@@ -1,38 +1,191 @@
-<!-- Navigation Bar -->
-<nav>
-  <div class="nav-container">
-    <a href="index.html" class="logo">PurpleTin</a>
-    <ul class="nav-links">
-      <li><a href="#animation">Animation</a></li>
-      <li><a href="#movies">Movies</a></li>
-      <li><a href="#tv-series">TV Series</a></li>
-      <li><a href="#tagalog">Tagalog</a></li>
-    </ul>
-  </div>
-</nav>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PurpleTin - Home</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-<!-- BANNER SECTION -->
-<section id="banner">
-  <div class="banner-slide active">
-    <img src="banner1.jpg" alt="Movie 1">
-    <div class="banner-info">
-      <h2>Sample Movie Title 1</h2>
-      <p>Overview: A brief description of this sample movie goes here.</p>
-      <a href="watch.html" class="watch-btn">Watch Now</a>
-    </div>
-  </div>
-  <div class="banner-slide">
-    <img src="banner2.jpg" alt="Movie 2">
-    <div class="banner-info">
-      <h2>Sample Movie Title 2</h2>
-      <p>Overview: A second description, showing another movie entry here.</p>
-      <a href="watch.html" class="watch-btn">Watch Now</a>
-    </div>
-  </div>
-</section>
+    html {
+      scroll-behavior: smooth;
+    }
 
-<!-- Animation Section -->
-<section id="animation">
-  <h2>Animation</h2>
-  <!-- your animation movies go here -->
-</section>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0d0d0d;
+      color: white;
+    }
+
+    nav {
+      background-color: #1f1f1f;
+      padding: 10px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .logo {
+      color: #a259ff;
+      font-size: 24px;
+      font-weight: bold;
+      margin-right: auto;
+      text-decoration: none;
+      padding-left: 20px;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links li a:hover {
+      color: #a259ff;
+    }
+
+    section {
+      padding: 40px 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    section h2 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      border-left: 4px solid #a259ff;
+      padding-left: 10px;
+    }
+
+    .movie-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 15px;
+    }
+
+    .movie-card {
+      background-color: #1a1a1a;
+      border-radius: 8px;
+      overflow: hidden;
+      text-align: center;
+      padding: 10px;
+      transition: transform 0.2s;
+    }
+
+    .movie-card:hover {
+      transform: scale(1.05);
+    }
+
+    .movie-card img {
+      width: 100%;
+      border-radius: 4px;
+      height: 170px;
+      object-fit: cover;
+    }
+
+    .movie-title {
+      margin-top: 10px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .movie-rating {
+      font-size: 12px;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="nav-container">
+      <a href="index.html" class="logo">PurpleTin</a>
+      <ul class="nav-links">
+        <li><a href="#animation">Animation</a></li>
+        <li><a href="#movies">Movies</a></li>
+        <li><a href="#tv-series">TV Series</a></li>
+        <li><a href="#anime">Anime</a></li>
+        <li><a href="#kdrama">K-Drama</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Sections -->
+  <section id="animation">
+    <h2>Animation</h2>
+    <div class="movie-grid">
+      <div class="movie-card">
+        <img src="https://via.placeholder.com/120x170" alt="Movie">
+        <div class="movie-title">Animated Film</div>
+        <div class="movie-rating">Rating: 8.5</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="movies">
+    <h2>Movies</h2>
+    <div class="movie-grid">
+      <div class="movie-card">
+        <img src="https://via.placeholder.com/120x170" alt="Movie">
+        <div class="movie-title">Sample Movie</div>
+        <div class="movie-rating">Rating: 7.8</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tv-series">
+    <h2>TV Series</h2>
+    <div class="movie-grid">
+      <div class="movie-card">
+        <img src="https://via.placeholder.com/120x170" alt="TV Series">
+        <div class="movie-title">TV Series Title</div>
+        <div class="movie-rating">Rating: 8.2</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="anime">
+    <h2>Anime</h2>
+    <div class="movie-grid">
+      <div class="movie-card">
+        <img src="https://via.placeholder.com/120x170" alt="Anime">
+        <div class="movie-title">Anime Name</div>
+        <div class="movie-rating">Rating: 9.0</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="kdrama">
+    <h2>K-Drama</h2>
+    <div class="movie-grid">
+      <div class="movie-card">
+        <img src="https://via.placeholder.com/120x170" alt="K-Drama">
+        <div class="movie-title">K-Drama Title</div>
+        <div class="movie-rating">Rating: 8.1</div>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
