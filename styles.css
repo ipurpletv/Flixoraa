@@ -1,4 +1,3 @@
-/* ---------- ROOT THEME ---------- */
 :root{
   --violet:#7d4dff;
   --violet-dark:#4d2ab5;
@@ -12,39 +11,46 @@
 *,*::before,*::after{box-sizing:border-box}
 body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(--text);scroll-behavior:smooth}
 
-/* ---------- NAV ---------- */
+/* ░░░ NAV ░░░ */
 .main-nav{
-  position:sticky;top:0;z-index:120;display:flex;align-items:center;gap:30px;
+  position:sticky;top:0;z-index:120;display:flex;align-items:center;
   padding:10px 5%;background:rgba(14,14,24,.85);backdrop-filter:blur(10px)
 }
 .nav-brand{font-size:1.3rem;font-weight:700;color:var(--violet);text-decoration:none}
-.nav-links{flex:1}
-.nav-links a{margin-left:22px;color:var(--text);text-decoration:none;font-weight:500;transition:color .3s}
-.nav-links a:hover{color:var(--violet)}
-/* search */
-#searchInput{
-  width:220px;padding:6px 12px;border:none;border-radius:var(--radius);
-  background:#222236;color:var(--text);font-size:.9rem
+.nav-links{
+  position:absolute;left:50%;transform:translateX(-50%);
+  display:flex;gap:22px
 }
+.nav-links a{color:var(--text);text-decoration:none;font-weight:500;transition:color .3s}
+.nav-links a:hover{color:var(--violet)}
+#searchInput{margin-left:auto;width:220px;padding:6px 12px;border:none;border-radius:var(--radius);background:#222236;color:var(--text);font-size:.9rem}
 #searchInput:focus{outline:2px solid var(--violet-dark)}
 
-/* ---------- HERO ---------- */
-.hero-banner{position:relative;height:48vh;overflow:hidden}
-.hero-banner img{width:100%;height:100%;object-fit:cover;filter:brightness(.55)}
-.banner-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
-.banner-overlay h1{font-size:clamp(2.2rem,4.5vw,3.5rem);margin:0 0 10px;font-weight:700}
-.banner-tag{font-size:1.05rem;color:var(--muted)}
+/* ░░░ HERO BANNER (SLIDER) ░░░ */
+.hero-banner{position:relative;height:56vh;overflow:hidden}
+.slide{
+  position:absolute;inset:0;opacity:0;transition:opacity 1s ease-in-out
+}
+.slide.active{opacity:1;z-index:1}
+.slide img{width:100%;height:100%;object-fit:cover;filter:brightness(.55)}
+.banner-overlay{
+  position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
+  align-items:center;text-align:center;padding:0 5%
+}
+.banner-overlay h1{font-size:clamp(2.2rem,4.5vw,3.7rem);margin:0 0 8px;font-weight:700}
+.banner-rating{margin:2px 0 14px;font-size:1.05rem;color:#ffd762}
+.banner-overview{max-width:700px;font-size:.95rem;color:var(--muted);margin-bottom:20px}
+.banner-watch{display:inline-block;padding:12px 34px;border-radius:var(--radius);background:var(--violet);color:#fff;font-weight:600;text-decoration:none;font-size:1rem;transition:background .3s}
+.banner-watch:hover{background:var(--violet-dark)}
 
-/* ---------- SECTION ---------- */
-.carousel-section{padding:50px 5%}
+/* ░░░ SECTIONS ░░░ */
+.carousel-section{padding:50px 5%;scroll-margin-top:90px} /* ensures anchor scroll isn’t hidden */
 .section-title{font-size:1.6rem;font-weight:700;margin-bottom:18px}
 
-/* ---------- CAROUSEL ---------- */
+/* ░░░ CAROUSEL & CARD ░░░ */
 .carousel-wrap{position:relative}
 .carousel-row{display:flex;gap:22px;overflow-x:auto;scroll-behavior:smooth;padding-bottom:10px}
 .carousel-row::-webkit-scrollbar{display:none}
-
-/* ---------- CARD ---------- */
 .card{flex:0 0 180px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:transform .25s}
 .card:hover{transform:translateY(-6px)}
 .card img{width:100%;height:270px;object-fit:cover}
@@ -53,24 +59,23 @@ body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(-
 .watch-btn{display:block;margin:0 10px 10px;padding:6px 0;text-align:center;border-radius:var(--radius);background:var(--violet);color:#fff;text-decoration:none;font-size:.85rem;font-weight:600;transition:background .3s}
 .watch-btn:hover{background:var(--violet-dark)}
 
-/* ---------- ARROWS ---------- */
+/* ░░░ ARROWS ░░░ */
 .arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.55);color:#fff;border:none;font-size:1.8rem;width:38px;height:60px;border-radius:8px;cursor:pointer;z-index:5}
 .arrow.left{left:-18px}
 .arrow.right{right:-18px}
 .arrow:hover{background:rgba(0,0,0,.8)}
 @media(max-width:600px){.arrow{display:none}}
 
-/* ---------- MODAL ---------- */
+/* ░░░ MODAL ░░░ */
 .modal{display:none;position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.8);backdrop-filter:blur(4px);justify-content:center;align-items:center}
 .modal-content{background:rgba(26,26,43,.9);border-radius:var(--radius);max-width:900px;width:90%;padding:30px;color:var(--text);position:relative;box-shadow:var(--shadow)}
 .close{position:absolute;top:18px;right:24px;font-size:2rem;cursor:pointer;color:#fff}
 .modal-flex{display:flex;gap:26px;flex-wrap:wrap}
 .modal-flex img{width:240px;border-radius:var(--radius);flex:0 0 auto;object-fit:cover;box-shadow:var(--shadow)}
 .modal-info{flex:1 1 300px;display:flex;flex-direction:column;gap:10px}
-.modal-info h2{margin-top:0}
 .modal-info .overview{font-size:.92rem;color:var(--muted)}
 .watch-now{align-self:flex-start;margin-top:8px;padding:10px 28px;border-radius:var(--radius);background:var(--violet);color:#fff;text-decoration:none;font-weight:600;transition:background .3s}
 .watch-now:hover{background:var(--violet-dark)}
 
-/* ---------- FOOTER ---------- */
+/* ░░░ FOOTER ░░░ */
 .site-footer{text-align:center;padding:25px 10px;color:var(--muted);font-size:.9rem}
