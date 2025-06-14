@@ -1,5 +1,5 @@
 // --------------  INSERT YOUR KEY BELOW  --------------
-const apiKey = 'YOUR_TMDB_API_KEY';
+const apiKey = 'b139bc417606842811f1526ae92572bc';
 // -----------------------------------------------------
 
 document.getElementById('loadBtn').addEventListener('click', loadMovies);
