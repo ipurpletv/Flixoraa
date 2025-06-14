@@ -3,48 +3,95 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PurpleTin - Movies</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>PurpleTin • Library</title>
+  <link rel="stylesheet" href="styles.css"/>
 </head>
-<body class="main-page">
-  <header class="main-header">
-    <h1>PurpleTin</h1>
-    <a href="index.html" class="back-home">Home</a>
+<body class="library">
+
+  <!-- ⬤⬤⬤  HERO BANNER  ⬤⬤⬤ -->
+  <header class="hero-banner">
+    <!-- Replace hero.jpg with your own 4‑5 MB JPEG for sharpness -->
+    <img src="hero.jpg" alt="Featured banner"/>
+    <div class="banner-overlay">
+      <h1>PurpleTin</h1>
+      <p class="banner-tag">Stream your favourites in glorious HD</p>
+    </div>
   </header>
 
-  <main class="movie-grid">
-    <!-- Example Movie Card -->
-    <div class="movie-card">
-      <img src="https://image.tmdb.org/t/p/w500/bbr6C3z6PR3RCkJcTn9C9BXuQhK.jpg" alt="Breathe Poster" />
-      <div class="movie-info">
-        <h2>Breathe</h2>
-        <p class="rating">⭐ 6.5</p>
-        <div class="details">
-          <p><strong>Release:</strong> 2024</p>
-          <p><strong>Genre:</strong> Sci-Fi, Thriller</p>
-          <p><strong>Duration:</strong> 110 mins</p>
-          <p><strong>Overview:</strong> In a world without oxygen, a mother and daughter fight to survive underground...</p>
-          <a href="watch.html?title=Breathe&src=https://your-stream-link-here.com" class="watch-btn">Watch</a>
-        </div>
-      </div>
+  <!-- ⬤⬤⬤  NAV BAR  ⬤⬤⬤ -->
+  <nav class="main-nav">
+    <a href="index.html" class="nav-brand">PurpleTin</a>
+    <div class="nav-links">
+      <a href="#animations">Animations</a>
+      <a href="#movies">Movies</a>
+      <a href="#tv">TV&nbsp;Series</a>
+      <a href="#anime">Anime</a>
+      <a href="#kdrama">K‑Drama</a>
     </div>
+  </nav>
 
-    <!-- Copy and paste this structure to add more movies -->
-    <!-- Example 2 -->
-    <div class="movie-card">
-      <img src="https://image.tmdb.org/t/p/w500/your-image.jpg" alt="Another Movie Poster" />
-      <div class="movie-info">
-        <h2>Another Movie</h2>
-        <p class="rating">⭐ 7.2</p>
-        <div class="details">
-          <p><strong>Release:</strong> 2023</p>
-          <p><strong>Genre:</strong> Action, Adventure</p>
-          <p><strong>Duration:</strong> 130 mins</p>
-          <p><strong>Overview:</strong> The journey of a hero continues...</p>
-          <a href="watch.html?title=Another+Movie&src=https://another-stream-link.com" class="watch-btn">Watch</a>
-        </div>
+  <!-- ⬤⬤⬤  CONTENT SECTIONS  ⬤⬤⬤ -->
+  <main>
+    <!-- ① Animations -->
+    <section id="animations" class="content-section">
+      <h2 class="section-title">Animations</h2>
+      <div class="card-grid">
+        <!-- example card -->
+        <article class="card">
+          <img src="https://image.tmdb.org/t/p/w780/5P8SmMzSNYikXpxil6BYzJ16611.jpg" alt="Spider‑Verse"/>
+          <div class="card-info">
+            <h3>Across the Spider‑Verse</h3>
+            <span class="rating">⭐ 8.5</span>
+            <a class="watch-btn" href="watch.html?title=Across+the+Spider-Verse&src=https://your‑stream‑link.com">Watch</a>
+          </div>
+        </article>
+        <!-- clone cards as needed -->
       </div>
-    </div>
+    </section>
+
+    <!-- ② Movies -->
+    <section id="movies" class="content-section">
+      <h2 class="section-title">Movies</h2>
+      <div class="card-grid">
+        <!-- sample -->
+        <article class="card">
+          <img src="https://image.tmdb.org/t/p/w780/bbr6C3z6PR3RCkJcTn9C9BXuQhK.jpg" alt="Breathe"/>
+          <div class="card-info">
+            <h3>Breathe</h3>
+            <span class="rating">⭐ 6.5</span>
+            <a class="watch-btn" href="watch.html?title=Breathe&src=https://your-stream-link-here.com">Watch</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ③ TV Series -->
+    <section id="tv" class="content-section">
+      <h2 class="section-title">TV Series</h2>
+      <div class="card-grid">
+        <!-- add cards -->
+      </div>
+    </section>
+
+    <!-- ④ Anime -->
+    <section id="anime" class="content-section">
+      <h2 class="section-title">Anime</h2>
+      <div class="card-grid">
+        <!-- add cards -->
+      </div>
+    </section>
+
+    <!-- ⑤ K‑Drama -->
+    <section id="kdrama" class="content-section">
+      <h2 class="section-title">K‑Drama</h2>
+      <div class="card-grid">
+        <!-- add cards -->
+      </div>
+    </section>
   </main>
+
+  <footer class="site-footer">
+    © 2025 PurpleTin&nbsp;• Hand‑crafted for cinephiles
+  </footer>
 </body>
 </html>
