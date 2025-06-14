@@ -1,58 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flixora Cinema</title>
-
-  <!-- Fonts & Icons -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-
-  <!-- Styles -->
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PurpleTin - Movies</title>
   <link rel="stylesheet" href="styles.css">
 </head>
-
-<body>
-  <!-- HERO / NAV -->
-  <header class="hero">
-    <nav class="topnav">
-      <div class="logo"><i class="fa-solid fa-film"></i> PurpleTin</div>
-      <ul class="nav-links">
-        <li><a href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
-      </ul>
-    </nav>
-
-    <div class="hero-content">
-      <h1>Your Private Cinema</h1>
-      <p class="tagline">Paste IMDb & stream links — watch instantly.</p>
-
-      <div class="input-area">
-        <textarea id="input" placeholder="https://www.imdb.com/title/tt11540468/ | https://example.com/breathe.mp4"></textarea>
-        <button id="loadBtn"><i class="fa-solid fa-magnifying-glass"></i> Load Movies</button>
-      </div>
-      <small class="note">Each line: IMDb URL <strong>|</strong> Streaming URL</small>
-    </div>
+<body class="main-page">
+  <header class="main-header">
+    <h1>PurpleTin</h1>
+    <a href="index.html" class="back-home">Home</a>
   </header>
 
-  <!-- MOVIE GRID -->
-  <main>
-    <section id="movieList" class="movie-grid"></section>
-  </main>
-
-  <!-- DETAILS MODAL -->
-  <div id="modal" class="modal">
-    <div class="modal-content">
-      <span id="closeModal" class="close">&times;</span>
-      <div id="modalBody"></div>
+  <main class="movie-grid">
+    <!-- Example Movie Card -->
+    <div class="movie-card">
+      <img src="https://image.tmdb.org/t/p/w500/bbr6C3z6PR3RCkJcTn9C9BXuQhK.jpg" alt="Breathe Poster" />
+      <div class="movie-info">
+        <h2>Breathe</h2>
+        <p class="rating">⭐ 6.5</p>
+        <div class="details">
+          <p><strong>Release:</strong> 2024</p>
+          <p><strong>Genre:</strong> Sci-Fi, Thriller</p>
+          <p><strong>Duration:</strong> 110 mins</p>
+          <p><strong>Overview:</strong> In a world without oxygen, a mother and daughter fight to survive underground...</p>
+          <a href="watch.html?title=Breathe&src=https://your-stream-link-here.com" class="watch-btn">Watch</a>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <footer>
-    <p>&copy; 2025 PurpleTin • Data provided by TMDb</p>
-  </footer>
-
-  <script src="script.js"></script>
+    <!-- Copy and paste this structure to add more movies -->
+    <!-- Example 2 -->
+    <div class="movie-card">
+      <img src="https://image.tmdb.org/t/p/w500/your-image.jpg" alt="Another Movie Poster" />
+      <div class="movie-info">
+        <h2>Another Movie</h2>
+        <p class="rating">⭐ 7.2</p>
+        <div class="details">
+          <p><strong>Release:</strong> 2023</p>
+          <p><strong>Genre:</strong> Action, Adventure</p>
+          <p><strong>Duration:</strong> 130 mins</p>
+          <p><strong>Overview:</strong> The journey of a hero continues...</p>
+          <a href="watch.html?title=Another+Movie&src=https://another-stream-link.com" class="watch-btn">Watch</a>
+        </div>
+      </div>
+    </div>
+  </main>
 </body>
 </html>
