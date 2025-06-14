@@ -1,49 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Watch • PurpleTin</title>
-
-  <!-- Fonts & Icons -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-
-  <!-- Styles -->
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Watch</title>
   <link rel="stylesheet" href="styles.css">
 </head>
-
 <body class="watch-page">
-  <header class="watch-nav">
-    <a href="main.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
-    <h2 id="watchTitle"></h2>
+  <header class="watch-header">
+    <a href="main.html" class="back-home">← Back to Movies</a>
+    <h1 id="movieTitle">Now Watching</h1>
   </header>
 
-  <main class="player-wrap">
-    <!-- Video / iframe inserted by script -->
-    <div id="player"></div>
+  <main class="watch-content">
+    <iframe id="moviePlayer" src="" allowfullscreen frameborder="0"></iframe>
   </main>
 
   <script>
-    // Parse query parameters
-    const params = new URLSearchParams(location.search);
-    const src   = params.get('src');
-    const title = params.get('title') || 'Now Playing';
-
-    document.getElementById('watchTitle').textContent = decodeURIComponent(title);
-
-    // Insert iframe (you can swap to <video> if you host MP4 directly)
-    const player = document.getElementById('player');
-    if (src) {
-      player.innerHTML = \`
-        <iframe src="\${decodeURIComponent(src)}"
-                frameborder="0"
-                allowfullscreen
-                class="iframe-player"></iframe>\`;
-    } else {
-      player.textContent = 'No stream URL provided.';
-    }
+    const params = new URLSearchParams(window.location.search);
+    const title = params.get("title");
+    const src = params.get("src");
+    document.getElementById("movieTitle").textContent = title || "Now Watching";
+    document.getElementById("moviePlayer").src = decodeURIComponent(src || "");
   </script>
 </body>
 </html>
