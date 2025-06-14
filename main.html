@@ -20,16 +20,66 @@
     <input id="searchInput" type="search" placeholder="Search…" autocomplete="off">
   </nav>
 
-  <!-- █ HERO BANNER █ -->
+  <!-- █ HERO BANNER (AUTO‑ROTATE) █ -->
   <header class="hero-banner" id="heroBanner"></header>
 
   <!-- █ CONTENT SECTIONS █ -->
   <main>
-    <!-- sections identical to previous version omitted for brevity -->
+    <!-- Animations -->
+    <section id="animations" class="carousel-section">
+      <h2 class="section-title">Animations</h2>
+      <div class="carousel-wrap">
+        <button class="arrow left" onclick="scrollLeft('row-ani')">&#10094;</button>
+        <div class="carousel-row" id="row-ani"></div>
+        <button class="arrow right" onclick="scrollRight('row-ani')">&#10095;</button>
+      </div>
+    </section>
+
+    <!-- Movies -->
+    <section id="movies" class="carousel-section">
+      <h2 class="section-title">Movies</h2>
+      <div class="carousel-wrap">
+        <button class="arrow left" onclick="scrollLeft('row-mov')">&#10094;</button>
+        <div class="carousel-row" id="row-mov"></div>
+        <button class="arrow right" onclick="scrollRight('row-mov')">&#10095;</button>
+      </div>
+    </section>
+
+    <!-- TV Series -->
+    <section id="tv" class="carousel-section">
+      <h2 class="section-title">TV Series</h2>
+      <div class="carousel-wrap">
+        <button class="arrow left" onclick="scrollLeft('row-tv')">&#10094;</button>
+        <div class="carousel-row" id="row-tv"></div>
+        <button class="arrow right" onclick="scrollRight('row-tv')">&#10095;</button>
+      </div>
+    </section>
+
+    <!-- Anime -->
+    <section id="anime" class="carousel-section">
+      <h2 class="section-title">Anime</h2>
+      <div class="carousel-wrap">
+        <button class="arrow left" onclick="scrollLeft('row-anime')">&#10094;</button>
+        <div class="carousel-row" id="row-anime"></div>
+        <button class="arrow right" onclick="scrollRight('row-anime')">&#10095;</button>
+      </div>
+    </section>
+
+    <!-- K‑Drama -->
+    <section id="kdrama" class="carousel-section">
+      <h2 class="section-title">K‑Drama</h2>
+      <div class="carousel-wrap">
+        <button class="arrow left" onclick="scrollLeft('row-k')">&#10094;</button>
+        <div class="carousel-row" id="row-k"></div>
+        <button class="arrow right" onclick="scrollRight('row-k')">&#10095;</button>
+      </div>
+    </section>
   </main>
 
-  <footer class="site-footer">© 2025 PurpleTin</footer>
+  <!-- FOOTER -->
+  <footer class="site-footer">© 2025 PurpleTin</footer>
 
+  <!-- MODAL -->
   <div id="modal" class="modal">
     <div class="modal-content">
       <span id="modalClose" class="close">&times;</span>
@@ -37,17 +87,19 @@
     </div>
   </div>
 
+  <!-- ░░░ SCRIPTS ░░░ -->
   <script>
     /* === CONFIGURATION === */
-    const TMDB_API_KEY = 'b139bc417606842811f1526ae92572bc';
+    const TMDB_API_KEY = 'b139bc417606842811f1526ae92572bc'; // your key
+    const BANNER_LIMIT = 1000;                               // number of random slides
 
-    // Content categories (same as before)
+    /* === CATEGORY CARDS === */
     const CATEGORIES = {
-      animations:{rowId:'row-ani',imdbIds:['tt2953050']},
-      movies:{rowId:'row-mov',imdbIds:['tt6208148']},
-      tv:{rowId:'row-tv',imdbIds:['tt4574334']},
-      anime:{rowId:'row-anime',imdbIds:['tt8580274']},
-      kdrama:{rowId:'row-k',imdbIds:['tt10262630']}
+      animations:{rowId:'row-ani',imdbIds:['tt2953050']},     // Encanto
+      movies:{rowId:'row-mov',imdbIds:['tt6208148']},         // Snow White
+      tv:{rowId:'row-tv',imdbIds:['tt4574334']},              // Stranger Things
+      anime:{rowId:'row-anime',imdbIds:['tt8580274']},        // Demon Slayer
+      kdrama:{rowId:'row-k',imdbIds:['tt10262630']}           // Crash Landing on You
     };
 
     const STREAM_MAP={
@@ -58,72 +110,66 @@
       tt10262630:'https://your-stream.com/crashlanding.mp4'
     };
 
-    // Banner will randomly rotate through these IMDb IDs
-    const BANNER_IDS=['tt6208148','tt2953050','tt4574334','tt8580274','tt10262630'];
+    /* === GENERIC HELPERS === */
+    const $=s=>document.querySelector(s);
+    const fetchJSON=u=>fetch(u).then(r=>r.json());
 
-    /* === HELPERS === */
-    const $=sel=>document.querySelector(sel);
-    const fetchJSON=url=>fetch(url).then(r=>r.json());
-
+    /* === FETCH BY IMDb (for carousel cards) === */
     async function fetchDetailsByIMDb(id){
-      const findURL=`https://api.themoviedb.org/3/find/${id}?api_key=${TMDB_API_KEY}&external_source=imdb_id`;
-      const find=await fetchJSON(findURL);
-      const arr=find.movie_results.length?find.movie_results:find.tv_results;
-      if(!arr.length) return null;
-      const media=arr[0];
-      const tmdbId=media.id;
-      const type=find.movie_results.length?'movie':'tv';
-      const detail=await fetchJSON(`https://api.themoviedb.org/3/${type}/${tmdbId}?api_key=${TMDB_API_KEY}&language=en-US`);
+      const find=`https://api.themoviedb.org/3/find/${id}?api_key=${TMDB_API_KEY}&external_source=imdb_id`;
+      const f=await fetchJSON(find);
+      const group=f.movie_results.length?f.movie_results:f.tv_results;
+      if(!group.length) return null;
+      const media=group[0];
+      const type=f.movie_results.length?'movie':'tv';
+      const det=`https://api.themoviedb.org/3/${type}/${media.id}?api_key=${TMDB_API_KEY}&language=en-US`;
+      const detail=await fetchJSON(det);
       return{type,detail,imdbId:id};
     }
 
-    function createCard({detail,type,imdbId}){
+    function cardHTML({detail,type,imdbId}){
       const title=type==='movie'?detail.title:detail.name;
-      const rating=detail.vote_average.toFixed(1);
-      const release=(detail.release_date||detail.first_air_date||'').slice(0,4);
-      const genres=detail.genres.map(g=>g.name).join(', ');
-      const poster=`https://image.tmdb.org/t/p/w342${detail.poster_path}`;
-      const overview=detail.overview;
-      const stream=STREAM_MAP[imdbId]||'#';
-      const art=document.createElement('article');
-      art.className='card';
-      Object.assign(art.dataset,{title,rating,release,genre:genres,overview,poster,stream});
-      art.innerHTML=`<img src="${poster}" alt="${title}"><h3>${title}</h3><span class="rating">⭐ ${rating}</span><a href="#" class="watch-btn">Watch</a>`;
-      return art;
+      return `<article class="card" data-title="${title}" data-rating="${detail.vote_average.toFixed(1)}" data-release="${(detail.release_date||detail.first_air_date||'').slice(0,4)}" data-genre="${detail.genres.map(g=>g.name).join(', ')}" data-overview="${detail.overview}" data-poster="https://image.tmdb.org/t/p/w342${detail.poster_path}" data-stream="${STREAM_MAP[imdbId]||'#'}">
+        <img src="https://image.tmdb.org/t/p/w342${detail.poster_path}" alt="${title}">
+        <h3>${title}</h3><span class="rating">⭐ ${detail.vote_average.toFixed(1)}</span>
+        <a href="#" class="watch-btn">Watch</a></article>`;
     }
 
-    async function populateCategory(key){
-      const {rowId,imdbIds}=CATEGORIES[key];
-      const row=document.getElementById(rowId);
-      for(const id of imdbIds){
-        const data=await fetchDetailsByIMDb(id);
-        if(data) row.appendChild(createCard(data));
+    async function populateCategories(){
+      for(const key of Object.keys(CATEGORIES)){
+        const row=$(`#${CATEGORIES[key].rowId}`);
+        for(const id of CATEGORIES[key].imdbIds){
+          const data=await fetchDetailsByIMDb(id);
+          if(data) row.insertAdjacentHTML('beforeend',cardHTML(data));
+        }
       }
     }
 
-    async function initAllCategories(){
-      for(const key of Object.keys(CATEGORIES)) await populateCategory(key);
-    }
-
-    /* === BANNER BUILD & RANDOM ROTATION === */
+    /* === HERO BANNER (1000 RANDOM) === */
     async function buildBannerSlides(){
       const hero=$('#heroBanner');
-      const slidePromises=BANNER_IDS.map(fetchDetailsByIMDb);
-      const results=await Promise.all(slidePromises);
-      results.filter(Boolean).forEach((data,i)=>{
-        const {detail,imdbId}=data;
-        const title=detail.title||detail.name;
-        const img=`https://image.tmdb.org/t/p/original${detail.backdrop_path||detail.poster_path}`;
-        const slide=document.createElement('div');
-        slide.className='slide'+(i===0?' active':'');
-        slide.dataset.stream=STREAM_MAP[imdbId]||'#';
-        slide.innerHTML=`<img src="${img}" alt="${title}"><div class="banner-overlay"><h1>${title}</h1><p class="banner-rating">⭐ ${detail.vote_average.toFixed(1)} | ${(detail.release_date||detail.first_air_date||'').slice(0,4)}</p><p class="banner-overview">${detail.overview}</p><a class="banner-watch" href="watch.html?title=${encodeURIComponent(title)}&src=${encodeURIComponent(STREAM_MAP[imdbId]||'#')}">Watch</a></div>`;
-        hero.appendChild(slide);
-      });
-      startRandomRotation();
+      let collected=0,page=1;
+      while(collected<BANNER_LIMIT){
+        const res=await fetchJSON(`https://api.themoviedb.org/3/trending/all/day?api_key=${TMDB_API_KEY}&page=${page}`);
+        if(!res.results||!res.results.length) break;
+        res.results.forEach(item=>{
+          if(collected>=BANNER_LIMIT||!item.backdrop_path) return;
+          const title=item.title||item.name;
+          const year=(item.release_date||item.first_air_date||'').slice(0,4);
+          hero.insertAdjacentHTML('beforeend',`
+            <div class="slide${collected===0?' active':''}" data-title="${title}">
+              <img src="https://image.tmdb.org/t/p/original${item.backdrop_path}" alt="${title}">
+              <div class="banner-overlay"><h1>${title}</h1><p class="banner-rating">⭐ ${item.vote_average.toFixed(1)} | ${year}</p><p class="banner-overview">${item.overview||''}</p><a class="banner-watch" href="#">Watch</a></div>
+            </div>`);
+          collected++;
+        });
+        page++;
+        if(page>50) break; // safety (20*50 = 1000)
+      }
+      randomRotateSlides();
     }
 
-    function startRandomRotation(){
+    function randomRotateSlides(){
       const slides=[...document.querySelectorAll('#heroBanner .slide')];
       if(slides.length<2) return;
       let current=0;
@@ -136,13 +182,13 @@
       },10000);
     }
 
-    /* === SEARCH, MODAL & UTILITY === */
+    /* === SEARCH, MODAL, SCROLL === */
     const amt=360;
     window.scrollLeft=id=>document.getElementById(id).scrollBy({left:-amt,behavior:'smooth'});
     window.scrollRight=id=>document.getElementById(id).scrollBy({left:amt,behavior:'smooth'});
 
     $('#searchInput').addEventListener('input',e=>{
-      const q=e.target.value.toLowerCase().trim();
+      const q=e.target.value.toLowerCase();
       document.querySelectorAll('.card').forEach(c=>c.style.display=c.dataset.title.toLowerCase().includes(q)?'':'none');
     });
 
@@ -153,14 +199,14 @@
       if(e.target.matches('.watch-btn')){
         e.preventDefault();
         const d=e.target.closest('.card').dataset;
-        $('#modalBody').innerHTML=`<div class="modal-flex"><img src="${d.poster}" alt="${d.title}"><div class="modal-info"><h2>${d.title}</h2><p><strong>Rating:</strong> ${d.rating}/10</p><p><strong>Release:</strong> ${d.release}</p><p><strong>Genre:</strong> ${d.genre}</p><p class="overview">${d.overview}</p><a class="watch-now" href="watch.html?title=${encodeURIComponent(d.title)}&src=${encodeURIComponent(d.stream)}" target="_blank">Watch Now</a></div></div>`;
+        $('#modalBody').innerHTML=`<div class=modal-flex><img src="${d.poster}" alt="${d.title}"><div class=modal-info><h2>${d.title}</h2><p><strong>Rating:</strong> ${d.rating}/10</p><p><strong>Release:</strong> ${d.release}</p><p><strong>Genre:</strong> ${d.genre}</p><p class=overview>${d.overview}</p><a class=watch-now href="watch.html?title=${encodeURIComponent(d.title)}&src=${encodeURIComponent(d.stream)}" target=_blank>Watch Now</a></div></div>`;
         modal.style.display='flex';
       }
     });
 
-    /* === INITIALISE EVERYTHING === */
+    /* === INIT === */
     (async()=>{
-      await Promise.all([initAllCategories(),buildBannerSlides()]);
+      await Promise.all([populateCategories(),buildBannerSlides()]);
     })();
   </script>
 </body>
