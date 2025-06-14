@@ -1,26 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PurpleTin • Library</title>
-  <link rel="stylesheet" href="styles.css"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PurpleTin • Home</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="library">
+<body>
 
-  <!-- ⬤⬤⬤  HERO BANNER  ⬤⬤⬤ -->
-  <header class="hero-banner">
-    <!-- Replace hero.jpg with your own 4‑5 MB JPEG for sharpness -->
-    <img src="hero.jpg" alt="Featured banner"/>
-    <div class="banner-overlay">
-      <h1>PurpleTin</h1>
-      <p class="banner-tag">Stream your favourites in glorious HD</p>
-    </div>
-  </header>
-
-  <!-- ⬤⬤⬤  NAV BAR  ⬤⬤⬤ -->
+  <!-- █████  NAV BAR  █████ -->
   <nav class="main-nav">
-    <a href="index.html" class="nav-brand">PurpleTin</a>
+    <a class="nav-brand" href="#">PurpleTin</a>
     <div class="nav-links">
       <a href="#animations">Animations</a>
       <a href="#movies">Movies</a>
@@ -30,68 +20,101 @@
     </div>
   </nav>
 
-  <!-- ⬤⬤⬤  CONTENT SECTIONS  ⬤⬤⬤ -->
+  <!-- █████  HERO BANNER  █████ -->
+  <header class="hero-banner">
+    <!-- Replace hero.jpg with your own 1920×800+ image -->
+    <img src="hero.jpg" alt="Hero Banner">
+    <div class="banner-overlay">
+      <h1>Unlimited Entertainment</h1>
+      <p class="banner-tag">Stream everything you love in one place</p>
+    </div>
+  </header>
+
+  <!-- █████  SECTIONS / CAROUSELS  █████ -->
   <main>
-    <!-- ① Animations -->
-    <section id="animations" class="content-section">
+
+    <!-- ═══ 1. ANIMATIONS ═══ -->
+    <section id="animations" class="carousel-section">
       <h2 class="section-title">Animations</h2>
-      <div class="card-grid">
-        <!-- example card -->
-        <article class="card">
-          <img src="https://image.tmdb.org/t/p/w780/5P8SmMzSNYikXpxil6BYzJ16611.jpg" alt="Spider‑Verse"/>
-          <div class="card-info">
+      <div class="carousel-wrap">
+        <button class="arrow left" onclick="scrollLeft('row-ani')">&#10094;</button>
+        <div class="carousel-row" id="row-ani">
+          <!-- ── CARD ── -->
+          <article class="card">
+            <img src="https://image.tmdb.org/t/p/w342/5P8SmMzSNYikXpxil6BYzJ16611.jpg" alt="Spider-Verse">
             <h3>Across the Spider‑Verse</h3>
-            <span class="rating">⭐ 8.5</span>
-            <a class="watch-btn" href="watch.html?title=Across+the+Spider-Verse&src=https://your‑stream‑link.com">Watch</a>
-          </div>
-        </article>
-        <!-- clone cards as needed -->
+            <span class="rating">⭐ 8.5</span>
+            <a class="watch-btn" href="watch.html?title=Across+the+Spider-Verse&src=https://your-stream.com">Watch</a>
+          </article>
+          <!-- duplicate cards here -->
+        </div>
+        <button class="arrow right" onclick="scrollRight('row-ani')">&#10095;</button>
       </div>
     </section>
 
-    <!-- ② Movies -->
-    <section id="movies" class="content-section">
+    <!-- ═══ 2. MOVIES ═══ -->
+    <section id="movies" class="carousel-section">
       <h2 class="section-title">Movies</h2>
-      <div class="card-grid">
-        <!-- sample -->
-        <article class="card">
-          <img src="https://image.tmdb.org/t/p/w780/bbr6C3z6PR3RCkJcTn9C9BXuQhK.jpg" alt="Breathe"/>
-          <div class="card-info">
+      <div class="carousel-wrap">
+        <button class="arrow left" onclick="scrollLeft('row-mov')">&#10094;</button>
+        <div class="carousel-row" id="row-mov">
+          <article class="card">
+            <img src="https://image.tmdb.org/t/p/w342/bbr6C3z6PR3RCkJcTn9C9BXuQhK.jpg" alt="Breathe">
             <h3>Breathe</h3>
-            <span class="rating">⭐ 6.5</span>
-            <a class="watch-btn" href="watch.html?title=Breathe&src=https://your-stream-link-here.com">Watch</a>
-          </div>
-        </article>
+            <span class="rating">⭐ 6.5</span>
+            <a class="watch-btn" href="watch.html?title=Breathe&src=https://your-stream.com/breathe.mp4">Watch</a>
+          </article>
+          <!-- more movie cards -->
+        </div>
+        <button class="arrow right" onclick="scrollRight('row-mov')">&#10095;</button>
       </div>
     </section>
 
-    <!-- ③ TV Series -->
-    <section id="tv" class="content-section">
-      <h2 class="section-title">TV Series</h2>
-      <div class="card-grid">
-        <!-- add cards -->
+    <!-- ═══ 3. TV SERIES ═══ -->
+    <section id="tv" class="carousel-section">
+      <h2 class="section-title">TV Series</h2>
+      <div class="carousel-wrap">
+        <button class="arrow left" onclick="scrollLeft('row-tv')">&#10094;</button>
+        <div class="carousel-row" id="row-tv">
+          <!-- tv cards -->
+        </div>
+        <button class="arrow right" onclick="scrollRight('row-tv')">&#10095;</button>
       </div>
     </section>
 
-    <!-- ④ Anime -->
-    <section id="anime" class="content-section">
+    <!-- ═══ 4. ANIME ═══ -->
+    <section id="anime" class="carousel-section">
       <h2 class="section-title">Anime</h2>
-      <div class="card-grid">
-        <!-- add cards -->
+      <div class="carousel-wrap">
+        <button class="arrow left" onclick="scrollLeft('row-anime')">&#10094;</button>
+        <div class="carousel-row" id="row-anime">
+          <!-- anime cards -->
+        </div>
+        <button class="arrow right" onclick="scrollRight('row-anime')">&#10095;</button>
       </div>
     </section>
 
-    <!-- ⑤ K‑Drama -->
-    <section id="kdrama" class="content-section">
+    <!-- ═══ 5. K‑DRAMA ═══ -->
+    <section id="kdrama" class="carousel-section">
       <h2 class="section-title">K‑Drama</h2>
-      <div class="card-grid">
-        <!-- add cards -->
+      <div class="carousel-wrap">
+        <button class="arrow left" onclick="scrollLeft('row-k')">&#10094;</button>
+        <div class="carousel-row" id="row-k">
+          <!-- kdrama cards -->
+        </div>
+        <button class="arrow right" onclick="scrollRight('row-k')">&#10095;</button>
       </div>
     </section>
+
   </main>
 
-  <footer class="site-footer">
-    © 2025 PurpleTin&nbsp;• Hand‑crafted for cinephiles
-  </footer>
+  <footer class="site-footer">© 2025 PurpleTin</footer>
+
+  <!-- Tiny JS for carousel arrows -->
+  <script>
+    const scrollAmount = 360; // pixels per click
+    function scrollLeft(id){ document.getElementById(id).scrollBy({left:-scrollAmount,behavior:'smooth'}); }
+    function scrollRight(id){ document.getElementById(id).scrollBy({left: scrollAmount,behavior:'smooth'}); }
+  </script>
 </body>
 </html>
