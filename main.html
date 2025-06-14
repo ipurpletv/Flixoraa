@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PurpleTin Cinema</title>
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <!-- HERO / NAV -->
+  <header class="hero">
+    <nav class="topnav">
+      <div class="logo"><i class="fa-solid fa-film"></i> PurpleTin</div>
+      <ul class="nav-links">
+        <li><a href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
+      </ul>
+    </nav>
+
+    <div class="hero-content">
+      <h1>Your Private Cinema</h1>
+      <p class="tagline">Paste IMDb & stream links — watch instantly.</p>
+
+      <div class="input-area">
+        <textarea id="input" placeholder="https://www.imdb.com/title/tt11540468/ | https://example.com/breathe.mp4"></textarea>
+        <button id="loadBtn"><i class="fa-solid fa-magnifying-glass"></i> Load Movies</button>
+      </div>
+      <small class="note">Each line: IMDb URL <strong>|</strong> Streaming URL</small>
+    </div>
+  </header>
+
+  <!-- MOVIE GRID -->
+  <main>
+    <section id="movieList" class="movie-grid"></section>
+  </main>
+
+  <!-- DETAILS MODAL -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span id="closeModal" class="close">&times;</span>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 PurpleTin • Data provided by TMDb</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
