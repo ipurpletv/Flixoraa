@@ -2,249 +2,229 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PurpleTin - Home</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #0d0d0d;
-      color: white;
-    }
-
-    nav {
-      background-color: #1f1f1f;
-      padding: 10px 0;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .nav-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .logo {
-      color: #a259ff;
-      font-size: 24px;
-      font-weight: bold;
-      margin-right: auto;
-      text-decoration: none;
-      padding-left: 20px;
-    }
-
-    .nav-links {
-      list-style: none;
-      display: flex;
-      gap: 25px;
-    }
-
-    .nav-links li a {
-      color: white;
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.3s ease;
-    }
-
-    .nav-links li a:hover {
-      color: #a259ff;
-    }
-
-    section {
-      padding: 40px 20px;
-      max-width: 1200px;
-      margin: auto;
-    }
-
-    section h2 {
-      font-size: 28px;
-      margin-bottom: 20px;
-      border-left: 4px solid #a259ff;
-      padding-left: 10px;
-    }
-
-    .movie-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-      gap: 15px;
-    }
-
-    .movie-card {
-      background-color: #1a1a1a;
-      border-radius: 8px;
-      overflow: hidden;
-      text-align: center;
-      padding: 10px;
-      transition: transform 0.2s;
-    }
-
-    .movie-card:hover {
-      transform: scale(1.05);
-    }
-
-    .movie-card img {
-      width: 100%;
-      border-radius: 4px;
-      height: 170px;
-      object-fit: cover;
-    }
-
-    .movie-title {
-      margin-top: 10px;
-      font-size: 14px;
-      font-weight: bold;
-    }
-
-    .movie-rating {
-      font-size: 12px;
-      color: #aaa;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PurpleTin • Home</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-  <!-- Navigation Bar -->
-  <nav>
-    <div class="nav-container">
-      <a href="index.html" class="logo">PurpleTin</a>
-      <ul class="nav-links">
-        <li><a href="#animation">Animation</a></li>
-        <li><a href="#movies">Movies</a></li>
-        <li><a href="#tv-series">TV Series</a></li>
-        <li><a href="#anime">Anime</a></li>
-        <li><a href="#kdrama">K-Drama</a></li>
-      </ul>
+  <!-- █ NAV BAR █ -->
+  <nav class="main-nav">
+    <a class="nav-brand" href="#">PurpleTin</a>
+
+    <!-- centered genre links -->
+    <div class="nav-links">
+      <a href="#animations">Animations</a>
+      <a href="#movies">Movies</a>
+      <a href="#tv">TV&nbsp;Series</a>
+      <a href="#anime">Anime</a>
+      <a href="#kdrama">K‑Drama</a>
     </div>
+
+    <!-- search -->
+    <input id="searchInput" type="search" placeholder="Search…" autocomplete="off">
   </nav>
 
-  <!-- Sections -->
-  <section id="movies">
-    <h2>Movies</h2>
-    <div class="movie-grid">
-      <!-- Just paste the TMDb or IMDb URL below -->
-      <article class="movie-card" data-tmdb="https://www.themoviedb.org/movie/1011985">
-        <img src="https://via.placeholder.com/120x170" alt="">
-        <div class="movie-title">Loading...</div>
-        <div class="movie-rating">Rating: --</div>
-      </article>
+  <!-- █ HERO BANNER (AUTO‑ROTATE) █ -->
+  <header class="hero-banner" id="heroBanner">
+    <!-- ─── SLIDE 1 ─── -->
+    <div class="slide active"
+         data-title="Breathe"
+         data-stream="https://your-stream.com/breathe.mp4">
+      <img src="https://image.tmdb.org/t/p/original/bbr6C3z6PR3RCkJcTn9C9BXuQhK.jpg" alt="Breathe">
+      <div class="banner-overlay">
+        <h1>Breathe</h1>
+        <p class="banner-rating">⭐ 6.5  |  2024  |  Sci‑Fi, Thriller</p>
+        <p class="banner-overview">
+          In a world without oxygen, a mother and daughter fight to survive underground…
+        </p>
+        <a class="banner-watch" href="watch.html?title=Breathe&src=https://your-stream.com/breathe.mp4">Watch</a>
+      </div>
     </div>
-  </section>
 
-  <section id="animation">
-    <h2>Animation</h2>
-    <div class="movie-grid">
-      <article class="movie-card" data-tmdb="https://www.themoviedb.org/movie/1416">
-        <img src="https://via.placeholder.com/120x170" alt="">
-        <div class="movie-title">Loading...</div>
-        <div class="movie-rating">Rating: --</div>
-      </article>
+    <!-- ─── SLIDE 2 ─── -->
+    <div class="slide"
+         data-title="Across the Spider‑Verse"
+         data-stream="https://your-stream.com/spider.mp4">
+      <img src="https://image.tmdb.org/t/p/original/5P8SmMzSNYikXpxil6BYzJ16611.jpg" alt="Across the Spider‑Verse">
+      <div class="banner-overlay">
+        <h1>Across the Spider‑Verse</h1>
+        <p class="banner-rating">⭐ 8.5  |  2023  |  Animation, Action</p>
+        <p class="banner-overview">
+          Miles Morales catapults across the Multiverse where he meets a team of Spider‑People…
+        </p>
+        <a class="banner-watch" href="watch.html?title=Across+the+Spider-Verse&src=https://your-stream.com/spider.mp4">Watch</a>
+      </div>
     </div>
-  </section>
 
-  <section id="tv-series">
-    <h2>TV Series</h2>
-    <div class="movie-grid">
-      <article class="movie-card" data-tmdb="https://www.themoviedb.org/tv/87917">
-        <img src="https://via.placeholder.com/120x170" alt="">
-        <div class="movie-title">Loading...</div>
-        <div class="movie-rating">Rating: --</div>
-      </article>
+    <!-- ─── SLIDE 3 ─── -->
+    <div class="slide"
+         data-title="Sample Movie"
+         data-stream="https://your-stream.com/sample.mp4">
+      <img src="https://image.tmdb.org/t/p/original/8f9vU7J78kU94bPZB3s9E25pXqJ.jpg" alt="Sample Movie">
+      <div class="banner-overlay">
+        <h1>Sample Movie</h1>
+        <p class="banner-rating">⭐ 7.8  |  2025  |  Drama</p>
+        <p class="banner-overview">
+          A gripping tale of hope and resilience in an uncertain future…
+        </p>
+        <a class="banner-watch" href="watch.html?title=Sample+Movie&src=https://your-stream.com/sample.mp4">Watch</a>
+      </div>
     </div>
-  </section>
+  </header>
 
-  <section id="anime">
-    <h2>Anime</h2>
-    <div class="movie-grid">
-      <article class="movie-card" data-tmdb="https://www.imdb.com/title/tt10233448">
-        <img src="https://via.placeholder.com/120x170" alt="">
-        <div class="movie-title">Loading...</div>
-        <div class="movie-rating">Rating: --</div>
-      </article>
+  <!-- █ CONTENT SECTIONS █ -->
+  <main>
+
+    <!-- Animations -->
+    <section id="animations" class="carousel-section">
+      <h2 class="section-title">Animations</h2>
+      <div class="carousel-wrap">
+        <button class="arrow left" onclick="scrollLeft('row-ani')">&#10094;</button>
+        <div class="carousel-row" id="row-ani">
+          <article class="card"
+                   data-title="Across the Spider-Verse"
+                   data-rating="8.5"
+                   data-release="2023"
+                   data-genre="Animation, Action"
+                   data-overview="Miles Morales catapults across the Multiverse…"
+                   data-poster="https://image.tmdb.org/t/p/w780/5P8SmMzSNYikXpxil6BYzJ16611.jpg"
+                   data-stream="https://your-stream.com/spider.mp4">
+            <img src="https://image.tmdb.org/t/p/w342/5P8SmMzSNYikXpxil6BYzJ16611.jpg" alt="Across the Spider‑Verse">
+            <h3>Across the Spider‑Verse</h3>
+            <span class="rating">⭐ 8.5</span>
+            <a href="#" class="watch-btn">Watch</a>
+          </article>
+          <!-- duplicate cards … -->
+        </div>
+        <button class="arrow right" onclick="scrollRight('row-ani')">&#10095;</button>
+      </div>
+    </section>
+
+    <!-- Movies -->
+    <section id="movies" class="carousel-section">
+      <h2 class="section-title">Movies</h2>
+      <div class="carousel-wrap">
+        <button class="arrow left" onclick="scrollLeft('row-mov')">&#10094;</button>
+        <div class="carousel-row" id="row-mov">
+          <article class="card"
+                   data-title="Breathe"
+                   data-rating="6.5"
+                   data-release="2024"
+                   data-genre="Sci‑Fi, Thriller"
+                   data-overview="In a world without oxygen, a mother and daughter fight to survive…"
+                   data-poster="https://image.tmdb.org/t/p/w780/bbr6C3z6PR3RCkJcTn9C9BXuQhK.jpg"
+                   data-stream="https://your-stream.com/breathe.mp4">
+            <img src="https://image.tmdb.org/t/p/w342/bbr6C3z6PR3RCkJcTn9C9BXuQhK.jpg" alt="Breathe">
+            <h3>Breathe</h3>
+            <span class="rating">⭐ 6.5</span>
+            <a href="#" class="watch-btn">Watch</a>
+          </article>
+          <!-- more movie cards… -->
+        </div>
+        <button class="arrow right" onclick="scrollRight('row-mov')">&#10095;</button>
+      </div>
+    </section>
+
+    <!-- TV Series -->
+    <section id="tv" class="carousel-section">
+      <h2 class="section-title">TV Series</h2>
+      <div class="carousel-wrap">
+        <button class="arrow left" onclick="scrollLeft('row-tv')">&#10094;</button>
+        <div class="carousel-row" id="row-tv">
+          <!-- tv cards -->
+        </div>
+        <button class="arrow right" onclick="scrollRight('row-tv')">&#10095;</button>
+      </div>
+    </section>
+
+    <!-- Anime -->
+    <section id="anime" class="carousel-section">
+      <h2 class="section-title">Anime</h2>
+      <div class="carousel-wrap">
+        <button class="arrow left" onclick="scrollLeft('row-anime')">&#10094;</button>
+        <div class="carousel-row" id="row-anime">
+          <!-- anime cards -->
+        </div>
+        <button class="arrow right" onclick="scrollRight('row-anime')">&#10095;</button>
+      </div>
+    </section>
+
+    <!-- K‑Drama -->
+    <section id="kdrama" class="carousel-section">
+      <h2 class="section-title">K‑Drama</h2>
+      <div class="carousel-wrap">
+        <button class="arrow left" onclick="scrollLeft('row-k')">&#10094;</button>
+        <div class="carousel-row" id="row-k">
+          <!-- k‑drama cards -->
+        </div>
+        <button class="arrow right" onclick="scrollRight('row-k')">&#10095;</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">© 2025 PurpleTin</footer>
+
+  <!-- MODAL -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span id="modalClose" class="close">&times;</span>
+      <div id="modalBody"></div>
     </div>
-  </section>
+  </div>
 
-  <section id="kdrama">
-    <h2>K-Drama</h2>
-    <div class="movie-grid">
-      <article class="movie-card" data-tmdb="https://www.themoviedb.org/tv/87920">
-        <img src="https://via.placeholder.com/120x170" alt="">
-        <div class="movie-title">Loading...</div>
-        <div class="movie-rating">Rating: --</div>
-      </article>
-    </div>
-  </section>
-
-  <!-- TMDb Auto-fetch Script -->
+  <!-- ░░░ SMALL, INLINE JS ░░░ -->
   <script>
-    const TMDB_KEY = 'b139bc417606842811f1526ae92572bc'; // ← REPLACE THIS WITH YOUR KEY
-    const IMG = path => `https://image.tmdb.org/t/p/w342${path}`;
+    /* === section scroll amount === */
+    const amt = 360;
+    const scrollLeft  = id => document.getElementById(id).scrollBy({left:-amt,behavior:'smooth'});
+    const scrollRight = id => document.getElementById(id).scrollBy({left: amt,behavior:'smooth'});
 
-    function extractId(url) {
-      const tmdbMatch = url.match(/\/(movie|tv)\/(\d+)/);
-      if (tmdbMatch) return { type: tmdbMatch[1], id: tmdbMatch[2] };
-
-      const imdbMatch = url.match(/tt\d{7,}/);
-      if (imdbMatch) return { type: 'imdb', id: imdbMatch[0] };
-
-      return null;
-    }
-
-    async function fetchByTmdb(id, type) {
-      const res = await fetch(`https://api.themoviedb.org/3/${type}/${id}?api_key=${TMDB_KEY}&language=en-US`);
-      return await res.json();
-    }
-
-    async function fetchByImdb(ttid) {
-      const res = await fetch(`https://api.themoviedb.org/3/find/${ttid}?api_key=${TMDB_KEY}&external_source=imdb_id`);
-      const data = await res.json();
-      return data.movie_results?.[0] || data.tv_results?.[0];
-    }
-
-    document.addEventListener('DOMContentLoaded', async () => {
-      const cards = document.querySelectorAll('[data-tmdb]');
-      for (const card of cards) {
-        const url = card.dataset.tmdb;
-        const parsed = extractId(url);
-        if (!parsed) continue;
-
-        try {
-          let info;
-          if (parsed.type === 'imdb') {
-            info = await fetchByImdb(parsed.id);
-          } else {
-            info = await fetchByTmdb(parsed.id, parsed.type);
-          }
-
-          if (!info) continue;
-
-          const img = card.querySelector('img');
-          if (img && info.poster_path) img.src = IMG(info.poster_path);
-
-          const title = card.querySelector('.movie-title');
-          if (title) title.textContent = info.title || info.name || 'Untitled';
-
-          const rating = card.querySelector('.movie-rating');
-          if (rating) rating.textContent = `Rating: ${info.vote_average?.toFixed(1) || '--'}`;
-        } catch (err) {
-          console.warn('Error fetching TMDb data:', err);
-        }
-      }
+    /* === SEARCH === */
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', () => {
+      const q = searchInput.value.toLowerCase().trim();
+      document.querySelectorAll('.card').forEach(c => {
+        c.style.display = c.dataset.title.toLowerCase().includes(q) ? '' : 'none';
+      });
     });
-  </script>
 
+    /* === POP‑UP MODAL === */
+    const modal      = document.getElementById('modal');
+    const modalBody  = document.getElementById('modalBody');
+    const modalClose = document.getElementById('modalClose');
+    modalClose.onclick = () => modal.style.display = 'none';
+    window.onclick   = e => (e.target === modal) && (modal.style.display='none');
+    document.querySelectorAll('.watch-btn').forEach(btn=>{
+      btn.addEventListener('click', e=>{
+        e.preventDefault();
+        const d = e.target.closest('.card').dataset;
+        modalBody.innerHTML = `
+          <div class="modal-flex">
+            <img src="${d.poster}" alt="${d.title}">
+            <div class="modal-info">
+              <h2>${d.title}</h2>
+              <p><strong>Rating:</strong> ${d.rating}/10</p>
+              <p><strong>Release:</strong> ${d.release}</p>
+              <p><strong>Genre:</strong> ${d.genre}</p>
+              <p class="overview">${d.overview}</p>
+              <a class="watch-now" href="watch.html?title=${encodeURIComponent(d.title)}&src=${encodeURIComponent(d.stream)}" target="_blank">Watch Now</a>
+            </div>
+          </div>`;
+        modal.style.display='flex';
+      });
+    });
+
+    /* === AUTO‑ROTATING HERO === */
+    const slides = document.querySelectorAll('.hero-banner .slide');
+    let idx = 0;
+    setInterval(()=>{
+      slides[idx].classList.remove('active');
+      idx = (idx + 1) % slides.length;
+      slides[idx].classList.add('active');
+    }, 10000); // 10s
+  </script>
 </body>
 </html>
