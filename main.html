@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- █ NAV BAR █ -->
   <nav class="main-nav">
     <a class="nav-brand" href="#">PurpleTin</a>
     <div class="nav-links">
@@ -19,29 +20,17 @@
     <input id="searchInput" type="search" placeholder="Search…" autocomplete="off">
   </nav>
 
+  <!-- █ HERO BANNER █ -->
   <header class="hero-banner" id="heroBanner"></header>
 
+  <!-- █ CONTENT SECTIONS █ -->
   <main>
     <!-- Animations -->
     <section id="animations" class="carousel-section">
       <h2 class="section-title">Animations</h2>
       <div class="carousel-wrap">
         <button class="arrow left" onclick="scrollLeft('row-ani')">&#10094;</button>
-        <div class="carousel-row" id="row-ani">
-          <article class="card"
-                   data-title="Encanto"
-                   data-rating="7.6"
-                   data-release="2021"
-                   data-genre="Animation, Family"
-                   data-overview="A Colombian teenage girl has to face the frustration of being the only member of her family without magical powers."
-                   data-poster="https://image.tmdb.org/t/p/w780/4j0PNHkMr5ax3IA8tjtxcmPU3QT.jpg"
-                   data-stream="https://your-stream.com/encanto.mp4">
-            <img src="https://image.tmdb.org/t/p/w342/4j0PNHkMr5ax3IA8tjtxcmPU3QT.jpg" alt="Encanto">
-            <h3>Encanto</h3>
-            <span class="rating">⭐ 7.6</span>
-            <a href="#" class="watch-btn">Watch</a>
-          </article>
-        </div>
+        <div class="carousel-row" id="row-ani"></div>
         <button class="arrow right" onclick="scrollRight('row-ani')">&#10095;</button>
       </div>
     </section>
@@ -51,21 +40,7 @@
       <h2 class="section-title">Movies</h2>
       <div class="carousel-wrap">
         <button class="arrow left" onclick="scrollLeft('row-mov')">&#10094;</button>
-        <div class="carousel-row" id="row-mov">
-          <article class="card"
-                   data-title="Snow White"
-                   data-rating="6.4"
-                   data-release="2025"
-                   data-genre="Fantasy, Adventure"
-                   data-overview="A live-action adaptation of the classic Disney fairy tale."
-                   data-poster="https://image.tmdb.org/t/p/w780/your_snow_white_poster.jpg"
-                   data-stream="https://your-stream.com/snowwhite.mp4">
-            <img src="https://image.tmdb.org/t/p/w342/your_snow_white_poster.jpg" alt="Snow White">
-            <h3>Snow White</h3>
-            <span class="rating">⭐ 6.4</span>
-            <a href="#" class="watch-btn">Watch</a>
-          </article>
-        </div>
+        <div class="carousel-row" id="row-mov"></div>
         <button class="arrow right" onclick="scrollRight('row-mov')">&#10095;</button>
       </div>
     </section>
@@ -75,21 +50,7 @@
       <h2 class="section-title">TV Series</h2>
       <div class="carousel-wrap">
         <button class="arrow left" onclick="scrollLeft('row-tv')">&#10094;</button>
-        <div class="carousel-row" id="row-tv">
-          <article class="card"
-                   data-title="Stranger Things"
-                   data-rating="8.7"
-                   data-release="2016"
-                   data-genre="Drama, Fantasy, Horror"
-                   data-overview="When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces, and one strange little girl."
-                   data-poster="https://image.tmdb.org/t/p/w780/x2LSRK2Cm7MZhjluni1msVJ3wDF.jpg"
-                   data-stream="https://your-stream.com/strangerthings.mp4">
-            <img src="https://image.tmdb.org/t/p/w342/x2LSRK2Cm7MZhjluni1msVJ3wDF.jpg" alt="Stranger Things">
-            <h3>Stranger Things</h3>
-            <span class="rating">⭐ 8.7</span>
-            <a href="#" class="watch-btn">Watch</a>
-          </article>
-        </div>
+        <div class="carousel-row" id="row-tv"></div>
         <button class="arrow right" onclick="scrollRight('row-tv')">&#10095;</button>
       </div>
     </section>
@@ -99,21 +60,7 @@
       <h2 class="section-title">Anime</h2>
       <div class="carousel-wrap">
         <button class="arrow left" onclick="scrollLeft('row-anime')">&#10094;</button>
-        <div class="carousel-row" id="row-anime">
-          <article class="card"
-                   data-title="Demon Slayer"
-                   data-rating="8.6"
-                   data-release="2019"
-                   data-genre="Animation, Action, Fantasy"
-                   data-overview="A boy becomes a demon slayer after demons kill his family and turn his sister into a demon."
-                   data-poster="https://image.tmdb.org/t/p/w780/wrCVHdkBlBWdJUZPvnJWcBRuhSY.jpg"
-                   data-stream="https://your-stream.com/demonslayer.mp4">
-            <img src="https://image.tmdb.org/t/p/w342/wrCVHdkBlBWdJUZPvnJWcBRuhSY.jpg" alt="Demon Slayer">
-            <h3>Demon Slayer</h3>
-            <span class="rating">⭐ 8.6</span>
-            <a href="#" class="watch-btn">Watch</a>
-          </article>
-        </div>
+        <div class="carousel-row" id="row-anime"></div>
         <button class="arrow right" onclick="scrollRight('row-anime')">&#10095;</button>
       </div>
     </section>
@@ -123,28 +70,16 @@
       <h2 class="section-title">K‑Drama</h2>
       <div class="carousel-wrap">
         <button class="arrow left" onclick="scrollLeft('row-k')">&#10094;</button>
-        <div class="carousel-row" id="row-k">
-          <article class="card"
-                   data-title="Crash Landing on You"
-                   data-rating="8.3"
-                   data-release="2019"
-                   data-genre="Drama, Romance"
-                   data-overview="A South Korean heiress accidentally lands in North Korea and meets a soldier who helps her hide."
-                   data-poster="https://image.tmdb.org/t/p/w780/2zeP4k0MbzJdK2jzjC4U6U08M6R.jpg"
-                   data-stream="https://your-stream.com/crashlanding.mp4">
-            <img src="https://image.tmdb.org/t/p/w342/2zeP4k0MbzJdK2jzjC4U6U08M6R.jpg" alt="Crash Landing on You">
-            <h3>Crash Landing on You</h3>
-            <span class="rating">⭐ 8.3</span>
-            <a href="#" class="watch-btn">Watch</a>
-          </article>
-        </div>
+        <div class="carousel-row" id="row-k"></div>
         <button class="arrow right" onclick="scrollRight('row-k')">&#10095;</button>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">© 2025 PurpleTin</footer>
+  <!-- FOOTER -->
+  <footer class="site-footer">© 2025 PurpleTin</footer>
 
+  <!-- MODAL -->
   <div id="modal" class="modal">
     <div class="modal-content">
       <span id="modalClose" class="close">&times;</span>
@@ -152,66 +87,153 @@
     </div>
   </div>
 
+  <!-- ░░░ SCRIPTS ░░░ -->
   <script>
-    const amt = 360;
-    const scrollLeft  = id => document.getElementById(id).scrollBy({left:-amt,behavior:'smooth'});
-    const scrollRight = id => document.getElementById(id).scrollBy({left: amt,behavior:'smooth'});
+    /* === CONFIGURATION === */
+    const TMDB_API_KEY = 'YOUR_TMDB_API_KEY';   // ❶ PUT YOUR KEY HERE
 
-    const searchInput = document.getElementById('searchInput');
-    searchInput.addEventListener('input', () => {
-      const q = searchInput.value.toLowerCase().trim();
-      document.querySelectorAll('.card').forEach(c => {
-        c.style.display = c.dataset.title.toLowerCase().includes(q) ? '' : 'none';
-      });
-    });
-
-    const modal = document.getElementById('modal');
-    const modalBody = document.getElementById('modalBody');
-    const modalClose = document.getElementById('modalClose');
-    modalClose.onclick = () => modal.style.display = 'none';
-    window.onclick = e => (e.target === modal) && (modal.style.display='none');
-    document.addEventListener('click', e => {
-      if (e.target.matches('.watch-btn')) {
-        e.preventDefault();
-        const d = e.target.closest('.card').dataset;
-        modalBody.innerHTML = `
-          <div class="modal-flex">
-            <img src="${d.poster}" alt="${d.title}">
-            <div class="modal-info">
-              <h2>${d.title}</h2>
-              <p><strong>Rating:</strong> ${d.rating}/10</p>
-              <p><strong>Release:</strong> ${d.release}</p>
-              <p><strong>Genre:</strong> ${d.genre}</p>
-              <p class="overview">${d.overview}</p>
-              <a class="watch-now" href="watch.html?title=${encodeURIComponent(d.title)}&src=${encodeURIComponent(d.stream)}" target="_blank">Watch Now</a>
-            </div>
-          </div>`;
-        modal.style.display='flex';
+    // ❷ Minimal data you supply → everything else loads automatically
+    const CATEGORIES = {
+      animations: {
+        rowId: 'row-ani',
+        imdbIds: ['tt2953050'] // Encanto
+      },
+      movies: {
+        rowId: 'row-mov',
+        imdbIds: ['tt6208148'] // Snow White
+      },
+      tv: {
+        rowId: 'row-tv',
+        imdbIds: ['tt4574334'] // Stranger Things
+      },
+      anime: {
+        rowId: 'row-anime',
+        imdbIds: ['tt8580274'] // Demon Slayer (movie id also ok)
+      },
+      kdrama: {
+        rowId: 'row-k',
+        imdbIds: ['tt10262630'] // Crash Landing on You
       }
-    });
+    };
 
-    async function loadBannerFromTMDb(query) {
-      const apiKey = 'YOUR_TMDB_API_KEY';
-      const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(query)}`);
-      const data = await res.json();
-      const movie = data.results[0];
-      if (!movie) return;
+    // optional – map an IMDb id (or title) to your own stream url
+    const STREAM_MAP = {
+      tt2953050: 'https://your-stream.com/encanto.mp4',
+      tt6208148: 'https://your-stream.com/snowwhite.mp4',
+      tt4574334: 'https://your-stream.com/strangerthings.mp4',
+      tt8580274: 'https://your-stream.com/demonslayer.mp4',
+      tt10262630: 'https://your-stream.com/crashlanding.mp4'
+    };
 
-      document.getElementById('heroBanner').innerHTML = `
-        <div class="slide active"
-             data-title="${movie.title}"
-             data-stream="https://your-stream.com/${query.toLowerCase().replace(/\s+/g,'')}.mp4">
-          <img src="https://image.tmdb.org/t/p/original${movie.backdrop_path}" alt="${movie.title}">
+    /* === HELPERS === */
+    const $ = sel => document.querySelector(sel);
+
+    const fetchJSON = url => fetch(url).then(r => r.json());
+
+    async function fetchDetailsByIMDb(id) {
+      // 1) /find to get TMDb ID & media type
+      const findURL = `https://api.themoviedb.org/3/find/${id}?api_key=${TMDB_API_KEY}&external_source=imdb_id`;
+      const findData = await fetchJSON(findURL);
+      const mediaArr = findData.movie_results.length ? findData.movie_results : findData.tv_results;
+      if (!mediaArr.length) return null;
+      const media = mediaArr[0];
+      const tmdbId = media.id;
+      const type = findData.movie_results.length ? 'movie' : 'tv';
+
+      // 2) get full details (for genre names, runtime, etc.)
+      const detailURL = `https://api.themoviedb.org/3/${type}/${tmdbId}?api_key=${TMDB_API_KEY}&language=en-US`;
+      const detail = await fetchJSON(detailURL);
+      return { type, detail, imdbId: id };
+    }
+
+    function createCard({ detail, type, imdbId }) {
+      const title   = type === 'movie' ? detail.title : detail.name;
+      const rating  = detail.vote_average.toFixed(1);
+      const release = (detail.release_date || detail.first_air_date || '').slice(0,4);
+      const genres  = detail.genres.map(g => g.name).join(', ');
+      const poster  = `https://image.tmdb.org/t/p/w342${detail.poster_path}`;
+      const overview= detail.overview;
+      const stream  = STREAM_MAP[imdbId] || '#';
+
+      const art = document.createElement('article');
+      art.className = 'card';
+      art.dataset.title   = title;
+      art.dataset.rating  = rating;
+      art.dataset.release = release;
+      art.dataset.genre   = genres;
+      art.dataset.overview= overview;
+      art.dataset.poster  = poster;
+      art.dataset.stream  = stream;
+      art.innerHTML = `
+        <img src="${poster}" alt="${title}">
+        <h3>${title}</h3>
+        <span class="rating">⭐ ${rating}</span>
+        <a href="#" class="watch-btn">Watch</a>`;
+      return art;
+    }
+
+    async function populateCategory(catKey) {
+      const { rowId, imdbIds } = CATEGORIES[catKey];
+      const row = document.getElementById(rowId);
+      for (const id of imdbIds) {
+        const data = await fetchDetailsByIMDb(id);
+        if (data) row.appendChild(createCard(data));
+      }
+    }
+
+    async function initAllCategories() {
+      for (const key of Object.keys(CATEGORIES)) {
+        await populateCategory(key);
+      }
+    }
+
+    /* === HERO BANNER === */
+    async function loadBanner(imdbId) {
+      const data = await fetchDetailsByIMDb(imdbId);
+      if (!data) return;
+      const { detail } = data;
+      const title = detail.title || detail.name;
+      const backdrop = `https://image.tmdb.org/t/p/original${detail.backdrop_path || detail.poster_path}`;
+      $('#heroBanner').innerHTML = `
+        <div class="slide active" data-title="${title}" data-stream="${STREAM_MAP[imdbId] || '#'}">
+          <img src="${backdrop}" alt="${title}">
           <div class="banner-overlay">
-            <h1>${movie.title}</h1>
-            <p class="banner-rating">⭐ ${movie.vote_average}  |  ${(movie.release_date || '').slice(0, 4)}  |  ${movie.genre_ids.join(', ')}</p>
-            <p class="banner-overview">${movie.overview}</p>
-            <a class="banner-watch" href="watch.html?title=${encodeURIComponent(movie.title)}&src=https://your-stream.com/${query.toLowerCase().replace(/\s+/g,'')}.mp4">Watch</a>
+            <h1>${title}</h1>
+            <p class="banner-rating">⭐ ${detail.vote_average.toFixed(1)}  |  ${(detail.release_date||detail.first_air_date||'').slice(0,4)}</p>
+            <p class="banner-overview">${detail.overview}</p>
+            <a class="banner-watch" href="watch.html?title=${encodeURIComponent(title)}&src=${encodeURIComponent(STREAM_MAP[imdbId]||'#')}">Watch</a>
           </div>
         </div>`;
     }
 
-    loadBannerFromTMDb("Snow White"); // Replace with any title you want to feature in the banner
+    /* === MODAL, SEARCH, CAROUSEL === */
+    const amt = 360;
+    window.scrollLeft  = id => document.getElementById(id).scrollBy({left:-amt,behavior:'smooth'});
+    window.scrollRight = id => document.getElementById(id).scrollBy({left: amt,behavior:'smooth'});
+
+    const searchInput = $('#searchInput');
+    searchInput.addEventListener('input', () => {
+      const q = searchInput.value.toLowerCase().trim();
+      document.querySelectorAll('.card').forEach(c => c.style.display = c.dataset.title.toLowerCase().includes(q) ? '' : 'none');
+    });
+
+    const modal = $('#modal');
+    $('#modalClose').onclick = () => modal.style.display='none';
+    window.onclick = e => (e.target===modal)&&(modal.style.display='none');
+    document.addEventListener('click',e=>{
+      if(e.target.matches('.watch-btn')){
+        e.preventDefault();
+        const d=e.target.closest('.card').dataset;
+        $('#modalBody').innerHTML=`<div class="modal-flex"><img src="${d.poster}" alt="${d.title}"><div class="modal-info"><h2>${d.title}</h2><p><strong>Rating:</strong> ${d.rating}/10</p><p><strong>Release:</strong> ${d.release}</p><p><strong>Genre:</strong> ${d.genre}</p><p class="overview">${d.overview}</p><a class="watch-now" href="watch.html?title=${encodeURIComponent(d.title)}&src=${encodeURIComponent(d.stream)}" target="_blank">Watch Now</a></div></div>`;
+        modal.style.display='flex';
+      }
+    });
+
+    /* === INITIALISE === */
+    (async()=>{
+      await initAllCategories();                // load cards automatically
+      await loadBanner('tt6208148');            // banner movie (Snow White)
+    })();
   </script>
 </body>
 </html>
