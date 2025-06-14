@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF‑8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PurpleTin • Home</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <!-- █████  NAV BAR  █████ -->
+  <!-- █ NAV BAR █ -->
   <nav class="main-nav">
     <a class="nav-brand" href="#">PurpleTin</a>
+
+    <!-- Quick links -->
     <div class="nav-links">
       <a href="#animations">Animations</a>
       <a href="#movies">Movies</a>
@@ -18,89 +20,105 @@
       <a href="#anime">Anime</a>
       <a href="#kdrama">K‑Drama</a>
     </div>
+
+    <!-- Search -->
+    <input id="searchInput" type="search" placeholder="Search…" autocomplete="off">
   </nav>
 
-  <!-- █████  HERO BANNER  █████ -->
+  <!-- █ HERO BANNER █ -->
   <header class="hero-banner">
-    <!-- Replace hero.jpg with your own 1920×800+ image -->
     <img src="hero.jpg" alt="Hero Banner">
     <div class="banner-overlay">
       <h1>Unlimited Entertainment</h1>
-      <p class="banner-tag">Stream everything you love in one place</p>
+      <p class="banner-tag">Everything you love, anytime</p>
     </div>
   </header>
 
-  <!-- █████  SECTIONS / CAROUSELS  █████ -->
+  <!-- █ CONTENT █ -->
   <main>
 
-    <!-- ═══ 1. ANIMATIONS ═══ -->
+    <!-- 1. Animations -->
     <section id="animations" class="carousel-section">
       <h2 class="section-title">Animations</h2>
       <div class="carousel-wrap">
         <button class="arrow left" onclick="scrollLeft('row-ani')">&#10094;</button>
         <div class="carousel-row" id="row-ani">
-          <!-- ── CARD ── -->
-          <article class="card">
-            <img src="https://image.tmdb.org/t/p/w342/5P8SmMzSNYikXpxil6BYzJ16611.jpg" alt="Spider-Verse">
+          <!-- CARD -->
+          <article class="card"
+                   data-title="Across the Spider-Verse"
+                   data-rating="8.5"
+                   data-release="2023"
+                   data-genre="Animation, Action"
+                   data-overview="Miles Morales catapults across the Multiverse..."
+                   data-poster="https://image.tmdb.org/t/p/w780/5P8SmMzSNYikXpxil6BYzJ16611.jpg"
+                   data-stream="https://your-stream.com/spider.mp4">
+            <img src="https://image.tmdb.org/t/p/w342/5P8SmMzSNYikXpxil6BYzJ16611.jpg" alt="Across the Spider‑Verse">
             <h3>Across the Spider‑Verse</h3>
             <span class="rating">⭐ 8.5</span>
-            <a class="watch-btn" href="watch.html?title=Across+the+Spider-Verse&src=https://your-stream.com">Watch</a>
+            <a href="#" class="watch-btn">Watch</a>
           </article>
-          <!-- duplicate cards here -->
+          <!-- duplicate cards … -->
         </div>
         <button class="arrow right" onclick="scrollRight('row-ani')">&#10095;</button>
       </div>
     </section>
 
-    <!-- ═══ 2. MOVIES ═══ -->
+    <!-- 2. Movies -->
     <section id="movies" class="carousel-section">
       <h2 class="section-title">Movies</h2>
       <div class="carousel-wrap">
         <button class="arrow left" onclick="scrollLeft('row-mov')">&#10094;</button>
         <div class="carousel-row" id="row-mov">
-          <article class="card">
+          <article class="card"
+                   data-title="Breathe"
+                   data-rating="6.5"
+                   data-release="2024"
+                   data-genre="Sci‑Fi, Thriller"
+                   data-overview="In a world without oxygen, a mother and daughter fight to survive…"
+                   data-poster="https://image.tmdb.org/t/p/w780/bbr6C3z6PR3RCkJcTn9C9BXuQhK.jpg"
+                   data-stream="https://your-stream.com/breathe.mp4">
             <img src="https://image.tmdb.org/t/p/w342/bbr6C3z6PR3RCkJcTn9C9BXuQhK.jpg" alt="Breathe">
             <h3>Breathe</h3>
             <span class="rating">⭐ 6.5</span>
-            <a class="watch-btn" href="watch.html?title=Breathe&src=https://your-stream.com/breathe.mp4">Watch</a>
+            <a href="#" class="watch-btn">Watch</a>
           </article>
-          <!-- more movie cards -->
+          <!-- more movie cards … -->
         </div>
         <button class="arrow right" onclick="scrollRight('row-mov')">&#10095;</button>
       </div>
     </section>
 
-    <!-- ═══ 3. TV SERIES ═══ -->
+    <!-- 3. TV Series -->
     <section id="tv" class="carousel-section">
       <h2 class="section-title">TV Series</h2>
       <div class="carousel-wrap">
         <button class="arrow left" onclick="scrollLeft('row-tv')">&#10094;</button>
         <div class="carousel-row" id="row-tv">
-          <!-- tv cards -->
+          <!-- cards -->
         </div>
         <button class="arrow right" onclick="scrollRight('row-tv')">&#10095;</button>
       </div>
     </section>
 
-    <!-- ═══ 4. ANIME ═══ -->
+    <!-- 4. Anime -->
     <section id="anime" class="carousel-section">
       <h2 class="section-title">Anime</h2>
       <div class="carousel-wrap">
         <button class="arrow left" onclick="scrollLeft('row-anime')">&#10094;</button>
         <div class="carousel-row" id="row-anime">
-          <!-- anime cards -->
+          <!-- cards -->
         </div>
         <button class="arrow right" onclick="scrollRight('row-anime')">&#10095;</button>
       </div>
     </section>
 
-    <!-- ═══ 5. K‑DRAMA ═══ -->
+    <!-- 5. K-Drama -->
     <section id="kdrama" class="carousel-section">
       <h2 class="section-title">K‑Drama</h2>
       <div class="carousel-wrap">
         <button class="arrow left" onclick="scrollLeft('row-k')">&#10094;</button>
         <div class="carousel-row" id="row-k">
-          <!-- kdrama cards -->
+          <!-- cards -->
         </div>
         <button class="arrow right" onclick="scrollRight('row-k')">&#10095;</button>
       </div>
@@ -108,13 +126,63 @@
 
   </main>
 
+  <!-- █ FOOTER █ -->
   <footer class="site-footer">© 2025 PurpleTin</footer>
 
-  <!-- Tiny JS for carousel arrows -->
+  <!-- █ MODAL █ -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span id="modalClose" class="close">&times;</span>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- █ JS (tiny, inline) █ -->
   <script>
-    const scrollAmount = 360; // pixels per click
-    function scrollLeft(id){ document.getElementById(id).scrollBy({left:-scrollAmount,behavior:'smooth'}); }
-    function scrollRight(id){ document.getElementById(id).scrollBy({left: scrollAmount,behavior:'smooth'}); }
+    /* ==== carousel scroll ==== */
+    const amt = 360;
+    const scrollLeft  = id => document.getElementById(id).scrollBy({left:-amt,behavior:'smooth'});
+    const scrollRight = id => document.getElementById(id).scrollBy({left: amt,behavior:'smooth'});
+
+    /* ==== search filter ==== */
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', () => {
+      const q = searchInput.value.toLowerCase().trim();
+      document.querySelectorAll('.card').forEach(c => {
+        c.style.display = c.dataset.title.toLowerCase().includes(q) ? '' : 'none';
+      });
+    });
+
+    /* ==== modal handling ==== */
+    const modal      = document.getElementById('modal');
+    const modalBody  = document.getElementById('modalBody');
+    const modalClose = document.getElementById('modalClose');
+    modalClose.onclick = () => modal.style.display = 'none';
+    window.onclick   = e => (e.target === modal) && (modal.style.display='none');
+
+    document.querySelectorAll('.watch-btn').forEach(btn=>{
+      btn.addEventListener('click', e=>{
+        e.preventDefault();
+        const card = e.target.closest('.card');
+        openModal(card.dataset);
+      });
+    });
+
+    function openModal(d){
+      modalBody.innerHTML = `
+        <div class="modal-flex">
+          <img src="${d.poster}" alt="${d.title}">
+          <div class="modal-info">
+            <h2>${d.title}</h2>
+            <p><strong>Rating:</strong> ${d.rating} / 10</p>
+            <p><strong>Release:</strong> ${d.release}</p>
+            <p><strong>Genre:</strong> ${d.genre}</p>
+            <p class="overview">${d.overview}</p>
+            <a class="watch-now" href="watch.html?title=${encodeURIComponent(d.title)}&src=${encodeURIComponent(d.stream)}" target="_blank">Watch Now</a>
+          </div>
+        </div>`;
+      modal.style.display='flex';
+    }
   </script>
 </body>
 </html>
