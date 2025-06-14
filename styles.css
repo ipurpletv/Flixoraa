@@ -1,70 +1,72 @@
-/* ----------  ROOT THEME  ---------- */
+/* ----------  ROOT / COLORS  ---------- */
 :root{
   --violet:#7d4dff;
   --violet-dark:#4d2ab5;
-  --bg:#0d0d18;
+  --bg:#0e0e18;
   --card:#1a1a2b;
-  --card-glass:rgba(26,26,43,0.6);
-  --text:#f1f1ff;
+  --text:#f4f4ff;
   --muted:#9c9cb5;
-  --radius:18px;
-  --shadow:0 10px 24px rgba(0,0,0,0.6);
-  --blur:16px;
+  --radius:14px;
+  --shadow:0 8px 18px rgba(0,0,0,.55);
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;color:var(--text);background:var(--bg);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(--text);scroll-behavior:smooth}
 
-/* ----------  HERO BANNER  ---------- */
-.hero-banner{position:relative;height:52vh;overflow:hidden}
-.hero-banner img{
-  width:100%;height:100%;object-fit:cover;filter:brightness(0.55)
-}
-.banner-overlay{
-  position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center
-}
-.hero-banner h1{
-  font-size:clamp(2.5rem,5vw,4rem);font-weight:700;color:#fff;letter-spacing:1px;margin-bottom:10px;text-shadow:0 4px 14px rgba(0,0,0,0.6)
-}
-.banner-tag{font-size:1.1rem;color:var(--muted);text-shadow:0 2px 8px rgba(0,0,0,0.5)}
-
-/* ----------  NAVIGATION  ---------- */
+/* ----------  NAV BAR  ---------- */
 .main-nav{
-  position:sticky;top:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:14px 5%;background:rgba(13,13,24,0.7);backdrop-filter:blur(8px)
+  position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center;
+  padding:12px 5%;background:rgba(14,14,24,.85);backdrop-filter:blur(10px)
 }
-.nav-brand{font-size:1.4rem;font-weight:600;color:var(--violet)}
-.nav-links a{margin-left:26px;color:var(--text);text-decoration:none;font-weight:500;transition:color .3s}
+.nav-brand{font-size:1.3rem;font-weight:700;color:var(--violet);text-decoration:none}
+.nav-links a{margin-left:24px;color:var(--text);text-decoration:none;font-weight:500;transition:color .3s}
 .nav-links a:hover{color:var(--violet)}
 
-/* ----------  CONTENT SECTIONS  ---------- */
-.content-section{padding:60px 5%}
-.section-title{font-size:1.8rem;font-weight:600;margin-bottom:30px;color:#fff}
+/* ----------  HERO BANNER  ---------- */
+.hero-banner{position:relative;height:48vh;overflow:hidden}
+.hero-banner img{width:100%;height:100%;object-fit:cover;filter:brightness(.55)}
+.banner-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.banner-overlay h1{font-size:clamp(2.2rem,4.5vw,3.5rem);margin:0 0 10px;font-weight:700}
+.banner-tag{font-size:1.05rem;color:var(--muted)}
 
-/* ----------  GRID & CARD  ---------- */
-.card-grid{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:32px
+/* ----------  SECTION  ---------- */
+.carousel-section{padding:50px 5%}
+.section-title{font-size:1.6rem;font-weight:700;margin-bottom:18px}
+
+/* ----------  CAROUSEL WRAPPER ---------- */
+.carousel-wrap{position:relative}
+.carousel-row{
+  display:flex;gap:22px;overflow-x:auto;scroll-behavior:smooth;padding-bottom:10px;
 }
+.carousel-row::-webkit-scrollbar{display:none}
+/* ----------  CARD  ---------- */
 .card{
-  background:var(--card-glass);backdrop-filter:blur(var(--blur));border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:transform .3s,ease
+  flex:0 0 180px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:transform .25s
 }
-.card:hover{transform:translateY(-8px)}
-.card img{
-  width:100%;height:480px;object-fit:cover
-}
-.card-info{padding:18px;display:flex;flex-direction:column;gap:8px}
-.card-info h3{font-size:1.15rem;font-weight:600}
-.rating{color:#ffd562}
+.card:hover{transform:translateY(-6px)}
+.card img{width:100%;height:270px;object-fit:cover}
+.card h3{margin:8px 10px 4px;font-size:.95rem;font-weight:600}
+.rating{margin:0 10px 6px;color:#ffd762;font-size:.85rem}
 .watch-btn{
-  align-self:flex-start;margin-top:6px;padding:10px 26px;border-radius:var(--radius);background:var(--violet);color:#fff;text-decoration:none;font-weight:600;letter-spacing:.3px;transition:background .3s
+  display:block;margin:0 10px 10px;padding:6px 0;text-align:center;border-radius:var(--radius);
+  background:var(--violet);color:#fff;text-decoration:none;font-size:.85rem;font-weight:600;transition:background .3s
 }
 .watch-btn:hover{background:var(--violet-dark)}
 
-/* ----------  FOOTER  ---------- */
-.site-footer{
-  text-align:center;padding:30px 10px;font-size:.9rem;color:var(--muted);background:#0a0a12
+/* ----------  ARROW BUTTONS ---------- */
+.arrow{
+  position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.55);
+  color:#fff;border:none;font-size:1.8rem;width:38px;height:60px;border-radius:8px;cursor:pointer;z-index:5;
 }
+.arrow.left{left:-18px}
+.arrow.right{right:-18px}
+.arrow:hover{background:rgba(0,0,0,.8)}
 
-/* ----------  RESPONSIVE  ---------- */
+/* ----------  FOOTER ---------- */
+.site-footer{text-align:center;padding:25px 10px;color:var(--muted);font-size:.9rem}
+
+/* ----------  SMALL DEVICES ---------- */
 @media(max-width:600px){
-  .hero-banner{height:46vh}
-  .card img{height:420px}
+  .card{flex:0 0 140px}
+  .card img{height:210px}
+  .arrow{display:none} /* Mobile users swipe instead */
 }
