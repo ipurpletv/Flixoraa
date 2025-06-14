@@ -132,60 +132,119 @@
   </nav>
 
   <!-- Sections -->
-  <section id="animation">
-    <h2>Animation</h2>
-    <div class="movie-grid">
-      <div class="movie-card">
-        <img src="https://via.placeholder.com/120x170" alt="Animation Movie">
-        <div class="movie-title">Animated Film</div>
-        <div class="movie-rating">Rating: 8.5</div>
-      </div>
-    </div>
-  </section>
-
   <section id="movies">
     <h2>Movies</h2>
     <div class="movie-grid">
-      <div class="movie-card">
-        <img src="https://via.placeholder.com/120x170" alt="Movie">
-        <div class="movie-title">Sample Movie</div>
-        <div class="movie-rating">Rating: 7.8</div>
-      </div>
+      <!-- Just paste the TMDb or IMDb URL below -->
+      <article class="movie-card" data-tmdb="https://www.themoviedb.org/movie/1011985">
+        <img src="https://via.placeholder.com/120x170" alt="">
+        <div class="movie-title">Loading...</div>
+        <div class="movie-rating">Rating: --</div>
+      </article>
+    </div>
+  </section>
+
+  <section id="animation">
+    <h2>Animation</h2>
+    <div class="movie-grid">
+      <article class="movie-card" data-tmdb="https://www.themoviedb.org/movie/1416">
+        <img src="https://via.placeholder.com/120x170" alt="">
+        <div class="movie-title">Loading...</div>
+        <div class="movie-rating">Rating: --</div>
+      </article>
     </div>
   </section>
 
   <section id="tv-series">
     <h2>TV Series</h2>
     <div class="movie-grid">
-      <div class="movie-card">
-        <img src="https://via.placeholder.com/120x170" alt="TV Series">
-        <div class="movie-title">TV Series Title</div>
-        <div class="movie-rating">Rating: 8.2</div>
-      </div>
+      <article class="movie-card" data-tmdb="https://www.themoviedb.org/tv/87917">
+        <img src="https://via.placeholder.com/120x170" alt="">
+        <div class="movie-title">Loading...</div>
+        <div class="movie-rating">Rating: --</div>
+      </article>
     </div>
   </section>
 
   <section id="anime">
     <h2>Anime</h2>
     <div class="movie-grid">
-      <div class="movie-card">
-        <img src="https://via.placeholder.com/120x170" alt="Anime">
-        <div class="movie-title">Anime Name</div>
-        <div class="movie-rating">Rating: 9.0</div>
-      </div>
+      <article class="movie-card" data-tmdb="https://www.imdb.com/title/tt10233448">
+        <img src="https://via.placeholder.com/120x170" alt="">
+        <div class="movie-title">Loading...</div>
+        <div class="movie-rating">Rating: --</div>
+      </article>
     </div>
   </section>
 
   <section id="kdrama">
     <h2>K-Drama</h2>
     <div class="movie-grid">
-      <div class="movie-card">
-        <img src="https://via.placeholder.com/120x170" alt="K-Drama">
-        <div class="movie-title">K-Drama Title</div>
-        <div class="movie-rating">Rating: 8.1</div>
-      </div>
+      <article class="movie-card" data-tmdb="https://www.themoviedb.org/tv/87920">
+        <img src="https://via.placeholder.com/120x170" alt="">
+        <div class="movie-title">Loading...</div>
+        <div class="movie-rating">Rating: --</div>
+      </article>
     </div>
   </section>
+
+  <!-- TMDb Auto-fetch Script -->
+  <script>
+    const TMDB_KEY = 'b139bc417606842811f1526ae92572bc'; // ← REPLACE THIS WITH YOUR KEY
+    const IMG = path => `https://image.tmdb.org/t/p/w342${path}`;
+
+    function extractId(url) {
+      const tmdbMatch = url.match(/\/(movie|tv)\/(\d+)/);
+      if (tmdbMatch) return { type: tmdbMatch[1], id: tmdbMatch[2] };
+
+      const imdbMatch = url.match(/tt\d{7,}/);
+      if (imdbMatch) return { type: 'imdb', id: imdbMatch[0] };
+
+      return null;
+    }
+
+    async function fetchByTmdb(id, type) {
+      const res = await fetch(`https://api.themoviedb.org/3/${type}/${id}?api_key=${TMDB_KEY}&language=en-US`);
+      return await res.json();
+    }
+
+    async function fetchByImdb(ttid) {
+      const res = await fetch(`https://api.themoviedb.org/3/find/${ttid}?api_key=${TMDB_KEY}&external_source=imdb_id`);
+      const data = await res.json();
+      return data.movie_results?.[0] || data.tv_results?.[0];
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const cards = document.querySelectorAll('[data-tmdb]');
+      for (const card of cards) {
+        const url = card.dataset.tmdb;
+        const parsed = extractId(url);
+        if (!parsed) continue;
+
+        try {
+          let info;
+          if (parsed.type === 'imdb') {
+            info = await fetchByImdb(parsed.id);
+          } else {
+            info = await fetchByTmdb(parsed.id, parsed.type);
+          }
+
+          if (!info) continue;
+
+          const img = card.querySelector('img');
+          if (img && info.poster_path) img.src = IMG(info.poster_path);
+
+          const title = card.querySelector('.movie-title');
+          if (title) title.textContent = info.title || info.name || 'Untitled';
+
+          const rating = card.querySelector('.movie-rating');
+          if (rating) rating.textContent = `Rating: ${info.vote_average?.toFixed(1) || '--'}`;
+        } catch (err) {
+          console.warn('Error fetching TMDb data:', err);
+        }
+      }
+    });
+  </script>
 
 </body>
 </html>
