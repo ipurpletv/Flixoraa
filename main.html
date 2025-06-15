@@ -20,8 +20,21 @@
     <input id="searchInput" type="search" placeholder="Search…" autocomplete="off">
   </nav>
 
-  <!-- █ HERO BANNER (AUTO‑ROTATE) █ -->
-  <header class="hero-banner" id="heroBanner"></header>
+  <!-- █ HERO BANNER █ -->
+  <header class="hero-banner" id="heroBanner">
+    <!-- You can manually add banners here -->
+    <!-- Example:
+    <div class="slide active">
+      <img src="your-banner.jpg" alt="Banner Title">
+      <div class="banner-overlay">
+        <h1>Title</h1>
+        <p class="banner-rating">⭐ 8.0 | 2023</p>
+        <p class="banner-overview">A short overview...</p>
+        <a class="banner-watch" href="#">Watch</a>
+      </div>
+    </div>
+    -->
+  </header>
 
   <!-- █ CONTENT SECTIONS █ -->
   <main>
@@ -30,7 +43,16 @@
       <h2 class="section-title">Animations</h2>
       <div class="carousel-wrap">
         <button class="arrow left" onclick="scrollLeft('row-ani')">&#10094;</button>
-        <div class="carousel-row" id="row-ani"></div>
+        <div class="carousel-row" id="row-ani">
+          <!-- Example Card -->
+          <!--
+          <article class="card" data-title="Encanto" data-rating="7.2" data-release="2021" data-genre="Animation, Family" data-overview="A magical family...">
+            <img src="encanto.jpg" alt="Encanto">
+            <h3>Encanto</h3><span class="rating">⭐ 7.2</span>
+            <a href="#" class="watch-btn">Watch</a>
+          </article>
+          -->
+        </div>
         <button class="arrow right" onclick="scrollRight('row-ani')">&#10095;</button>
       </div>
     </section>
@@ -89,125 +111,45 @@
 
   <!-- ░░░ SCRIPTS ░░░ -->
   <script>
-    /* === CONFIGURATION === */
-    const TMDB_API_KEY = 'b139bc417606842811f1526ae92572bc'; // your key
-    const BANNER_LIMIT = 1000;                               // number of random slides
+    const $ = s => document.querySelector(s);
 
-    /* === CATEGORY CARDS === */
-    const CATEGORIES = {
-      animations:{rowId:'row-ani',imdbIds:['tt2953050']},     // Encanto
-      movies:{rowId:'row-mov',imdbIds:['tt6208148']},         // Snow White
-      tv:{rowId:'row-tv',imdbIds:['tt4574334']},              // Stranger Things
-      anime:{rowId:'row-anime',imdbIds:['tt8580274']},        // Demon Slayer
-      kdrama:{rowId:'row-k',imdbIds:['tt10262630']}           // Crash Landing on You
-    };
+    // Horizontal scrolling for carousel
+    const amt = 360;
+    window.scrollLeft = id => document.getElementById(id).scrollBy({ left: -amt, behavior: 'smooth' });
+    window.scrollRight = id => document.getElementById(id).scrollBy({ left: amt, behavior: 'smooth' });
 
-    const STREAM_MAP={
-      tt2953050:'https://your-stream.com/encanto.mp4',
-      tt6208148:'https://your-stream.com/snowwhite.mp4',
-      tt4574334:'https://your-stream.com/strangerthings.mp4',
-      tt8580274:'https://your-stream.com/demonslayer.mp4',
-      tt10262630:'https://your-stream.com/crashlanding.mp4'
-    };
-
-    /* === GENERIC HELPERS === */
-    const $=s=>document.querySelector(s);
-    const fetchJSON=u=>fetch(u).then(r=>r.json());
-
-    /* === FETCH BY IMDb (for carousel cards) === */
-    async function fetchDetailsByIMDb(id){
-      const find=`https://api.themoviedb.org/3/find/${id}?api_key=${TMDB_API_KEY}&external_source=imdb_id`;
-      const f=await fetchJSON(find);
-      const group=f.movie_results.length?f.movie_results:f.tv_results;
-      if(!group.length) return null;
-      const media=group[0];
-      const type=f.movie_results.length?'movie':'tv';
-      const det=`https://api.themoviedb.org/3/${type}/${media.id}?api_key=${TMDB_API_KEY}&language=en-US`;
-      const detail=await fetchJSON(det);
-      return{type,detail,imdbId:id};
-    }
-
-    function cardHTML({detail,type,imdbId}){
-      const title=type==='movie'?detail.title:detail.name;
-      return `<article class="card" data-title="${title}" data-rating="${detail.vote_average.toFixed(1)}" data-release="${(detail.release_date||detail.first_air_date||'').slice(0,4)}" data-genre="${detail.genres.map(g=>g.name).join(', ')}" data-overview="${detail.overview}" data-poster="https://image.tmdb.org/t/p/w342${detail.poster_path}" data-stream="${STREAM_MAP[imdbId]||'#'}">
-        <img src="https://image.tmdb.org/t/p/w342${detail.poster_path}" alt="${title}">
-        <h3>${title}</h3><span class="rating">⭐ ${detail.vote_average.toFixed(1)}</span>
-        <a href="#" class="watch-btn">Watch</a></article>`;
-    }
-
-    async function populateCategories(){
-      for(const key of Object.keys(CATEGORIES)){
-        const row=$(`#${CATEGORIES[key].rowId}`);
-        for(const id of CATEGORIES[key].imdbIds){
-          const data=await fetchDetailsByIMDb(id);
-          if(data) row.insertAdjacentHTML('beforeend',cardHTML(data));
-        }
-      }
-    }
-
-    /* === HERO BANNER (1000 RANDOM) === */
-    async function buildBannerSlides(){
-      const hero=$('#heroBanner');
-      let collected=0,page=1;
-      while(collected<BANNER_LIMIT){
-        const res=await fetchJSON(`https://api.themoviedb.org/3/trending/all/day?api_key=${TMDB_API_KEY}&page=${page}`);
-        if(!res.results||!res.results.length) break;
-        res.results.forEach(item=>{
-          if(collected>=BANNER_LIMIT||!item.backdrop_path) return;
-          const title=item.title||item.name;
-          const year=(item.release_date||item.first_air_date||'').slice(0,4);
-          hero.insertAdjacentHTML('beforeend',`
-            <div class="slide${collected===0?' active':''}" data-title="${title}">
-              <img src="https://image.tmdb.org/t/p/original${item.backdrop_path}" alt="${title}">
-              <div class="banner-overlay"><h1>${title}</h1><p class="banner-rating">⭐ ${item.vote_average.toFixed(1)} | ${year}</p><p class="banner-overview">${item.overview||''}</p><a class="banner-watch" href="#">Watch</a></div>
-            </div>`);
-          collected++;
-        });
-        page++;
-        if(page>50) break; // safety (20*50 = 1000)
-      }
-      randomRotateSlides();
-    }
-
-    function randomRotateSlides(){
-      const slides=[...document.querySelectorAll('#heroBanner .slide')];
-      if(slides.length<2) return;
-      let current=0;
-      setInterval(()=>{
-        slides[current].classList.remove('active');
-        let next;
-        do{next=Math.floor(Math.random()*slides.length);}while(next===current);
-        current=next;
-        slides[current].classList.add('active');
-      },10000);
-    }
-
-    /* === SEARCH, MODAL, SCROLL === */
-    const amt=360;
-    window.scrollLeft=id=>document.getElementById(id).scrollBy({left:-amt,behavior:'smooth'});
-    window.scrollRight=id=>document.getElementById(id).scrollBy({left:amt,behavior:'smooth'});
-
-    $('#searchInput').addEventListener('input',e=>{
-      const q=e.target.value.toLowerCase();
-      document.querySelectorAll('.card').forEach(c=>c.style.display=c.dataset.title.toLowerCase().includes(q)?'':'none');
+    // Search filtering
+    $('#searchInput').addEventListener('input', e => {
+      const q = e.target.value.toLowerCase();
+      document.querySelectorAll('.card').forEach(c => {
+        c.style.display = c.dataset.title.toLowerCase().includes(q) ? '' : 'none';
+      });
     });
 
-    const modal=$('#modal');
-    $('#modalClose').onclick=()=>modal.style.display='none';
-    window.onclick=e=>(e.target===modal)&&(modal.style.display='none');
-    document.addEventListener('click',e=>{
-      if(e.target.matches('.watch-btn')){
+    // Modal behavior
+    const modal = $('#modal');
+    $('#modalClose').onclick = () => modal.style.display = 'none';
+    window.onclick = e => (e.target === modal) && (modal.style.display = 'none');
+
+    document.addEventListener('click', e => {
+      if (e.target.matches('.watch-btn')) {
         e.preventDefault();
-        const d=e.target.closest('.card').dataset;
-        $('#modalBody').innerHTML=`<div class=modal-flex><img src="${d.poster}" alt="${d.title}"><div class=modal-info><h2>${d.title}</h2><p><strong>Rating:</strong> ${d.rating}/10</p><p><strong>Release:</strong> ${d.release}</p><p><strong>Genre:</strong> ${d.genre}</p><p class=overview>${d.overview}</p><a class=watch-now href="watch.html?title=${encodeURIComponent(d.title)}&src=${encodeURIComponent(d.stream)}" target=_blank>Watch Now</a></div></div>`;
-        modal.style.display='flex';
+        const d = e.target.closest('.card').dataset;
+        $('#modalBody').innerHTML = `
+          <div class="modal-flex">
+            <img src="${d.poster}" alt="${d.title}">
+            <div class="modal-info">
+              <h2>${d.title}</h2>
+              <p><strong>Rating:</strong> ${d.rating}/10</p>
+              <p><strong>Release:</strong> ${d.release}</p>
+              <p><strong>Genre:</strong> ${d.genre}</p>
+              <p class="overview">${d.overview}</p>
+              <a class="watch-now" href="watch.html?title=${encodeURIComponent(d.title)}&src=${encodeURIComponent(d.stream)}" target="_blank">Watch Now</a>
+            </div>
+          </div>`;
+        modal.style.display = 'flex';
       }
     });
-
-    /* === INIT === */
-    (async()=>{
-      await Promise.all([populateCategories(),buildBannerSlides()]);
-    })();
   </script>
 </body>
 </html>
