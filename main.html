@@ -4,9 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PurpleTin • Home</title>
+
+  <!-- MAIN STYLES -->
   <link rel="stylesheet" href="styles.css" />
 
-  <!-- QUICK INLINE STYLES FOR THE NEW HERO & SMOOTH SCROLL -->
+  <!-- FONT AWESOME FOR SOCIAL ICONS -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        integrity="sha512-9Sle+qVDfM5YT4c6756L6Yle2pS39Vjp3nTs5hIhxKydjvZyk6JPiS9/GYpzH4+Xx9Q7r5OgKp1xpXZT3rWTgQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- QUICK INLINE STYLES FOR HERO & SMOOTH SCROLL -->
   <style>
     html{scroll-behavior:smooth}
 
@@ -25,19 +33,26 @@
 
   <!-- █ NAV BAR █ -->
   <nav class="main-nav">
-    <a class="nav-brand" href="#">PurpleTin</a>
-
-    <!-- HAMBURGER: only shows on mobile -->
+    <!-- HAMBURGER (now always visible) -->
     <button class="hamburger" aria-label="Toggle navigation">
       <span></span><span></span><span></span>
     </button>
 
+    <a class="nav-brand" href="#">PurpleTin</a>
+
+    <!-- SIDE DRAWER LINKS -->
     <div class="nav-links" id="navLinks">
       <a href="#animations">Animations</a>
       <a href="#movies">Movies</a>
       <a href="#tv">TV Series</a>
       <a href="#anime">Anime</a>
       <a href="#kdrama">K‑Drama</a>
+
+      <div class="social">
+        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
+        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      </div>
     </div>
 
     <input id="searchInput" type="search" placeholder="Search…" autocomplete="off">
@@ -296,10 +311,14 @@
       }
     });
 
-    /* Mobile nav toggle */
+    /* Hamburger toggle */
     const hamburger=$('.hamburger');
     const navLinks=$('#navLinks');
     hamburger.addEventListener('click',()=> navLinks.classList.toggle('active'));
+
+    /* Close drawer when a link is clicked */
+    navLinks.querySelectorAll('a').forEach(a=>
+      a.addEventListener('click',()=> navLinks.classList.remove('active')));
   </script>
 </body>
 </html>
