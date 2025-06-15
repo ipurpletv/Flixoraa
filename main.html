@@ -33,25 +33,25 @@
 
   <!-- █ NAV BAR █ -->
   <nav class="main-nav">
-    <!-- HAMBURGER (now always visible) -->
+    <!-- HAMBURGER -->
     <button class="hamburger" aria-label="Toggle navigation">
       <span></span><span></span><span></span>
     </button>
 
     <a class="nav-brand" href="#">PurpleTin</a>
 
-    <!-- SIDE DRAWER LINKS -->
+    <!-- SIDE DRAWER -->
     <div class="nav-links" id="navLinks">
-      <a href="#animations">Animations</a>
-      <a href="#movies">Movies</a>
-      <a href="#tv">TV Series</a>
-      <a href="#anime">Anime</a>
-      <a href="#kdrama">K‑Drama</a>
+      <a class="nav-anchor" href="#animations">Animations</a>
+      <a class="nav-anchor" href="#movies">Movies</a>
+      <a class="nav-anchor" href="#tv">TV Series</a>
+      <a class="nav-anchor" href="#anime">Anime</a>
+      <a class="nav-anchor" href="#kdrama">K‑Drama</a>
 
       <div class="social">
-        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-        <a href="#" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
-        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://facebook.com/yourpage"   target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://t.me/yourchannel"        target="_blank" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
+        <a href="https://instagram.com/yourpage"  target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
       </div>
     </div>
 
@@ -274,7 +274,7 @@
   <script>
     const $ = s => document.querySelector(s);
 
-    /* Carousel horizontal scroll */
+    /* Carousel scroll */
     const amt = 360;
     window.scrollLeft  = id => document.getElementById(id).scrollBy({left:-amt,behavior:'smooth'});
     window.scrollRight = id => document.getElementById(id).scrollBy({left: amt,behavior:'smooth'});
@@ -311,14 +311,14 @@
       }
     });
 
-    /* Hamburger toggle */
+    /* Drawer toggle */
     const hamburger=$('.hamburger');
     const navLinks=$('#navLinks');
     hamburger.addEventListener('click',()=> navLinks.classList.toggle('active'));
 
-    /* Close drawer when a link is clicked */
-    navLinks.querySelectorAll('a').forEach(a=>
-      a.addEventListener('click',()=> navLinks.classList.remove('active')));
+    /* Close drawer after internal nav click */
+    navLinks.querySelectorAll('.nav-anchor').forEach(link=>
+      link.addEventListener('click',()=> navLinks.classList.remove('active')));
   </script>
 </body>
 </html>
