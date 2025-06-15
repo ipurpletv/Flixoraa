@@ -12,36 +12,102 @@
       box-sizing: border-box;
     }
 
-    body {
-      height: 100vh;
-      font-family: 'Segoe UI', sans-serif;
-      background: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
-      background-size: cover;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    body, html {
+      height: 100%;
       overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+      background: black;
       position: relative;
       color: white;
     }
 
-    .overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(6px);
-      z-index: 1;
+    /* === LOADER === */
+    #loader {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: #0b0015;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
     }
 
+    .spinner {
+      border: 5px solid #2e2e2e;
+      border-top: 5px solid #a259ff;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* === BACKGROUND === */
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?q=80&w=1470&auto=format&fit=crop') no-repeat center center fixed;
+      background-size: cover;
+      z-index: -3;
+      filter: brightness(0.6);
+    }
+
+    /* FOG LAYER */
+    .fog {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: url('https://i.ibb.co/JBKPBtL/fog.png');
+      background-repeat: repeat;
+      animation: moveFog 60s linear infinite;
+      opacity: 0.07;
+      z-index: -2;
+    }
+
+    @keyframes moveFog {
+      0% { background-position: 0 0; }
+      100% { background-position: 1000px 0; }
+    }
+
+    /* STARS */
+    .stars {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: url('https://www.transparenttextures.com/patterns/stardust.png');
+      opacity: 0.2;
+      z-index: -1;
+      animation: twinkle 5s ease-in-out infinite alternate;
+    }
+
+    @keyframes twinkle {
+      0% { opacity: 0.2; }
+      100% { opacity: 0.4; }
+    }
+
+    /* === CONTENT PANEL === */
     .landing-container {
-      position: relative;
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
       z-index: 2;
       text-align: center;
-      padding: 60px 40px;
-      background: rgba(30, 0, 50, 0.5);
+      background: rgba(255, 255, 255, 0.06);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 20px;
+      padding: 60px 40px;
       box-shadow: 0 0 40px rgba(162, 89, 255, 0.3);
+      backdrop-filter: blur(12px);
+    }
+
+    .logo {
+      width: 80px;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 8px #a259ff);
     }
 
     h1 {
@@ -107,16 +173,39 @@
       .landing-container {
         padding: 40px 20px;
       }
+
+      .logo {
+        width: 60px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="overlay"></div>
+
+  <!-- LOADER -->
+  <div id="loader">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- STARS & FOG -->
+  <div class="stars"></div>
+  <div class="fog"></div>
+
+  <!-- MAIN CONTENT -->
   <div class="landing-container">
+    <img src="logo.png" alt="PurpleTin Logo" class="logo" />
     <h1>PurpleTin</h1>
     <div class="tagline">Stream the World of Entertainment</div>
     <br /><br />
     <a href="main.html" class="get-started-btn">Get Started</a>
   </div>
+
+  <!-- JS to hide loader -->
+  <script>
+    window.addEventListener("load", () => {
+      document.getElementById("loader").style.display = "none";
+    });
+  </script>
+
 </body>
 </html>
