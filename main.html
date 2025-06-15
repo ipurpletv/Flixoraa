@@ -7,26 +7,29 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- ░░░ NAV ░░░ -->
-  <nav class="main-nav">
-    <button class="hamburger" id="hamburgerBtn" aria-label="Open Menu">
-      <span></span><span></span><span></span>
-    </button>
-    <a href="#" class="nav-brand">PurpleTin</a>
-    <input type="text" id="searchInput" placeholder="Search..." />
-  </nav>
-  <div class="nav-links" id="drawer">
-    <a href="#animations">Animations</a>
-    <a href="#movies">Movies</a>
-    <a href="#tv">TV Series</a>
-    <a href="#anime">Anime</a>
-    <a href="#kdrama">K-Drama</a>
-    <div class="social">
-      <a href="#">🌐</a>
-      <a href="#">📺</a>
-      <a href="#">🎬</a>
-    </div>
+<!-- ░░░ NAV ░░░ -->
+<nav class="main-nav">
+  <button class="hamburger" id="hamburgerBtn" aria-label="Open Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <a href="#" class="nav-brand">PurpleTin</a>
+  <input type="text" id="searchInput" placeholder="Search..." />
+</nav>
+
+<div class="nav-links" id="drawer">
+  <button class="close-drawer" id="drawerClose">✖</button>
+  <a href="#animations">Animations</a>
+  <a href="#movies">Movies</a>
+  <a href="#tv">TV Series</a>
+  <a href="#anime">Anime</a>
+  <a href="#kdrama">K-Drama</a>
+  <div class="social">
+    <a href="#" title="Facebook">📘</a>
+    <a href="#" title="Instagram">📸</a>
+    <a href="#" title="Telegram">📨</a>
   </div>
+</div>
+
 
   <!-- ░░░ SECTIONS ░░░ -->
   <section class="carousel-section" id="animations">
@@ -128,6 +131,22 @@
 
   <!-- ░░░ JS ░░░ -->
   <script>
+    <script>
+  const hamburger = document.getElementById("hamburgerBtn");
+  const drawer = document.getElementById("drawer");
+  const drawerClose = document.getElementById("drawerClose");
+
+  hamburger.addEventListener("click", () => {
+    drawer.classList.add("active");
+  });
+
+  drawerClose.addEventListener("click", () => {
+    drawer.classList.remove("active");
+  });
+
+  // (Modal, search, and scrollCarousel remain unchanged...)
+</script>
+
     const hamburger = document.getElementById("hamburgerBtn");
     const drawer = document.getElementById("drawer");
     hamburger.addEventListener("click", () => {
