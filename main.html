@@ -5,6 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PurpleTin • Home</title>
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    .hero-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      height: 70vh;
+      background: linear-gradient(to right, #1e1e2f, #2a2a3d);
+      color: #fff;
+      padding: 2rem;
+    }
+    .hero-center h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    .hero-center p {
+      font-size: 1.2rem;
+      max-width: 600px;
+    }
+  </style>
 </head>
 <body>
   <!-- █ NAV BAR █ -->
@@ -20,20 +44,10 @@
     <input id="searchInput" type="search" placeholder="Search…" autocomplete="off">
   </nav>
 
-  <!-- █ HERO BANNER █ -->
-  <header class="hero-banner" id="heroBanner">
-    <!-- You can manually add banners here -->
-    <!-- Example:
-    <div class="slide active">
-      <img src="your-banner.jpg" alt="Banner Title">
-      <div class="banner-overlay">
-        <h1>Title</h1>
-        <p class="banner-rating">⭐ 8.0 | 2023</p>
-        <p class="banner-overview">A short overview...</p>
-        <a class="banner-watch" href="#">Watch</a>
-      </div>
-    </div>
-    -->
+  <!-- █ HERO CENTERED TITLE █ -->
+  <header class="hero-center">
+    <h1>Flixora</h1>
+    <p>Discover and stream handpicked movies, animations, TV shows, and more — curated just for you. Simple. Smooth. Flixora.</p>
   </header>
 
   <!-- █ CONTENT SECTIONS █ -->
@@ -44,14 +58,7 @@
       <div class="carousel-wrap">
         <button class="arrow left" onclick="scrollLeft('row-ani')">&#10094;</button>
         <div class="carousel-row" id="row-ani">
-          <!-- Example Card -->
-          <!--
-          <article class="card" data-title="Encanto" data-rating="7.2" data-release="2021" data-genre="Animation, Family" data-overview="A magical family...">
-            <img src="encanto.jpg" alt="Encanto">
-            <h3>Encanto</h3><span class="rating">⭐ 7.2</span>
-            <a href="#" class="watch-btn">Watch</a>
-          </article>
-          -->
+          <!-- Add animation cards manually here -->
         </div>
         <button class="arrow right" onclick="scrollRight('row-ani')">&#10095;</button>
       </div>
@@ -113,12 +120,10 @@
   <script>
     const $ = s => document.querySelector(s);
 
-    // Horizontal scrolling for carousel
     const amt = 360;
     window.scrollLeft = id => document.getElementById(id).scrollBy({ left: -amt, behavior: 'smooth' });
     window.scrollRight = id => document.getElementById(id).scrollBy({ left: amt, behavior: 'smooth' });
 
-    // Search filtering
     $('#searchInput').addEventListener('input', e => {
       const q = e.target.value.toLowerCase();
       document.querySelectorAll('.card').forEach(c => {
@@ -126,7 +131,6 @@
       });
     });
 
-    // Modal behavior
     const modal = $('#modal');
     $('#modalClose').onclick = () => modal.style.display = 'none';
     window.onclick = e => (e.target === modal) && (modal.style.display = 'none');
