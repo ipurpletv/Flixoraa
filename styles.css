@@ -1,64 +1,159 @@
-/* ───────── COLOR + BASE RESET ───────── */
-:root{
-  --violet:#7d4dff;
-  --violet-dark:#4d2ab5;
-  --bg:#0e0e18;
-  --card:#1a1a2b;
-  --text:#f4f4ff;
-  --muted:#9c9cb5;
-  --radius:14px;
-  --shadow:0 8px 18px rgba(0,0,0,.55);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-*,*::before,*::after{box-sizing:border-box}
-body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(--text)}
 
-/* ░░░ NAV ░░░ */
-.main-nav{
-  position:sticky;top:0;z-index:120;display:flex;align-items:center;gap:18px;
-  padding:10px 5%;background:rgba(14,14,24,.85);backdrop-filter:blur(10px)
+body {
+  font-family: Arial, sans-serif;
+  background-color: #121212;
+  color: #fff;
 }
-.nav-brand{font-size:1.3rem;font-weight:700;color:var(--violet);text-decoration:none}
 
-/* Hamburger */
-.hamburger{
-  display:flex;flex-direction:column;gap:4px;background:transparent;border:0;cursor:pointer;
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #1f1f1f;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
-.hamburger span{width:24px;height:3px;background:var(--text);border-radius:3px;}
 
-/* Drawer */
-.nav-links{
-  position:fixed;top:0;left:-260px;width:240px;height:100vh;
-  background:rgba(14,14,24,.96);
-  padding:80px 20px 40px;
-  display:flex;flex-direction:column;gap:22px;
-  transition:left .35s ease;
-  z-index:200;
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #a060ff;
 }
-.nav-links.active{left:0;}
-.nav-links a{
-  color:var(--text);text-decoration:none;font-weight:500;font-size:.95rem;
-  transition:color .25s;
+
+nav {
+  display: flex;
+  gap: 20px;
 }
-.nav-links a:hover{color:var(--violet)}
 
-/* Social */
-.social{
-  margin-top:auto;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);
-  display:flex;gap:20px;
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
 }
-.social a{font-size:1.15rem;color:var(--text);transition:color .25s;}
-.social a:hover{color:var(--violet)}
 
-/* Search */
-#searchInput{
-  margin-left:auto;width:220px;padding:6px 12px;border:none;
-  border-radius:var(--radius);background:#222236;color:var(--text);font-size:.9rem;
+nav a:hover {
+  color: #a060ff;
 }
-#searchInput:focus{outline:2px solid var(--violet-dark)}
 
-/* ░░░ HERO BANNER ░░░ */
-.hero-banner{position:relative;height:56vh;overflow:hidden}
-/* … (rest of original styles stay unchanged) … */
+.menu-toggle {
+  display: none;
+  font-size: 28px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
 
-/* For brevity, all other existing section/card/modal styles are unchanged
-   — keep the same as the previous version you already have. */
+.banner {
+  text-align: center;
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #4a148c, #6a1b9a);
+}
+
+.banner h1 {
+  font-size: 48px;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.banner p {
+  font-size: 20px;
+  color: #e0e0e0;
+}
+
+.content {
+  padding: 40px 20px;
+}
+
+.content h2 {
+  font-size: 32px;
+  margin-bottom: 30px;
+  color: #a060ff;
+}
+
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.movie-card {
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s;
+}
+
+.movie-card:hover {
+  transform: scale(1.05);
+}
+
+.movie-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.movie-card h3 {
+  padding: 10px;
+  font-size: 18px;
+  color: #fff;
+}
+
+footer {
+  background-color: #1f1f1f;
+  text-align: center;
+  padding: 20px;
+  color: #aaa;
+  font-size: 14px;
+  margin-top: 40px;
+}
+
+/* MOBILE UI FIX */
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    right: 0;
+    width: 100%;
+    background-color: #1f1f1f;
+    display: none;
+    text-align: center;
+    padding: 15px 0;
+  }
+
+  nav.active {
+    display: flex;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  nav a {
+    padding: 10px 0;
+    border-bottom: 1px solid #333;
+  }
+
+  .movie-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+
+  .banner h1 {
+    font-size: 32px;
+  }
+
+  .banner p {
+    font-size: 16px;
+  }
+}
