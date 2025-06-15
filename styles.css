@@ -1,4 +1,4 @@
-/* ───────── ORIGINAL STYLES YOU SENT ───────── */
+/* ───────── COLOR + BASE RESET ───────── */
 :root{
   --violet:#7d4dff;
   --violet-dark:#4d2ab5;
@@ -10,21 +10,55 @@
   --shadow:0 8px 18px rgba(0,0,0,.55);
 }
 *,*::before,*::after{box-sizing:border-box}
-body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(--text);scroll-behavior:smooth}
+body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(--text)}
 
 /* ░░░ NAV ░░░ */
 .main-nav{
-  position:sticky;top:0;z-index:120;display:flex;align-items:center;
+  position:sticky;top:0;z-index:120;display:flex;align-items:center;gap:18px;
   padding:10px 5%;background:rgba(14,14,24,.85);backdrop-filter:blur(10px)
 }
 .nav-brand{font-size:1.3rem;font-weight:700;color:var(--violet);text-decoration:none}
-.nav-links{
-  position:absolute;left:50%;transform:translateX(-50%);
-  display:flex;gap:22px
+
+/* Hamburger button */
+.hamburger{
+  display:flex;flex-direction:column;gap:4px;
+  background:transparent;border:0;cursor:pointer;
 }
-.nav-links a{color:var(--text);text-decoration:none;font-weight:500;transition:color .3s}
+.hamburger span{
+  width:24px;height:3px;background:var(--text);border-radius:3px;
+}
+
+/* Side drawer links */
+.nav-links{
+  position:fixed;top:0;left:-260px;width:240px;height:100vh;
+  background:rgba(14,14,24,.96);
+  padding:80px 20px 40px;
+  display:flex;flex-direction:column;gap:22px;
+  transition:left .35s ease;
+  z-index:200;
+}
+.nav-links.active{left:0;}
+.nav-links a{
+  color:var(--text);text-decoration:none;font-weight:500;font-size:.95rem;
+  transition:color .25s;
+}
 .nav-links a:hover{color:var(--violet)}
-#searchInput{margin-left:auto;width:220px;padding:6px 12px;border:none;border-radius:var(--radius);background:#222236;color:var(--text);font-size:.9rem}
+
+/* Social icons in drawer */
+.social{
+  margin-top:auto;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);
+  display:flex;gap:20px;
+}
+.social a{
+  font-size:1.15rem;color:var(--text);transition:color .25s;
+}
+.social a:hover{color:var(--violet)}
+
+/* Search bar */
+#searchInput{
+  margin-left:auto;width:220px;padding:6px 12px;border:none;
+  border-radius:var(--radius);background:#222236;color:var(--text);font-size:.9rem;
+}
 #searchInput:focus{outline:2px solid var(--violet-dark)}
 
 /* ░░░ HERO BANNER (for image slider – unused now but kept) ░░░ */
@@ -79,7 +113,7 @@ body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(-
 /* ░░░ FOOTER ░░░ */
 .site-footer{text-align:center;padding:25px 10px;color:var(--muted);font-size:.9rem}
 
-/* ░░░ MEDIA FIXES FOR CARDS, BANNER, MODAL ░░░ */
+/* ░░░ MEDIA FIXES ░░░ */
 @media(max-width:480px){
   .card{flex:0 0 130px}
   .card img{height:200px}
@@ -91,57 +125,4 @@ body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(-
   .banner-watch{padding:10px 24px;font-size:.95rem}
 }
 
-/* ───────── MOBILE NAVIGATION ADD‑ON ───────── */
-.hamburger{
-  display:none;
-  flex-direction:column;
-  gap:4px;
-  background:transparent;
-  border:0;
-  cursor:pointer;
-  margin-left:auto;
-}
-.hamburger span{
-  width:24px;
-  height:3px;
-  background:var(--text);
-  border-radius:3px;
-}
-
-/* Phones & small tablets */
-@media(max-width:768px){
-  .hamburger{display:flex;}
-
-  .nav-links{
-    display:none;
-    flex-direction:column;
-    position:absolute;
-    top:100%;left:0;width:100%;
-    background:rgba(14,14,24,.96);
-    padding:10px 0;
-    z-index:200;
-  }
-  .nav-links.active{display:flex;}
-
-  .nav-links a{
-    padding:12px 20px;
-    font-size:1rem;
-    width:100%;
-  }
-
-  #searchInput{
-    width:100%;
-    margin-top:8px;
-  }
-}
-
-/* Keep original centred row on desktop */
-@media(min-width:769px){
-  .nav-links{
-    position:absolute;
-    left:50%;
-    transform:translateX(-50%);
-    flex-direction:row;
-  }
-  .hamburger{display:none;}
-}
+/* No desktop‑only hide for hamburger anymore */
