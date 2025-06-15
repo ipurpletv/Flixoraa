@@ -14,52 +14,82 @@
 
     body {
       height: 100vh;
-      background: linear-gradient(to right, #2c003e, #3f0e54);
-      background-size: cover;
-      background-position: center;
       font-family: 'Segoe UI', sans-serif;
-      color: white;
+      background: linear-gradient(160deg, #1a001f, #290032, #3f0056);
+      background-size: 200% 200%;
+      animation: backgroundGlow 15s ease infinite;
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
       position: relative;
+      overflow: hidden;
+      color: white;
     }
 
-    /* Overlay style */
+    @keyframes backgroundGlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Stars */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: url('https://www.transparenttextures.com/patterns/stardust.png');
+      opacity: 0.2;
+      z-index: 0;
+    }
+
     .overlay {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(20, 10, 30, 0.75);
-      backdrop-filter: blur(6px);
+      inset: 0;
+      background: rgba(10, 0, 20, 0.65);
+      backdrop-filter: blur(8px);
       z-index: 1;
     }
 
-    /* Main content container */
     .landing-container {
       position: relative;
       z-index: 2;
-      text-align: center;
-      padding: 40px;
+      padding: 50px;
       border-radius: 16px;
-      background: rgba(255, 255, 255, 0.05);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      background: rgba(255, 255, 255, 0.06);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      animation: fadeIn 1.5s ease;
+      box-shadow: 0 0 20px rgba(160, 82, 255, 0.2);
     }
 
     h1 {
       font-size: 3.5rem;
-      color: #a259ff;
-      text-shadow: 0 0 15px #a259ff80, 0 0 30px #a259ff50;
-      margin-bottom: 20px;
+      color: #da9cff;
+      text-shadow: 0 0 15px #b56affaa, 0 0 30px #a259ff66;
+      margin-bottom: 10px;
+    }
+
+    .tagline {
+      font-size: 1.3rem;
+      color: #eee;
+      margin-bottom: 30px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .tagline::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: -8px;
+      width: 60%;
+      height: 2px;
+      background: #a259ff;
+      box-shadow: 0 0 8px #a259ff88;
+      border-radius: 999px;
     }
 
     .get-started-btn {
-      display: inline-block;
       padding: 14px 36px;
       font-size: 1.2rem;
       color: white;
@@ -77,20 +107,13 @@
       box-shadow: 0 0 20px #a259ff;
     }
 
-    @keyframes fadeIn {
-      0% {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
     @media (max-width: 768px) {
       h1 {
         font-size: 2.5rem;
+      }
+
+      .tagline {
+        font-size: 1.1rem;
       }
 
       .get-started-btn {
@@ -107,7 +130,9 @@
 <body>
   <div class="overlay"></div>
   <div class="landing-container">
-    <h1>Welcome to PurpleTin</h1>
+    <h1>PurpleTin</h1>
+    <div class="tagline">Stream the World of Entertainment</div>
+    <br /><br />
     <a href="main.html" class="get-started-btn">Get Started</a>
   </div>
 </body>
