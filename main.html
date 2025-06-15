@@ -2,323 +2,165 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PurpleTin • Home</title>
-
-  <!-- MAIN STYLES -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PurpleTin - Stream Your Favorites</title>
   <link rel="stylesheet" href="styles.css" />
-
-  <!-- FONT AWESOME FOR SOCIAL ICONS -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-        integrity="sha512-9Sle+qVDfM5YT4c6756L6Yle2pS39Vjp3nTs5hIhxKydjvZyk6JPiS9/GYpzH4+Xx9Q7r5OgKp1xpXZT3rWTgQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-  <!-- QUICK INLINE STYLES FOR HERO & SMOOTH SCROLL -->
-  <style>
-    html{scroll-behavior:smooth}
-
-    /* Centered hero banner */
-    .hero-banner{
-      display:flex;justify-content:center;align-items:center;flex-direction:column;
-      text-align:center;height:55vh;
-      background:linear-gradient(135deg,#4e1f91 0%,#2c2c54 100%);
-      color:#fff;padding:2rem;
-    }
-    .hero-banner h1{font-size:3.5rem;margin:.25em 0;letter-spacing:1px}
-    .hero-banner p{font-size:1.15rem;max-width:630px;line-height:1.4}
-  </style>
+  <script defer src="scripts.js"></script>
 </head>
 <body>
 
-  <!-- █ NAV BAR █ -->
+  <!-- ░░░ NAVBAR ░░░ -->
   <nav class="main-nav">
-    <!-- HAMBURGER -->
-    <button class="hamburger" aria-label="Toggle navigation">
+    <button class="hamburger" id="hamburgerBtn">
       <span></span><span></span><span></span>
     </button>
-
-    <a class="nav-brand" href="#">PurpleTin</a>
-
-    <!-- SIDE DRAWER -->
-    <div class="nav-links" id="navLinks">
-      <a class="nav-anchor" href="#animations">Animations</a>
-      <a class="nav-anchor" href="#movies">Movies</a>
-      <a class="nav-anchor" href="#tv">TV Series</a>
-      <a class="nav-anchor" href="#anime">Anime</a>
-      <a class="nav-anchor" href="#kdrama">K‑Drama</a>
-
-      <div class="social">
-        <a href="https://facebook.com/yourpage"   target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-        <a href="https://t.me/yourchannel"        target="_blank" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
-        <a href="https://instagram.com/yourpage"  target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-      </div>
-    </div>
-
-    <input id="searchInput" type="search" placeholder="Search…" autocomplete="off">
+    <a href="#" class="nav-brand">PurpleTin</a>
+    <input type="text" id="searchInput" placeholder="Search..." />
   </nav>
 
-  <!-- █ HERO █ -->
-  <header class="hero-banner" id="heroBanner">
-    <h1>Flixora</h1>
-    <p>Your gateway to hand‑picked movies, series, and animated gems — stream what you love, whenever you want.</p>
-  </header>
-
-  <!-- █ CONTENT SECTIONS █ -->
-  <main>
-
-    <!-- ░░░ Animations ░░░ -->
-    <section id="animations" class="carousel-section">
-      <h2 class="section-title">Animations</h2>
-      <div class="carousel-wrap">
-        <button class="arrow left" onclick="scrollLeft('row-ani')">&#10094;</button>
-        <div class="carousel-row" id="row-ani">
-
-          <article class="card"
-                   data-title="Encanto"
-                   data-rating="7.2"
-                   data-release="2021"
-                   data-genre="Animation, Family"
-                   data-overview="A magical family living in the mountains of Colombia must protect the source of their power."
-                   data-poster="https://via.placeholder.com/200x300?text=Encanto"
-                   data-stream="https://example.com/encanto">
-            <img src="https://via.placeholder.com/200x300?text=Encanto" alt="Encanto">
-            <h3>Encanto</h3><span class="rating">⭐ 7.2</span>
-            <a href="#" class="watch-btn">Watch</a>
-          </article>
-
-          <article class="card"
-                   data-title="Frozen II"
-                   data-rating="6.8"
-                   data-release="2019"
-                   data-genre="Animation, Adventure"
-                   data-overview="Elsa, Anna, Kristoff and Olaf set out to discover the origin of Elsa's powers."
-                   data-poster="https://via.placeholder.com/200x300?text=Frozen+II"
-                   data-stream="https://example.com/frozen2">
-            <img src="https://via.placeholder.com/200x300?text=Frozen+II" alt="Frozen II">
-            <h3>Frozen II</h3><span class="rating">⭐ 6.8</span>
-            <a href="#" class="watch-btn">Watch</a>
-          </article>
-
-        </div>
-        <button class="arrow right" onclick="scrollRight('row-ani')">&#10095;</button>
-      </div>
-    </section>
-
-    <!-- ░░░ Movies ░░░ -->
-    <section id="movies" class="carousel-section">
-      <h2 class="section-title">Movies</h2>
-      <div class="carousel-wrap">
-        <button class="arrow left" onclick="scrollLeft('row-mov')">&#10094;</button>
-        <div class="carousel-row" id="row-mov">
-
-          <article class="card"
-                   data-title="Avengers: Endgame"
-                   data-rating="8.4"
-                   data-release="2019"
-                   data-genre="Action, Sci‑Fi"
-                   data-overview="The Avengers assemble once more in a bid to undo Thanos' destructive snap."
-                   data-poster="https://via.placeholder.com/200x300?text=Endgame"
-                   data-stream="https://example.com/endgame">
-            <img src="https://via.placeholder.com/200x300?text=Endgame" alt="Avengers: Endgame">
-            <h3>Endgame</h3><span class="rating">⭐ 8.4</span>
-            <a href="#" class="watch-btn">Watch</a>
-          </article>
-
-          <article class="card"
-                   data-title="Joker"
-                   data-rating="8.5"
-                   data-release="2019"
-                   data-genre="Drama, Crime"
-                   data-overview="A failed comedian descends into madness and becomes the infamous Joker."
-                   data-poster="https://via.placeholder.com/200x300?text=Joker"
-                   data-stream="https://example.com/joker">
-            <img src="https://via.placeholder.com/200x300?text=Joker" alt="Joker">
-            <h3>Joker</h3><span class="rating">⭐ 8.5</span>
-            <a href="#" class="watch-btn">Watch</a>
-          </article>
-
-        </div>
-        <button class="arrow right" onclick="scrollRight('row-mov')">&#10095;</button>
-      </div>
-    </section>
-
-    <!-- ░░░ TV Series ░░░ -->
-    <section id="tv" class="carousel-section">
-      <h2 class="section-title">TV Series</h2>
-      <div class="carousel-wrap">
-        <button class="arrow left" onclick="scrollLeft('row-tv')">&#10094;</button>
-        <div class="carousel-row" id="row-tv">
-
-          <article class="card"
-                   data-title="Stranger Things"
-                   data-rating="8.7"
-                   data-release="2016"
-                   data-genre="Sci‑Fi, Horror"
-                   data-overview="In 1980s Indiana, a group of kids face supernatural forces and secret experiments."
-                   data-poster="https://via.placeholder.com/200x300?text=Stranger+Things"
-                   data-stream="https://example.com/strangerthings">
-            <img src="https://via.placeholder.com/200x300?text=Stranger+Things" alt="Stranger Things">
-            <h3>Stranger Things</h3><span class="rating">⭐ 8.7</span>
-            <a href="#" class="watch-btn">Watch</a>
-          </article>
-
-          <article class="card"
-                   data-title="Breaking Bad"
-                   data-rating="9.5"
-                   data-release="2008"
-                   data-genre="Crime, Drama"
-                   data-overview="A high‑school chemistry teacher turns to making meth after a cancer diagnosis."
-                   data-poster="https://via.placeholder.com/200x300?text=Breaking+Bad"
-                   data-stream="https://example.com/breakingbad">
-            <img src="https://via.placeholder.com/200x300?text=Breaking+Bad" alt="Breaking Bad">
-            <h3>Breaking Bad</h3><span class="rating">⭐ 9.5</span>
-            <a href="#" class="watch-btn">Watch</a>
-          </article>
-
-        </div>
-        <button class="arrow right" onclick="scrollRight('row-tv')">&#10095;</button>
-      </div>
-    </section>
-
-    <!-- ░░░ Anime ░░░ -->
-    <section id="anime" class="carousel-section">
-      <h2 class="section-title">Anime</h2>
-      <div class="carousel-wrap">
-        <button class="arrow left" onclick="scrollLeft('row-anime')">&#10094;</button>
-        <div class="carousel-row" id="row-anime">
-
-          <article class="card"
-                   data-title="Demon Slayer"
-                   data-rating="8.6"
-                   data-release="2019"
-                   data-genre="Action, Fantasy"
-                   data-overview="A boy becomes a demon slayer after his family is slaughtered by demons."
-                   data-poster="https://via.placeholder.com/200x300?text=Demon+Slayer"
-                   data-stream="https://example.com/demonslayer">
-            <img src="https://via.placeholder.com/200x300?text=Demon+Slayer" alt="Demon Slayer">
-            <h3>Demon Slayer</h3><span class="rating">⭐ 8.6</span>
-            <a href="#" class="watch-btn">Watch</a>
-          </article>
-
-          <article class="card"
-                   data-title="One Piece"
-                   data-rating="8.9"
-                   data-release="1999"
-                   data-genre="Adventure, Fantasy"
-                   data-overview="Monkey D. Luffy seeks the legendary treasure One Piece to become Pirate King."
-                   data-poster="https://via.placeholder.com/200x300?text=One+Piece"
-                   data-stream="https://example.com/onepiece">
-            <img src="https://via.placeholder.com/200x300?text=One+Piece" alt="One Piece">
-            <h3>One Piece</h3><span class="rating">⭐ 8.9</span>
-            <a href="#" class="watch-btn">Watch</a>
-          </article>
-
-        </div>
-        <button class="arrow right" onclick="scrollRight('row-anime')">&#10095;</button>
-      </div>
-    </section>
-
-    <!-- ░░░ K‑Drama ░░░ -->
-    <section id="kdrama" class="carousel-section">
-      <h2 class="section-title">K‑Drama</h2>
-      <div class="carousel-wrap">
-        <button class="arrow left" onclick="scrollLeft('row-k')">&#10094;</button>
-        <div class="carousel-row" id="row-k">
-
-          <article class="card"
-                   data-title="Crash Landing on You"
-                   data-rating="8.8"
-                   data-release="2019"
-                   data-genre="Romance, Drama"
-                   data-overview="A South Korean heiress crash‑lands in North Korea and meets a soldier who helps her hide."
-                   data-poster="https://via.placeholder.com/200x300?text=Crash+Landing"
-                   data-stream="https://example.com/crashlanding">
-            <img src="https://via.placeholder.com/200x300?text=Crash+Landing" alt="Crash Landing on You">
-            <h3>Crash Landing on You</h3><span class="rating">⭐ 8.8</span>
-            <a href="#" class="watch-btn">Watch</a>
-          </article>
-
-          <article class="card"
-                   data-title="Squid Game"
-                   data-rating="8.1"
-                   data-release="2021"
-                   data-genre="Thriller, Drama"
-                   data-overview="Hundreds of cash‑strapped contestants accept a strange invitation to compete in children's games for a huge prize."
-                   data-poster="https://via.placeholder.com/200x300?text=Squid+Game"
-                   data-stream="https://example.com/squidgame">
-            <img src="https://via.placeholder.com/200x300?text=Squid+Game" alt="Squid Game">
-            <h3>Squid Game</h3><span class="rating">⭐ 8.1</span>
-            <a href="#" class="watch-btn">Watch</a>
-          </article>
-
-        </div>
-        <button class="arrow right" onclick="scrollRight('row-k')">&#10095;</button>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="site-footer">© 2025 PurpleTin</footer>
-
-  <!-- MODAL -->
-  <div id="modal" class="modal">
-    <div class="modal-content">
-      <span id="modalClose" class="close">&times;</span>
-      <div id="modalBody"></div>
+  <!-- ░░░ DRAWER LINKS ░░░ -->
+  <div class="nav-links" id="navDrawer">
+    <a href="#animation">Animation</a>
+    <a href="#movies">Movies</a>
+    <a href="#tv">TV Series</a>
+    <a href="#anime">Anime</a>
+    <a href="#kdrama">K-Drama</a>
+    <div class="social">
+      <a href="#">🐦</a>
+      <a href="#">📘</a>
+      <a href="#">📷</a>
     </div>
   </div>
 
-  <!-- ░░░ SCRIPTS ░░░ -->
-  <script>
-    const $ = s => document.querySelector(s);
+  <!-- ░░░ HERO BANNER ░░░ -->
+  <section class="hero-banner">
+    <div class="slide active">
+      <img src="https://via.placeholder.com/1200x600?text=Featured+Movie" alt="Featured" />
+    </div>
+    <div class="banner-overlay">
+      <h1>Experience the Ultimate Streaming</h1>
+      <div class="banner-rating">⭐ 8.5 | Action • 2025</div>
+      <p class="banner-overview">Watch your favorite shows and movies, anytime, anywhere. Dive into endless entertainment only at PurpleTin.</p>
+      <a href="#" class="banner-watch">Watch Now</a>
+    </div>
+  </section>
 
-    /* Carousel scroll */
-    const amt = 360;
-    window.scrollLeft  = id => document.getElementById(id).scrollBy({left:-amt,behavior:'smooth'});
-    window.scrollRight = id => document.getElementById(id).scrollBy({left: amt,behavior:'smooth'});
+  <!-- ░░░ SECTIONS ░░░ -->
 
-    /* Search filter */
-    $('#searchInput').addEventListener('input', e=>{
-      const q=e.target.value.toLowerCase();
-      document.querySelectorAll('.card').forEach(c=>
-        c.style.display=c.dataset.title.toLowerCase().includes(q)?'':'none');
-    });
+  <!-- Animation -->
+  <section class="carousel-section" id="animation">
+    <h2 class="section-title">Animation</h2>
+    <div class="carousel-wrap">
+      <button class="arrow left">&#10094;</button>
+      <div class="carousel-row">
+        <div class="card" data-modal="modal1">
+          <img src="https://via.placeholder.com/180x270?text=Animation+1" alt="">
+          <h3>Animated Fun 1</h3>
+          <div class="rating">⭐ 7.8</div>
+          <a href="#" class="watch-btn">Watch</a>
+        </div>
+        <div class="card" data-modal="modal2">
+          <img src="https://via.placeholder.com/180x270?text=Animation+2" alt="">
+          <h3>Animated Fun 2</h3>
+          <div class="rating">⭐ 8.2</div>
+          <a href="#" class="watch-btn">Watch</a>
+        </div>
+        <!-- Add more cards here -->
+      </div>
+      <button class="arrow right">&#10095;</button>
+    </div>
+  </section>
 
-    /* Modal logic */
-    const modal=$('#modal');
-    $('#modalClose').onclick = ()=> modal.style.display='none';
-    window.onclick          = e=> (e.target===modal)&&(modal.style.display='none');
+  <!-- Movies -->
+  <section class="carousel-section" id="movies">
+    <h2 class="section-title">Movies</h2>
+    <div class="carousel-wrap">
+      <button class="arrow left">&#10094;</button>
+      <div class="carousel-row">
+        <div class="card" data-modal="modal3">
+          <img src="https://via.placeholder.com/180x270?text=Movie+1" alt="">
+          <h3>Movie Thriller</h3>
+          <div class="rating">⭐ 9.0</div>
+          <a href="#" class="watch-btn">Watch</a>
+        </div>
+        <!-- Add more cards -->
+      </div>
+      <button class="arrow right">&#10095;</button>
+    </div>
+  </section>
 
-    document.addEventListener('click',e=>{
-      if(e.target.matches('.watch-btn')){
-        e.preventDefault();
-        const d=e.target.closest('.card').dataset;
-        $('#modalBody').innerHTML=`
-          <div class="modal-flex">
-            <img src="${d.poster}" alt="${d.title}">
-            <div class="modal-info">
-              <h2>${d.title}</h2>
-              <p><strong>Rating:</strong> ${d.rating}/10</p>
-              <p><strong>Release:</strong> ${d.release}</p>
-              <p><strong>Genre:</strong> ${d.genre}</p>
-              <p class="overview">${d.overview}</p>
-              <a class="watch-now" href="watch.html?title=${encodeURIComponent(d.title)}&src=${encodeURIComponent(d.stream)}" target="_blank">Watch Now</a>
-            </div>
-          </div>`;
-        modal.style.display='flex';
-      }
-    });
+  <!-- TV Series -->
+  <section class="carousel-section" id="tv">
+    <h2 class="section-title">TV Series</h2>
+    <div class="carousel-wrap">
+      <button class="arrow left">&#10094;</button>
+      <div class="carousel-row">
+        <div class="card" data-modal="modal4">
+          <img src="https://via.placeholder.com/180x270?text=TV+1" alt="">
+          <h3>TV Drama</h3>
+          <div class="rating">⭐ 8.6</div>
+          <a href="#" class="watch-btn">Watch</a>
+        </div>
+      </div>
+      <button class="arrow right">&#10095;</button>
+    </div>
+  </section>
 
-    /* Drawer toggle */
-    const hamburger=$('.hamburger');
-    const navLinks=$('#navLinks');
-    hamburger.addEventListener('click',()=> navLinks.classList.toggle('active'));
+  <!-- Anime -->
+  <section class="carousel-section" id="anime">
+    <h2 class="section-title">Anime</h2>
+    <div class="carousel-wrap">
+      <button class="arrow left">&#10094;</button>
+      <div class="carousel-row">
+        <div class="card" data-modal="modal5">
+          <img src="https://via.placeholder.com/180x270?text=Anime+1" alt="">
+          <h3>Ninja Battles</h3>
+          <div class="rating">⭐ 8.9</div>
+          <a href="#" class="watch-btn">Watch</a>
+        </div>
+      </div>
+      <button class="arrow right">&#10095;</button>
+    </div>
+  </section>
 
-    /* Close drawer after internal nav click */
-    navLinks.querySelectorAll('.nav-anchor').forEach(link=>
-      link.addEventListener('click',()=> navLinks.classList.remove('active')));
-  </script>
+  <!-- K-Drama -->
+  <section class="carousel-section" id="kdrama">
+    <h2 class="section-title">K-Drama</h2>
+    <div class="carousel-wrap">
+      <button class="arrow left">&#10094;</button>
+      <div class="carousel-row">
+        <div class="card" data-modal="modal6">
+          <img src="https://via.placeholder.com/180x270?text=K-Drama+1" alt="">
+          <h3>Love in Seoul</h3>
+          <div class="rating">⭐ 9.1</div>
+          <a href="#" class="watch-btn">Watch</a>
+        </div>
+      </div>
+      <button class="arrow right">&#10095;</button>
+    </div>
+  </section>
+
+  <!-- ░░░ MODALS ░░░ -->
+  <div class="modal" id="modal1">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <div class="modal-flex">
+        <img src="https://via.placeholder.com/240x360?text=Animation+1" alt="">
+        <div class="modal-info">
+          <h2>Animated Fun 1</h2>
+          <p class="overview">A fun and colorful animated journey for the whole family.</p>
+          <a href="#" class="watch-now">Watch Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Duplicate modals for modal2–modal6 as needed -->
+
+  <!-- ░░░ FOOTER ░░░ -->
+  <footer class="site-footer">
+    © 2025 PurpleTin. All rights reserved.
+  </footer>
+
 </body>
 </html>
