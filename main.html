@@ -3,164 +3,181 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PurpleTin - Stream Your Favorites</title>
+  <title>PurpleTin</title>
   <link rel="stylesheet" href="styles.css" />
-  <script defer src="scripts.js"></script>
 </head>
 <body>
-
-  <!-- ░░░ NAVBAR ░░░ -->
+  <!-- ░░░ NAV ░░░ -->
   <nav class="main-nav">
-    <button class="hamburger" id="hamburgerBtn">
+    <button class="hamburger" id="hamburgerBtn" aria-label="Open Menu">
       <span></span><span></span><span></span>
     </button>
     <a href="#" class="nav-brand">PurpleTin</a>
     <input type="text" id="searchInput" placeholder="Search..." />
   </nav>
-
-  <!-- ░░░ DRAWER LINKS ░░░ -->
-  <div class="nav-links" id="navDrawer">
-    <a href="#animation">Animation</a>
+  <div class="nav-links" id="drawer">
+    <a href="#animations">Animations</a>
     <a href="#movies">Movies</a>
     <a href="#tv">TV Series</a>
     <a href="#anime">Anime</a>
     <a href="#kdrama">K-Drama</a>
     <div class="social">
-      <a href="#">🐦</a>
-      <a href="#">📘</a>
-      <a href="#">📷</a>
+      <a href="#">🌐</a>
+      <a href="#">📺</a>
+      <a href="#">🎬</a>
     </div>
   </div>
 
-  <!-- ░░░ HERO BANNER ░░░ -->
-  <section class="hero-banner">
-    <div class="slide active">
-      <img src="https://via.placeholder.com/1200x600?text=Featured+Movie" alt="Featured" />
-    </div>
-    <div class="banner-overlay">
-      <h1>Experience the Ultimate Streaming</h1>
-      <div class="banner-rating">⭐ 8.5 | Action • 2025</div>
-      <p class="banner-overview">Watch your favorite shows and movies, anytime, anywhere. Dive into endless entertainment only at PurpleTin.</p>
-      <a href="#" class="banner-watch">Watch Now</a>
-    </div>
-  </section>
-
   <!-- ░░░ SECTIONS ░░░ -->
-
-  <!-- Animation -->
-  <section class="carousel-section" id="animation">
-    <h2 class="section-title">Animation</h2>
+  <section class="carousel-section" id="animations">
+    <h2 class="section-title">3D Adventures</h2>
     <div class="carousel-wrap">
-      <button class="arrow left">&#10094;</button>
-      <div class="carousel-row">
-        <div class="card" data-modal="modal1">
-          <img src="https://via.placeholder.com/180x270?text=Animation+1" alt="">
-          <h3>Animated Fun 1</h3>
-          <div class="rating">⭐ 7.8</div>
-          <a href="#" class="watch-btn">Watch</a>
+      <button class="arrow left" onclick="scrollCarousel('animations', -1)">‹</button>
+      <div class="carousel-row" id="animations-carousel">
+        <div class="card" data-title="3D Adventures">
+          <img src="https://via.placeholder.com/180x270?text=Animation" alt="Animation Poster"/>
+          <h3>3D Adventures</h3>
+          <p class="rating">⭐ 8.0</p>
+          <a href="#" class="watch-btn" data-title="3D Adventures" data-overview="A thrilling animated journey." data-image="https://via.placeholder.com/240x360?text=Animation">Watch</a>
         </div>
-        <div class="card" data-modal="modal2">
-          <img src="https://via.placeholder.com/180x270?text=Animation+2" alt="">
-          <h3>Animated Fun 2</h3>
-          <div class="rating">⭐ 8.2</div>
-          <a href="#" class="watch-btn">Watch</a>
-        </div>
-        <!-- Add more cards here -->
       </div>
-      <button class="arrow right">&#10095;</button>
+      <button class="arrow right" onclick="scrollCarousel('animations', 1)">›</button>
     </div>
   </section>
 
-  <!-- Movies -->
   <section class="carousel-section" id="movies">
-    <h2 class="section-title">Movies</h2>
+    <h2 class="section-title">Final Destination</h2>
     <div class="carousel-wrap">
-      <button class="arrow left">&#10094;</button>
-      <div class="carousel-row">
-        <div class="card" data-modal="modal3">
-          <img src="https://via.placeholder.com/180x270?text=Movie+1" alt="">
-          <h3>Movie Thriller</h3>
-          <div class="rating">⭐ 9.0</div>
-          <a href="#" class="watch-btn">Watch</a>
+      <button class="arrow left" onclick="scrollCarousel('movies', -1)">‹</button>
+      <div class="carousel-row" id="movies-carousel">
+        <div class="card" data-title="Final Destination">
+          <img src="https://via.placeholder.com/180x270?text=Movie" alt="Movie Poster"/>
+          <h3>Final Destination</h3>
+          <p class="rating">⭐ 8.0</p>
+          <a href="#" class="watch-btn" data-title="Final Destination" data-overview="Death doesn’t give second chances." data-image="https://via.placeholder.com/240x360?text=Movie">Watch</a>
         </div>
-        <!-- Add more cards -->
       </div>
-      <button class="arrow right">&#10095;</button>
+      <button class="arrow right" onclick="scrollCarousel('movies', 1)">›</button>
     </div>
   </section>
 
-  <!-- TV Series -->
   <section class="carousel-section" id="tv">
-    <h2 class="section-title">TV Series</h2>
+    <h2 class="section-title">Breaking Bad</h2>
     <div class="carousel-wrap">
-      <button class="arrow left">&#10094;</button>
-      <div class="carousel-row">
-        <div class="card" data-modal="modal4">
-          <img src="https://via.placeholder.com/180x270?text=TV+1" alt="">
-          <h3>TV Drama</h3>
-          <div class="rating">⭐ 8.6</div>
-          <a href="#" class="watch-btn">Watch</a>
+      <button class="arrow left" onclick="scrollCarousel('tv', -1)">‹</button>
+      <div class="carousel-row" id="tv-carousel">
+        <div class="card" data-title="Breaking Bad">
+          <img src="https://via.placeholder.com/180x270?text=TV+Series" alt="TV Series Poster"/>
+          <h3>Breaking Bad</h3>
+          <p class="rating">⭐ 8.0</p>
+          <a href="#" class="watch-btn" data-title="Breaking Bad" data-overview="A chemistry teacher turns drug lord." data-image="https://via.placeholder.com/240x360?text=TV+Series">Watch</a>
         </div>
       </div>
-      <button class="arrow right">&#10095;</button>
+      <button class="arrow right" onclick="scrollCarousel('tv', 1)">›</button>
     </div>
   </section>
 
-  <!-- Anime -->
   <section class="carousel-section" id="anime">
-    <h2 class="section-title">Anime</h2>
+    <h2 class="section-title">Attack on Titan</h2>
     <div class="carousel-wrap">
-      <button class="arrow left">&#10094;</button>
-      <div class="carousel-row">
-        <div class="card" data-modal="modal5">
-          <img src="https://via.placeholder.com/180x270?text=Anime+1" alt="">
-          <h3>Ninja Battles</h3>
-          <div class="rating">⭐ 8.9</div>
-          <a href="#" class="watch-btn">Watch</a>
+      <button class="arrow left" onclick="scrollCarousel('anime', -1)">‹</button>
+      <div class="carousel-row" id="anime-carousel">
+        <div class="card" data-title="Attack on Titan">
+          <img src="https://via.placeholder.com/180x270?text=Anime" alt="Anime Poster"/>
+          <h3>Attack on Titan</h3>
+          <p class="rating">⭐ 8.0</p>
+          <a href="#" class="watch-btn" data-title="Attack on Titan" data-overview="Humanity fights for survival." data-image="https://via.placeholder.com/240x360?text=Anime">Watch</a>
         </div>
       </div>
-      <button class="arrow right">&#10095;</button>
+      <button class="arrow right" onclick="scrollCarousel('anime', 1)">›</button>
     </div>
   </section>
 
-  <!-- K-Drama -->
   <section class="carousel-section" id="kdrama">
-    <h2 class="section-title">K-Drama</h2>
+    <h2 class="section-title">Crash Landing</h2>
     <div class="carousel-wrap">
-      <button class="arrow left">&#10094;</button>
-      <div class="carousel-row">
-        <div class="card" data-modal="modal6">
-          <img src="https://via.placeholder.com/180x270?text=K-Drama+1" alt="">
-          <h3>Love in Seoul</h3>
-          <div class="rating">⭐ 9.1</div>
-          <a href="#" class="watch-btn">Watch</a>
+      <button class="arrow left" onclick="scrollCarousel('kdrama', -1)">‹</button>
+      <div class="carousel-row" id="kdrama-carousel">
+        <div class="card" data-title="Crash Landing">
+          <img src="https://via.placeholder.com/180x270?text=K-Drama" alt="K-Drama Poster"/>
+          <h3>Crash Landing</h3>
+          <p class="rating">⭐ 8.0</p>
+          <a href="#" class="watch-btn" data-title="Crash Landing" data-overview="Love across borders." data-image="https://via.placeholder.com/240x360?text=K-Drama">Watch</a>
         </div>
       </div>
-      <button class="arrow right">&#10095;</button>
+      <button class="arrow right" onclick="scrollCarousel('kdrama', 1)">›</button>
     </div>
   </section>
 
-  <!-- ░░░ MODALS ░░░ -->
-  <div class="modal" id="modal1">
+  <!-- ░░░ MODAL ░░░ -->
+  <div class="modal" id="watchModal">
     <div class="modal-content">
-      <span class="close">&times;</span>
+      <span class="close" id="modalClose">&times;</span>
       <div class="modal-flex">
-        <img src="https://via.placeholder.com/240x360?text=Animation+1" alt="">
+        <img src="" alt="Poster" id="modalImg" />
         <div class="modal-info">
-          <h2>Animated Fun 1</h2>
-          <p class="overview">A fun and colorful animated journey for the whole family.</p>
+          <h2 id="modalTitle"></h2>
+          <p class="overview" id="modalOverview"></p>
           <a href="#" class="watch-now">Watch Now</a>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Duplicate modals for modal2–modal6 as needed -->
+  <footer class="site-footer">© 2025 PurpleTin. All rights reserved.</footer>
 
-  <!-- ░░░ FOOTER ░░░ -->
-  <footer class="site-footer">
-    © 2025 PurpleTin. All rights reserved.
-  </footer>
+  <!-- ░░░ JS ░░░ -->
+  <script>
+    const hamburger = document.getElementById("hamburgerBtn");
+    const drawer = document.getElementById("drawer");
+    hamburger.addEventListener("click", () => {
+      drawer.classList.toggle("active");
+    });
 
+    const modal = document.getElementById("watchModal");
+    const modalImg = document.getElementById("modalImg");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalOverview = document.getElementById("modalOverview");
+    const modalClose = document.getElementById("modalClose");
+
+    document.querySelectorAll(".watch-btn").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const title = btn.getAttribute("data-title");
+        const overview = btn.getAttribute("data-overview");
+        const img = btn.getAttribute("data-image");
+
+        modalTitle.textContent = title;
+        modalOverview.textContent = overview;
+        modalImg.src = img;
+        modal.style.display = "flex";
+      });
+    });
+
+    modalClose.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+
+    window.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+
+    const searchInput = document.getElementById("searchInput");
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.toLowerCase();
+      document.querySelectorAll(".card").forEach(card => {
+        const title = card.getAttribute("data-title").toLowerCase();
+        card.style.display = title.includes(query) ? "block" : "none";
+      });
+    });
+
+    function scrollCarousel(sectionId, direction) {
+      const row = document.querySelector(`#${sectionId}-carousel`);
+      const scrollAmount = 220;
+      row.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+    }
+  </script>
 </body>
 </html>
