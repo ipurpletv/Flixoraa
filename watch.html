@@ -22,6 +22,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
     }
 
     .back-home {
@@ -32,6 +34,14 @@
 
     #movieTitle {
       font-size: 1.2rem;
+    }
+
+    .episode-dropdown {
+      background: #1e1e1e;
+      color: #fff;
+      padding: 0.4rem;
+      border: 1px solid #333;
+      border-radius: 6px;
     }
 
     .watch-content {
@@ -77,7 +87,6 @@
       background: #2c2c2c;
     }
 
-    /* 🔁 Mobile responsive */
     @media (max-width: 768px) {
       .watch-content {
         flex-direction: column;
@@ -92,7 +101,6 @@
       }
     }
 
-    /* ⛔ Rotate Notice Hidden by Default */
     #rotateNotice {
       display: none;
       background: #ff4444;
@@ -117,6 +125,7 @@
   <header class="watch-header">
     <a href="main.html" class="back-home">← Back to Movies</a>
     <h1 id="movieTitle">Now Watching</h1>
+    <select id="episodeDropdown" class="episode-dropdown" style="display: none;"></select>
   </header>
 
   <main class="watch-content">
@@ -125,20 +134,59 @@
     <aside class="watch-next">
       <div class="suggestion-title">🎬 Watch Next</div>
       <div class="suggestion-list">
-        <a href="watch.html?title=Jumanji&src=https://drive.google.com/file/d/abc123/preview">Jumanji</a>
-        <a href="watch.html?title=Avengers&src=https://drive.google.com/file/d/xyz456/preview">Avengers</a>
-        <a href="watch.html?title=Inception&src=https://drive.google.com/file/d/uvw789/preview">Inception</a>
+        <a href="watch.html?title=Jumanji&src=https://drive.google.com/file/d/abc123/preview&type=movie">Jumanji</a>
+        <a href="watch.html?title=Avengers&src=https://drive.google.com/file/d/xyz456/preview&type=movie">Avengers</a>
+        <a href="watch.html?title=Inception&src=https://drive.google.com/file/d/uvw789/preview&type=movie">Inception</a>
       </div>
     </aside>
   </main>
 
   <script>
     const params = new URLSearchParams(window.location.search);
-    const title = params.get("title");
-    const src = params.get("src");
+    const title = params.get("title") || "Now Watching";
+    const type = params.get("type") || "movie";
+    const src = decodeURIComponent(params.get("src") || "");
+    const episodeData = params.get("episodes");
 
-    document.getElementById("movieTitle").textContent = title || "Now Watching";
-    document.getElementById("moviePlayer").src = decodeURIComponent(src || "");
+    document.getElementById("movieTitle").textContent = title;
+    const player = document.getElementById("moviePlayer");
+    const dropdown = document.getElementById("episodeDropdown");
+
+    // Handle Series (tv, anime, kdrama)
+    if (["tv", "anime", "kdrama"].includes(type) && episodeData) {
+      let episodes = [];
+
+      try {
+        episodes = JSON.parse(decodeURIComponent(episodeData));
+      } catch (e) {
+        console.error("Invalid episode data");
+      }
+
+      if (episodes.length > 0) {
+        dropdown.style.display = "inline-block";
+
+        // Populate dropdown
+        episodes.forEach((ep, i) => {
+          const opt = document.createElement("option");
+          opt.value = ep;
+          opt.textContent = `Episode ${i + 1}`;
+          dropdown.appendChild(opt);
+        });
+
+        // Load first episode
+        player.src = episodes[0];
+
+        // Change episode
+        dropdown.addEventListener("change", () => {
+          player.src = dropdown.value;
+        });
+      } else {
+        player.src = src;
+      }
+    } else {
+      // For movies/animations
+      player.src = src;
+    }
   </script>
 
 </body>
