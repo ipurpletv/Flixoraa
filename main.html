@@ -9,6 +9,9 @@
     .modal{position:fixed;inset:0;display:none;justify-content:center;align-items:center;background:rgba(0,0,0,.8);z-index:99}
     .modal-content{background:#1a1a1a;color:#fff;padding:1.5rem;border-radius:12px;max-width:600px;width:90%}
     .close{cursor:pointer;font-size:1.5rem;position:absolute;top:10px;right:16px}
+    .episodes { margin-top: 10px; display: none; flex-direction: column; gap: 5px; }
+    .episodes a { padding: 6px 12px; background: #333; color: #fff; text-decoration: none; border-radius: 6px; }
+    .toggle-episodes { margin-top: 8px; background: #8b5cf6; color: #fff; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -110,42 +113,51 @@ const contentData = {
   ],
   animations: [
     {
-      title: "Inception",
-      poster: "https://via.placeholder.com/180x270?text=Inception",
-      image: "https://via.placeholder.com/240x360?text=Inception",
-      rating: "8.8",
-      overview: "A thief who steals secrets through dream-sharing.",
-      drive: "https://drive.google.com/file/d/abc123XYZ/preview"
+      title: "Zootopia",
+      poster: "https://via.placeholder.com/180x270?text=Zootopia",
+      image: "https://via.placeholder.com/240x360?text=Zootopia",
+      rating: "8.0",
+      overview: "A bunny cop teams up with a fox to solve a mystery.",
+      drive: "https://drive.google.com/file/d/def456XYZ/preview"
     }
   ],
   tv: [
     {
-      title: "Inception",
-      poster: "https://via.placeholder.com/180x270?text=Inception",
-      image: "https://via.placeholder.com/240x360?text=Inception",
-      rating: "8.8",
-      overview: "A thief who steals secrets through dream-sharing.",
-      drive: "https://drive.google.com/file/d/abc123XYZ/preview"
+      title: "Loki",
+      poster: "https://via.placeholder.com/180x270?text=Loki",
+      image: "https://via.placeholder.com/240x360?text=Loki",
+      rating: "8.3",
+      overview: "The God of Mischief steps out of his brother’s shadow.",
+      episodes: [
+        { title: "Episode 1", drive: "https://drive.google.com/file/d/ep1/preview" },
+        { title: "Episode 2", drive: "https://drive.google.com/file/d/ep2/preview" }
+      ]
     }
   ],
   anime: [
     {
-      title: "Inception",
-      poster: "https://via.placeholder.com/180x270?text=Inception",
-      image: "https://via.placeholder.com/240x360?text=Inception",
-      rating: "8.8",
-      overview: "A thief who steals secrets through dream-sharing.",
-      drive: "https://drive.google.com/file/d/abc123XYZ/preview"
+      title: "Naruto",
+      poster: "https://via.placeholder.com/180x270?text=Naruto",
+      image: "https://via.placeholder.com/240x360?text=Naruto",
+      rating: "8.2",
+      overview: "A ninja dreams of becoming the strongest in his village.",
+      episodes: [
+        { title: "Episode 1", drive: "https://drive.google.com/file/d/naruto1/preview" },
+        { title: "Episode 2", drive: "https://drive.google.com/file/d/naruto2/preview" }
+      ]
     }
   ],
   kdrama: [
     {
-      title: "Inception",
-      poster: "https://via.placeholder.com/180x270?text=Inception",
-      image: "https://via.placeholder.com/240x360?text=Inception",
-      rating: "8.8",
-      overview: "A thief who steals secrets through dream-sharing.",
-      drive: "https://drive.google.com/file/d/abc123XYZ/preview"
+      title: "Crash Landing on You",
+      poster: "https://via.placeholder.com/180x270?text=Crash+Landing",
+      image: "https://via.placeholder.com/240x360?text=Crash+Landing",
+      rating: "8.5",
+      overview: "A South Korean heiress crash lands in North Korea.",
+      episodes: [
+        { title: "Episode 1", drive: "https://drive.google.com/file/d/epk1/preview" },
+        { title: "Episode 2", drive: "https://drive.google.com/file/d/epk2/preview" }
+      ]
     }
   ]
 };
@@ -165,19 +177,50 @@ function createCard(item) {
     <img src="${item.poster}" alt="Poster">
     <h3>${item.title}</h3>
     <p class="rating">⭐ ${item.rating}</p>
-    <a href="#" class="watch-btn" data-title="${item.title}" data-overview="${item.overview}" data-image="${item.image}" data-src="${item.drive}">Watch</a>
   `;
-  card.querySelector(".watch-btn").addEventListener("click", e => {
-    e.preventDefault();
-    modalTitle.textContent = item.title;
-    modalOverview.textContent = item.overview;
-    modalImg.src = item.image;
-    const watchURL = new URL("watch.html", window.location.origin);
-    watchURL.searchParams.set("title", item.title);
-    watchURL.searchParams.set("src", item.drive);
-    watchNowBtn.href = watchURL.toString();
-    modal.style.display = "flex";
-  });
+
+  if (item.episodes) {
+    const toggleBtn = document.createElement("button");
+    toggleBtn.className = "toggle-episodes";
+    toggleBtn.textContent = "Episodes ▾";
+    const episodeList = document.createElement("div");
+    episodeList.className = "episodes";
+
+    item.episodes.forEach(ep => {
+      const epLink = document.createElement("a");
+      const watchURL = new URL("watch.html", window.location.origin);
+      watchURL.searchParams.set("title", `${item.title} - ${ep.title}`);
+      watchURL.searchParams.set("src", ep.drive);
+      epLink.href = watchURL.toString();
+      epLink.textContent = ep.title;
+      episodeList.appendChild(epLink);
+    });
+
+    toggleBtn.addEventListener("click", () => {
+      episodeList.style.display = episodeList.style.display === "flex" ? "none" : "flex";
+    });
+
+    card.appendChild(toggleBtn);
+    card.appendChild(episodeList);
+  } else {
+    const watchBtn = document.createElement("a");
+    watchBtn.href = "#";
+    watchBtn.className = "watch-btn";
+    watchBtn.textContent = "Watch";
+    watchBtn.addEventListener("click", e => {
+      e.preventDefault();
+      modalTitle.textContent = item.title;
+      modalOverview.textContent = item.overview;
+      modalImg.src = item.image;
+      const watchURL = new URL("watch.html", window.location.origin);
+      watchURL.searchParams.set("title", item.title);
+      watchURL.searchParams.set("src", item.drive);
+      watchNowBtn.href = watchURL.toString();
+      modal.style.display = "flex";
+    });
+    card.appendChild(watchBtn);
+  }
+
   return card;
 }
 
