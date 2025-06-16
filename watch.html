@@ -1,154 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Watch | Flixora</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Watch</title>
+  <link rel="stylesheet" href="styles.css">
   <style>
-    body {
+    body.watch-page {
       margin: 0;
+      font-family: sans-serif;
       background: #0f0f0f;
       color: #fff;
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
     }
     .watch-header {
-      background: #1f1f1f;
       padding: 1rem;
-      text-align: center;
+      background: #1a1a1a;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     .back-home {
       color: #8b5cf6;
       text-decoration: none;
-      display: inline-block;
-      margin-bottom: 0.5rem;
-      font-size: 0.9rem;
     }
-    .watch-content {
-      flex: 1;
+    .watch-layout {
       display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
+      flex-direction: row;
+      gap: 1rem;
       padding: 1rem;
+    }
+    .watch-player {
+      flex: 3;
+      aspect-ratio: 16 / 9;
+      position: relative;
     }
     #moviePlayer {
       width: 100%;
-      max-width: 960px;
-      aspect-ratio: 16 / 9;
+      height: 100%;
       border: none;
       border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-      background: #000;
     }
-    /* Rotate prompt */
-    #rotatePrompt {
-      display: none;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      color: #fff;
-      font-size: 1.2rem;
-      font-weight: 600;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 2rem;
-      box-sizing: border-box;
+    .watch-suggestions {
+      flex: 1;
+      background: #1a1a1a;
+      padding: 1rem;
       border-radius: 12px;
     }
-    /* Suggestions */
-    .suggestions {
-      padding: 1rem;
-      background: #141414;
+    .suggestion-card {
+      margin-bottom: 1rem;
     }
-    .suggestions h2 {
-      margin-top: 0;
-      font-size: 1.2rem;
+    .suggestion-card a {
+      text-decoration: none;
+      color: #fff;
     }
-    .suggest-row {
-      display: flex;
-      gap: 0.75rem;
-      overflow-x: auto;
-    }
-    .suggest-card {
-      flex: 0 0 120px;
-      text-align: center;
-    }
-    .suggest-card img {
+    .suggestion-card img {
       width: 100%;
       border-radius: 8px;
     }
-    .suggest-card a {
-      text-decoration: none;
-      color: #ccc;
-      font-size: 0.85rem;
+    .rotate-device {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      color: #fff;
+      font-size: 1.5rem;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      z-index: 999;
+    }
+    @media screen and (orientation: portrait) and (max-width: 768px) {
+      .rotate-device {
+        display: flex;
+      }
     }
   </style>
 </head>
-<body>
+<body class="watch-page">
+  <div class="rotate-device">Please rotate your device to landscape for the best viewing experience.</div>
   <header class="watch-header">
     <a href="index.html" class="back-home">← Back to Movies</a>
     <h1 id="movieTitle">Now Watching</h1>
   </header>
 
-  <main class="watch-content">
-    <iframe id="moviePlayer" allowfullscreen allow="autoplay"></iframe>
-    <div id="rotatePrompt">Rotate your device to landscape for a better viewing experience 📱↔️</div>
+  <main class="watch-layout">
+    <div class="watch-player">
+      <iframe id="moviePlayer" src="" allowfullscreen></iframe>
+    </div>
+    <aside class="watch-suggestions">
+      <h2>Watch Next</h2>
+      <div class="suggestion-card">
+        <a href="watch.html?title=The+Conjuring&src=https%3A%2F%2Fdrive.google.com%2Ffile%2Fd%2FEXAMPLE_ID1%2Fpreview">
+          <img src="https://via.placeholder.com/160x240?text=The+Conjuring" alt="The Conjuring">
+          <p>The Conjuring</p>
+        </a>
+      </div>
+      <div class="suggestion-card">
+        <a href="watch.html?title=Insidious&src=https%3A%2F%2Fdrive.google.com%2Ffile%2Fd%2FEXAMPLE_ID2%2Fpreview">
+          <img src="https://via.placeholder.com/160x240?text=Insidious" alt="Insidious">
+          <p>Insidious</p>
+        </a>
+      </div>
+      <div class="suggestion-card">
+        <a href="watch.html?title=Saw&src=https%3A%2F%2Fdrive.google.com%2Ffile%2Fd%2FEXAMPLE_ID3%2Fpreview">
+          <img src="https://via.placeholder.com/160x240?text=Saw" alt="Saw">
+          <p>Saw</p>
+        </a>
+      </div>
+    </aside>
   </main>
 
-  <!-- Watch Next Suggestions -->
-  <section class="suggestions">
-    <h2>Watch Next</h2>
-    <div class="suggest-row">
-      <!-- Example suggestions; replace src IDs with real ones -->
-      <div class="suggest-card">
-        <a href="watch.html?title=Breaking%20Bad%20Pilot&src=https%3A%2F%2Fdrive.google.com%2Ffile%2Fd%2F1TVEXAMPLEID%2Fpreview">
-          <img src="https://via.placeholder.com/120x180?text=TV" alt="Breaking Bad" />
-          Breaking Bad
-        </a>
-      </div>
-      <div class="suggest-card">
-        <a href="watch.html?title=Attack%20on%20Titan%20EP1&src=https%3A%2F%2Fdrive.google.com%2Ffile%2Fd%2F1ANIMEEXAMPLEID%2Fpreview">
-          <img src="https://via.placeholder.com/120x180?text=Anime" alt="Attack on Titan" />
-          AoT EP1
-        </a>
-      </div>
-      <div class="suggest-card">
-        <a href="watch.html?title=Crash%20Landing%20EP1&src=https%3A%2F%2Fdrive.google.com%2Ffile%2Fd%2F1KDRAMAEXAMPLEID%2Fpreview">
-          <img src="https://via.placeholder.com/120x180?text=KDrama" alt="Crash Landing" />
-          Crash Landing
-        </a>
-      </div>
-    </div>
-  </section>
-
   <script>
-    // --- Populate player & title ---
     const params = new URLSearchParams(window.location.search);
     const title = params.get("title");
     let src = params.get("src");
     if (src && !src.includes("autoplay")) {
-      src += (src.includes("?") ? "&" : "?") + "autoplay=1"; // Autoplay param
+      src += (src.includes("?") ? "&" : "?") + "autoplay=1";
     }
     document.getElementById("movieTitle").textContent = title || "Now Watching";
     document.getElementById("moviePlayer").src = decodeURIComponent(src || "");
-
-    // --- Rotate prompt logic ---
-    const prompt = document.getElementById("rotatePrompt");
-    function checkOrientation() {
-      const isPortrait = window.matchMedia("(orientation: portrait)").matches;
-      prompt.style.display = isPortrait ? "flex" : "none";
-    }
-    window.addEventListener("resize", checkOrientation);
-    window.addEventListener("orientationchange", checkOrientation);
-    checkOrientation(); // initial
   </script>
 </body>
 </html>
