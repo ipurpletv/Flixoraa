@@ -8,104 +8,126 @@
   <style>
     body.watch-page {
       margin: 0;
-      font-family: sans-serif;
-      background: #0f0f0f;
+      font-family: Arial, sans-serif;
+      background: #0e0e0e;
       color: #fff;
     }
+
     .watch-header {
       padding: 1rem;
       background: #1a1a1a;
+      position: sticky;
+      top: 0;
+      z-index: 10;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
+
     .back-home {
       color: #8b5cf6;
       text-decoration: none;
+      font-size: 1rem;
     }
-    .watch-layout {
+
+    #movieTitle {
+      font-size: 1.2rem;
+    }
+
+    .watch-content {
       display: flex;
       flex-direction: row;
       gap: 1rem;
       padding: 1rem;
     }
-    .watch-player {
-      flex: 3;
-      aspect-ratio: 16 / 9;
-      position: relative;
-    }
+
     #moviePlayer {
+      flex: 2;
+      aspect-ratio: 16/9;
       width: 100%;
-      height: 100%;
       border: none;
-      border-radius: 12px;
+      border-radius: 10px;
     }
-    .watch-suggestions {
+
+    .watch-next {
       flex: 1;
-      background: #1a1a1a;
-      padding: 1rem;
-      border-radius: 12px;
+      min-width: 200px;
     }
-    .suggestion-card {
-      margin-bottom: 1rem;
+
+    .suggestion-title {
+      margin-bottom: 0.5rem;
+      font-weight: bold;
     }
-    .suggestion-card a {
+
+    .suggestion-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .suggestion-list a {
+      color: #ccc;
+      background: #1e1e1e;
+      padding: 0.5rem;
+      border-radius: 6px;
       text-decoration: none;
-      color: #fff;
     }
-    .suggestion-card img {
-      width: 100%;
-      border-radius: 8px;
+
+    .suggestion-list a:hover {
+      background: #2c2c2c;
     }
-    .rotate-device {
+
+    /* 🔁 Mobile responsive */
+    @media (max-width: 768px) {
+      .watch-content {
+        flex-direction: column;
+      }
+
+      .watch-next {
+        width: 100%;
+      }
+
+      #rotateNotice {
+        display: block;
+      }
+    }
+
+    /* ⛔ Rotate Notice Hidden by Default */
+    #rotateNotice {
       display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.9);
+      background: #ff4444;
       color: #fff;
-      font-size: 1.5rem;
-      justify-content: center;
-      align-items: center;
       text-align: center;
-      z-index: 999;
+      padding: 0.5rem;
+      font-size: 0.9rem;
     }
-    @media screen and (orientation: portrait) and (max-width: 768px) {
-      .rotate-device {
-        display: flex;
+
+    @media (orientation: portrait) and (max-width: 768px) {
+      #rotateNotice {
+        display: block;
       }
     }
   </style>
 </head>
 <body class="watch-page">
-  <div class="rotate-device">Please rotate your device to landscape for the best viewing experience.</div>
+
+  <!-- 🔁 Rotate Phone Notice -->
+  <div id="rotateNotice">🔁 For best experience, please rotate your phone to landscape.</div>
+
   <header class="watch-header">
     <a href="index.html" class="back-home">← Back to Movies</a>
     <h1 id="movieTitle">Now Watching</h1>
   </header>
 
-  <main class="watch-layout">
-    <div class="watch-player">
-      <iframe id="moviePlayer" src="" allowfullscreen></iframe>
-    </div>
-    <aside class="watch-suggestions">
-      <h2>Watch Next</h2>
-      <div class="suggestion-card">
-        <a href="watch.html?title=The+Conjuring&src=https%3A%2F%2Fdrive.google.com%2Ffile%2Fd%2FEXAMPLE_ID1%2Fpreview">
-          <img src="https://via.placeholder.com/160x240?text=The+Conjuring" alt="The Conjuring">
-          <p>The Conjuring</p>
-        </a>
-      </div>
-      <div class="suggestion-card">
-        <a href="watch.html?title=Insidious&src=https%3A%2F%2Fdrive.google.com%2Ffile%2Fd%2FEXAMPLE_ID2%2Fpreview">
-          <img src="https://via.placeholder.com/160x240?text=Insidious" alt="Insidious">
-          <p>Insidious</p>
-        </a>
-      </div>
-      <div class="suggestion-card">
-        <a href="watch.html?title=Saw&src=https%3A%2F%2Fdrive.google.com%2Ffile%2Fd%2FEXAMPLE_ID3%2Fpreview">
-          <img src="https://via.placeholder.com/160x240?text=Saw" alt="Saw">
-          <p>Saw</p>
-        </a>
+  <main class="watch-content">
+    <iframe id="moviePlayer" src="" allowfullscreen></iframe>
+
+    <aside class="watch-next">
+      <div class="suggestion-title">🎬 Watch Next</div>
+      <div class="suggestion-list">
+        <a href="watch.html?title=Jumanji&src=https://drive.google.com/file/d/abc123/preview">Jumanji</a>
+        <a href="watch.html?title=Avengers&src=https://drive.google.com/file/d/xyz456/preview">Avengers</a>
+        <a href="watch.html?title=Inception&src=https://drive.google.com/file/d/uvw789/preview">Inception</a>
       </div>
     </aside>
   </main>
@@ -113,12 +135,11 @@
   <script>
     const params = new URLSearchParams(window.location.search);
     const title = params.get("title");
-    let src = params.get("src");
-    if (src && !src.includes("autoplay")) {
-      src += (src.includes("?") ? "&" : "?") + "autoplay=1";
-    }
+    const src = params.get("src");
+
     document.getElementById("movieTitle").textContent = title || "Now Watching";
     document.getElementById("moviePlayer").src = decodeURIComponent(src || "");
   </script>
+
 </body>
 </html>
