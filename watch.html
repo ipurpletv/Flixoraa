@@ -22,8 +22,6 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
     }
 
     .back-home {
@@ -34,14 +32,6 @@
 
     #movieTitle {
       font-size: 1.2rem;
-    }
-
-    .episode-dropdown {
-      background: #1e1e1e;
-      color: #fff;
-      padding: 0.4rem;
-      border: 1px solid #333;
-      border-radius: 6px;
     }
 
     .watch-content {
@@ -87,6 +77,7 @@
       background: #2c2c2c;
     }
 
+    /* 🔁 Mobile responsive */
     @media (max-width: 768px) {
       .watch-content {
         flex-direction: column;
@@ -101,6 +92,7 @@
       }
     }
 
+    /* ⛔ Rotate Notice Hidden by Default */
     #rotateNotice {
       display: none;
       background: #ff4444;
@@ -115,6 +107,18 @@
         display: block;
       }
     }
+
+    /* 🎞 Episode Selector */
+    #episodeSelector {
+      margin: 1rem 0;
+      padding: 0.5rem;
+      width: 100%;
+      background: #1a1a1a;
+      color: #fff;
+      border: 1px solid #333;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
   </style>
 </head>
 <body class="watch-page">
@@ -125,67 +129,65 @@
   <header class="watch-header">
     <a href="main.html" class="back-home">← Back to Movies</a>
     <h1 id="movieTitle">Now Watching</h1>
-    <select id="episodeDropdown" class="episode-dropdown" style="display: none;"></select>
   </header>
 
   <main class="watch-content">
-    <iframe id="moviePlayer" src="" allowfullscreen></iframe>
+    <div style="flex: 2;">
+      <!-- 🎞 Optional Episode Selector -->
+      <select id="episodeSelector" style="display:none;"></select>
+      <iframe id="moviePlayer" src="" allowfullscreen></iframe>
+    </div>
 
     <aside class="watch-next">
       <div class="suggestion-title">🎬 Watch Next</div>
       <div class="suggestion-list">
+        <!-- 🧩 Movie -->
         <a href="watch.html?title=Jumanji&src=https://drive.google.com/file/d/abc123/preview&type=movie">Jumanji</a>
         <a href="watch.html?title=Avengers&src=https://drive.google.com/file/d/xyz456/preview&type=movie">Avengers</a>
         <a href="watch.html?title=Inception&src=https://drive.google.com/file/d/uvw789/preview&type=movie">Inception</a>
+        <!-- 🧩 TV Series/Anime/Kdrama with Episodes -->
+        <a href="watch.html?title=Sample%20K-Drama&type=kdrama&episodes=%5B%22https%3A%2F%2Fdrive.google.com%2Ffile%2Fd%2Fep1%2Fpreview%22%2C%22https%3A%2F%2Fdrive.google.com%2Ffile%2Fd%2Fep2%2Fpreview%22%2C%22https%3A%2F%2Fdrive.google.com%2Ffile%2Fd%2Fep3%2Fpreview%22%2C%22https%3A%2F%2Fdrive.google.com%2Ffile%2Fd%2Fep4%2Fpreview%22%2C%22https%3A%2F%2Fdrive.google.com%2Ffile%2Fd%2Fep5%2Fpreview%22%5D">Sample K-Drama (5 Episodes)</a>
       </div>
     </aside>
   </main>
 
   <script>
     const params = new URLSearchParams(window.location.search);
-    const title = params.get("title") || "Now Watching";
+    const title = params.get("title");
     const type = params.get("type") || "movie";
-    const src = decodeURIComponent(params.get("src") || "");
-    const episodeData = params.get("episodes");
+    const src = params.get("src");
+    const episodes = params.get("episodes");
 
-    document.getElementById("movieTitle").textContent = title;
-    const player = document.getElementById("moviePlayer");
-    const dropdown = document.getElementById("episodeDropdown");
+    const movieTitleEl = document.getElementById("movieTitle");
+    const moviePlayerEl = document.getElementById("moviePlayer");
+    const episodeSelector = document.getElementById("episodeSelector");
 
-    // Handle Series (tv, anime, kdrama)
-    if (["tv", "anime", "kdrama"].includes(type) && episodeData) {
-      let episodes = [];
+    movieTitleEl.textContent = title || "Now Watching";
 
-      try {
-        episodes = JSON.parse(decodeURIComponent(episodeData));
-      } catch (e) {
-        console.error("Invalid episode data");
-      }
+    // Show episode dropdown if type is tv-related
+    if (["anime", "tv", "kdrama"].includes(type) && episodes) {
+      const episodeList = JSON.parse(decodeURIComponent(episodes));
+      episodeSelector.style.display = "block";
+      episodeSelector.innerHTML = "";
 
-      if (episodes.length > 0) {
-        dropdown.style.display = "inline-block";
+      episodeList.forEach((link, index) => {
+        const option = document.createElement("option");
+        option.value = link;
+        option.textContent = `Episode ${index + 1}`;
+        episodeSelector.appendChild(option);
+      });
 
-        // Populate dropdown
-        episodes.forEach((ep, i) => {
-          const opt = document.createElement("option");
-          opt.value = ep;
-          opt.textContent = `Episode ${i + 1}`;
-          dropdown.appendChild(opt);
-        });
+      // Default load first episode
+      moviePlayerEl.src = episodeList[0];
 
-        // Load first episode
-        player.src = episodes[0];
+      episodeSelector.addEventListener("change", () => {
+        moviePlayerEl.src = episodeSelector.value;
+      });
 
-        // Change episode
-        dropdown.addEventListener("change", () => {
-          player.src = dropdown.value;
-        });
-      } else {
-        player.src = src;
-      }
     } else {
-      // For movies/animations
-      player.src = src;
+      // Movie/Animation
+      moviePlayerEl.src = decodeURIComponent(src || "");
+      episodeSelector.style.display = "none";
     }
   </script>
 
