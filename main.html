@@ -121,7 +121,8 @@
       <div class="modal-info">
         <h2 id="modalTitle"></h2>
         <p class="overview" id="modalOverview"></p>
-        <a href="#" class="watch-now">Watch Now</a>
+        <!-- Updated "Watch Now" button with ID -->
+        <a href="#" id="watchNowBtn" class="watch-now">Watch Now</a>
       </div>
     </div>
   </div>
@@ -148,6 +149,7 @@
   const modalTitle = document.getElementById("modalTitle");
   const modalOverview = document.getElementById("modalOverview");
   const modalClose = document.getElementById("modalClose");
+  const watchNowBtn = document.getElementById("watchNowBtn");
 
   document.querySelectorAll(".watch-btn").forEach(btn => {
     btn.addEventListener("click", (e) => {
@@ -156,9 +158,19 @@
       const overview = btn.getAttribute("data-overview");
       const img = btn.getAttribute("data-image");
 
+      // Populate modal content
       modalTitle.textContent = title;
       modalOverview.textContent = overview;
       modalImg.src = img;
+
+      // Build dynamic URL for watch.html
+      const url = new URL("watch.html", window.location.origin);
+      url.searchParams.set("title", title);
+      url.searchParams.set("overview", overview);
+      url.searchParams.set("image", img);
+      watchNowBtn.href = url.toString();
+
+      // Show modal
       modal.style.display = "flex";
     });
   });
