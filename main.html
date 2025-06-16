@@ -6,13 +6,14 @@
   <title>Flixora</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
-    .modal { position: fixed; inset: 0; display: none; justify-content: center; align-items: center; background: rgba(0, 0, 0, .8); z-index: 99; }
-    .modal-content { background: #1a1a1a; color: #fff; padding: 1.5rem; border-radius: 12px; max-width: 600px; width: 90%; position: relative; }
-    .close { cursor: pointer; font-size: 1.5rem; position: absolute; top: 10px; right: 16px; }
+    .modal{position:fixed;inset:0;display:none;justify-content:center;align-items:center;background:rgba(0,0,0,.8);z-index:99}
+    .modal-content{background:#1a1a1a;color:#fff;padding:1.5rem;border-radius:12px;max-width:600px;width:90%}
+    .close{cursor:pointer;font-size:1.5rem;position:absolute;top:10px;right:16px}
   </style>
 </head>
 <body>
 
+<!-- ░░░ NAV ░░░ -->
 <nav class="main-nav">
   <button class="hamburger" id="hamburgerBtn" aria-label="Open Menu">
     <span></span><span></span><span></span>
@@ -35,70 +36,19 @@
   </div>
 </div>
 
+<!-- ░░░ SECTIONS ░░░ -->
 <section class="carousel-section" id="movies">
   <h2 class="section-title">Movies</h2>
   <div class="carousel-wrap">
     <button class="arrow left" onclick="scrollCarousel('movies',-1)">‹</button>
     <div class="carousel-row" id="movies-carousel">
-      <div class="card" data-title="Final Destination">
-        <img src="https://via.placeholder.com/180x270?text=Movie" alt="Movie Poster" />
-        <h3>Final Destination</h3>
-        <p class="rating">⭐ 8.0</p>
-        <a href="#" class="watch-btn" data-title="Final Destination" data-overview="Death doesn’t give second chances." data-image="https://via.placeholder.com/240x360?text=Movie" data-src="https://drive.google.com/file/d/1A2B3C4D5E6F7G8H9I0J/preview">Watch</a>
-      </div>
+
     </div>
     <button class="arrow right" onclick="scrollCarousel('movies',1)">›</button>
   </div>
 </section>
 
-<section class="carousel-section" id="tv">
-  <h2 class="section-title">TV Series</h2>
-  <div class="carousel-wrap">
-    <button class="arrow left" onclick="scrollCarousel('tv',-1)">‹</button>
-    <div class="carousel-row" id="tv-carousel">
-      <div class="card" data-title="Breaking Bad">
-        <img src="https://via.placeholder.com/180x270?text=TV" alt="TV Poster" />
-        <h3>Breaking Bad</h3>
-        <p class="rating">⭐ 9.5</p>
-        <a href="#" class="watch-btn" data-title="Breaking Bad" data-overview="A high school chemistry teacher turned methamphetamine producer." data-image="https://via.placeholder.com/240x360?text=TV" data-src="https://drive.google.com/file/d/1TVEXAMPLEID/preview">Watch</a>
-      </div>
-    </div>
-    <button class="arrow right" onclick="scrollCarousel('tv',1)">›</button>
-  </div>
-</section>
-
-<section class="carousel-section" id="anime">
-  <h2 class="section-title">Anime</h2>
-  <div class="carousel-wrap">
-    <button class="arrow left" onclick="scrollCarousel('anime',-1)">‹</button>
-    <div class="carousel-row" id="anime-carousel">
-      <div class="card" data-title="Attack on Titan">
-        <img src="https://via.placeholder.com/180x270?text=Anime" alt="Anime Poster" />
-        <h3>Attack on Titan</h3>
-        <p class="rating">⭐ 9.0</p>
-        <a href="#" class="watch-btn" data-title="Attack on Titan" data-overview="Humans fight for survival against giant creatures." data-image="https://via.placeholder.com/240x360?text=Anime" data-src="https://drive.google.com/file/d/1ANIMEEXAMPLEID/preview">Watch</a>
-      </div>
-    </div>
-    <button class="arrow right" onclick="scrollCarousel('anime',1)">›</button>
-  </div>
-</section>
-
-<section class="carousel-section" id="kdrama">
-  <h2 class="section-title">K-Drama</h2>
-  <div class="carousel-wrap">
-    <button class="arrow left" onclick="scrollCarousel('kdrama',-1)">‹</button>
-    <div class="carousel-row" id="kdrama-carousel">
-      <div class="card" data-title="Crash Landing on You">
-        <img src="https://via.placeholder.com/180x270?text=K-Drama" alt="K-Drama Poster" />
-        <h3>Crash Landing on You</h3>
-        <p class="rating">⭐ 8.7</p>
-        <a href="#" class="watch-btn" data-title="Crash Landing on You" data-overview="A South Korean heiress accidentally ends up in North Korea." data-image="https://via.placeholder.com/240x360?text=K-Drama" data-src="https://drive.google.com/file/d/1KDRAMAEXAMPLEID/preview">Watch</a>
-      </div>
-    </div>
-    <button class="arrow right" onclick="scrollCarousel('kdrama',1)">›</button>
-  </div>
-</section>
-
+<!-- ░░░ MODAL ░░░ -->
 <div class="modal" id="watchModal">
   <div class="modal-content">
     <span class="close" id="modalClose">&times;</span>
@@ -115,13 +65,17 @@
 
 <footer class="site-footer">© 2025 Flixora. All rights reserved.</footer>
 
+<!-- ░░░ JS ░░░ -->
 <script>
-const hamburger=document.getElementById('hamburgerBtn');
-const drawer=document.getElementById('drawer');
-const drawerClose=document.getElementById('drawerClose');
-hamburger.addEventListener('click',()=>drawer.classList.add('active'));
-drawerClose.addEventListener('click',()=>drawer.classList.remove('active'));
+// === Drawer ===
+document.getElementById('hamburgerBtn').addEventListener('click',()=>{
+  document.getElementById('drawer').classList.add('active');
+});
+document.getElementById('drawerClose').addEventListener('click',()=>{
+  document.getElementById('drawer').classList.remove('active');
+});
 
+// === Modal ===
 const modal=document.getElementById('watchModal');
 const modalImg=document.getElementById('modalImg');
 const modalTitle=document.getElementById('modalTitle');
@@ -129,23 +83,26 @@ const modalOverview=document.getElementById('modalOverview');
 const modalClose=document.getElementById('modalClose');
 const watchNowBtn=document.getElementById('watchNowBtn');
 
-document.querySelectorAll('.watch-btn').forEach(btn=>{
-  btn.addEventListener('click',e=>{
-    e.preventDefault();
-    const {title,overview,image,src}=btn.dataset;
-    modalTitle.textContent=title;
-    modalOverview.textContent=overview;
-    modalImg.src=image;
-    const watchURL=new URL('watch.html',window.location.origin);
-    watchURL.searchParams.set('title',title);
-    watchURL.searchParams.set('src',src);
-    watchNowBtn.href=watchURL.toString();
-    modal.style.display='flex';
+function bindWatchButtons() {
+  document.querySelectorAll('.watch-btn').forEach(btn=>{
+    btn.addEventListener('click',e=>{
+      e.preventDefault();
+      const {title,overview,image,src}=btn.dataset;
+      modalTitle.textContent=title;
+      modalOverview.textContent=overview;
+      modalImg.src=image;
+      const watchURL=new URL('watch.html',window.location.origin);
+      watchURL.searchParams.set('title',title);
+      watchURL.searchParams.set('src',src);
+      watchNowBtn.href=watchURL.toString();
+      modal.style.display='flex';
+    });
   });
-});
+}
 modalClose.addEventListener('click',()=>modal.style.display='none');
 window.addEventListener('click',e=>{if(e.target===modal)modal.style.display='none';});
 
+// === Search ===
 const searchInput=document.getElementById('searchInput');
 searchInput.addEventListener('input',()=>{
   const q=searchInput.value.toLowerCase();
@@ -154,11 +111,47 @@ searchInput.addEventListener('input',()=>{
   });
 });
 
+// === Carousel scroll ===
 function scrollCarousel(id,dir){
   const row=document.getElementById(`${id}-carousel`);
   if(row)row.scrollBy({left:dir*220,behavior:'smooth'});
 }
-</script>
 
+// === Auto-generate Cards ===
+const movieList = [
+  {
+    title: "Inception",
+    poster: "https://via.placeholder.com/180x270?text=Inception",
+    image: "https://via.placeholder.com/240x360?text=Inception",
+    rating: "8.8",
+    overview: "A thief who steals secrets through dream-sharing.",
+    drive: "https://drive.google.com/file/d/abc123XYZ/preview"
+  },
+  {
+    title: "Shrek",
+    poster: "https://via.placeholder.com/180x270?text=Shrek",
+    image: "https://via.placeholder.com/240x360?text=Shrek",
+    rating: "7.9",
+    overview: "An ogre's journey to rescue a princess.",
+    drive: "https://drive.google.com/file/d/def456XYZ/preview"
+  }
+];
+
+const movieContainer = document.getElementById("movies-carousel");
+movieContainer.innerHTML = movieList.map(m => `
+  <div class="card" data-title="${m.title}">
+    <img src="${m.poster}" alt="${m.title} Poster" />
+    <h3>${m.title}</h3>
+    <p class="rating">⭐ ${m.rating}</p>
+    <a href="#" class="watch-btn"
+       data-title="${m.title}"
+       data-overview="${m.overview}"
+       data-image="${m.image}"
+       data-src="${m.drive}">Watch</a>
+  </div>
+`).join('');
+
+bindWatchButtons();
+</script>
 </body>
 </html>
