@@ -13,7 +13,6 @@
 </head>
 <body>
 
-<!-- ░░░ NAV ░░░ -->
 <nav class="main-nav">
   <button class="hamburger" id="hamburgerBtn" aria-label="Open Menu">
     <span></span><span></span><span></span>
@@ -36,19 +35,51 @@
   </div>
 </div>
 
-<!-- ░░░ SECTIONS ░░░ -->
 <section class="carousel-section" id="movies">
   <h2 class="section-title">Movies</h2>
   <div class="carousel-wrap">
     <button class="arrow left" onclick="scrollCarousel('movies',-1)">‹</button>
-    <div class="carousel-row" id="movies-carousel">
-
-    </div>
+    <div class="carousel-row" id="movies-carousel"></div>
     <button class="arrow right" onclick="scrollCarousel('movies',1)">›</button>
   </div>
 </section>
 
-<!-- ░░░ MODAL ░░░ -->
+<section class="carousel-section" id="animations">
+  <h2 class="section-title">Animations</h2>
+  <div class="carousel-wrap">
+    <button class="arrow left" onclick="scrollCarousel('animations',-1)">‹</button>
+    <div class="carousel-row" id="animations-carousel"></div>
+    <button class="arrow right" onclick="scrollCarousel('animations',1)">›</button>
+  </div>
+</section>
+
+<section class="carousel-section" id="tv">
+  <h2 class="section-title">TV Series</h2>
+  <div class="carousel-wrap">
+    <button class="arrow left" onclick="scrollCarousel('tv',-1)">‹</button>
+    <div class="carousel-row" id="tv-carousel"></div>
+    <button class="arrow right" onclick="scrollCarousel('tv',1)">›</button>
+  </div>
+</section>
+
+<section class="carousel-section" id="anime">
+  <h2 class="section-title">Anime</h2>
+  <div class="carousel-wrap">
+    <button class="arrow left" onclick="scrollCarousel('anime',-1)">‹</button>
+    <div class="carousel-row" id="anime-carousel"></div>
+    <button class="arrow right" onclick="scrollCarousel('anime',1)">›</button>
+  </div>
+</section>
+
+<section class="carousel-section" id="kdrama">
+  <h2 class="section-title">K-Drama</h2>
+  <div class="carousel-wrap">
+    <button class="arrow left" onclick="scrollCarousel('kdrama',-1)">‹</button>
+    <div class="carousel-row" id="kdrama-carousel"></div>
+    <button class="arrow right" onclick="scrollCarousel('kdrama',1)">›</button>
+  </div>
+</section>
+
 <div class="modal" id="watchModal">
   <div class="modal-content">
     <span class="close" id="modalClose">&times;</span>
@@ -65,17 +96,60 @@
 
 <footer class="site-footer">© 2025 Flixora. All rights reserved.</footer>
 
-<!-- ░░░ JS ░░░ -->
 <script>
-// === Drawer ===
-document.getElementById('hamburgerBtn').addEventListener('click',()=>{
-  document.getElementById('drawer').classList.add('active');
-});
-document.getElementById('drawerClose').addEventListener('click',()=>{
-  document.getElementById('drawer').classList.remove('active');
-});
+const contentData = {
+  movies: [
+    {
+      title: "Inception",
+      poster: "https://via.placeholder.com/180x270?text=Inception",
+      image: "https://via.placeholder.com/240x360?text=Inception",
+      rating: "8.8",
+      overview: "A thief who steals secrets through dream-sharing.",
+      drive: "https://drive.google.com/file/d/abc123XYZ/preview"
+    }
+  ],
+  animations: [
+    {
+      title: "Inception",
+      poster: "https://via.placeholder.com/180x270?text=Inception",
+      image: "https://via.placeholder.com/240x360?text=Inception",
+      rating: "8.8",
+      overview: "A thief who steals secrets through dream-sharing.",
+      drive: "https://drive.google.com/file/d/abc123XYZ/preview"
+    }
+  ],
+  tv: [
+    {
+      title: "Inception",
+      poster: "https://via.placeholder.com/180x270?text=Inception",
+      image: "https://via.placeholder.com/240x360?text=Inception",
+      rating: "8.8",
+      overview: "A thief who steals secrets through dream-sharing.",
+      drive: "https://drive.google.com/file/d/abc123XYZ/preview"
+    }
+  ],
+  anime: [
+    {
+      title: "Inception",
+      poster: "https://via.placeholder.com/180x270?text=Inception",
+      image: "https://via.placeholder.com/240x360?text=Inception",
+      rating: "8.8",
+      overview: "A thief who steals secrets through dream-sharing.",
+      drive: "https://drive.google.com/file/d/abc123XYZ/preview"
+    }
+  ],
+  kdrama: [
+    {
+      title: "Inception",
+      poster: "https://via.placeholder.com/180x270?text=Inception",
+      image: "https://via.placeholder.com/240x360?text=Inception",
+      rating: "8.8",
+      overview: "A thief who steals secrets through dream-sharing.",
+      drive: "https://drive.google.com/file/d/abc123XYZ/preview"
+    }
+  ]
+};
 
-// === Modal ===
 const modal=document.getElementById('watchModal');
 const modalImg=document.getElementById('modalImg');
 const modalTitle=document.getElementById('modalTitle');
@@ -83,75 +157,54 @@ const modalOverview=document.getElementById('modalOverview');
 const modalClose=document.getElementById('modalClose');
 const watchNowBtn=document.getElementById('watchNowBtn');
 
-function bindWatchButtons() {
-  document.querySelectorAll('.watch-btn').forEach(btn=>{
-    btn.addEventListener('click',e=>{
-      e.preventDefault();
-      const {title,overview,image,src}=btn.dataset;
-      modalTitle.textContent=title;
-      modalOverview.textContent=overview;
-      modalImg.src=image;
-      const watchURL=new URL('watch.html',window.location.origin);
-      watchURL.searchParams.set('title',title);
-      watchURL.searchParams.set('src',src);
-      watchNowBtn.href=watchURL.toString();
-      modal.style.display='flex';
-    });
+function createCard(item) {
+  const card = document.createElement("div");
+  card.className = "card";
+  card.dataset.title = item.title.toLowerCase();
+  card.innerHTML = `
+    <img src="${item.poster}" alt="Poster">
+    <h3>${item.title}</h3>
+    <p class="rating">⭐ ${item.rating}</p>
+    <a href="#" class="watch-btn" data-title="${item.title}" data-overview="${item.overview}" data-image="${item.image}" data-src="${item.drive}">Watch</a>
+  `;
+  card.querySelector(".watch-btn").addEventListener("click", e => {
+    e.preventDefault();
+    modalTitle.textContent = item.title;
+    modalOverview.textContent = item.overview;
+    modalImg.src = item.image;
+    const watchURL = new URL("watch.html", window.location.origin);
+    watchURL.searchParams.set("title", item.title);
+    watchURL.searchParams.set("src", item.drive);
+    watchNowBtn.href = watchURL.toString();
+    modal.style.display = "flex";
   });
+  return card;
 }
+
+function populateSection(section, data) {
+  const row = document.getElementById(`${section}-carousel`);
+  row.innerHTML = "";
+  data.forEach(item => row.appendChild(createCard(item)));
+}
+
+Object.keys(contentData).forEach(section => populateSection(section, contentData[section]));
+
 modalClose.addEventListener('click',()=>modal.style.display='none');
 window.addEventListener('click',e=>{if(e.target===modal)modal.style.display='none';});
 
-// === Search ===
-const searchInput=document.getElementById('searchInput');
-searchInput.addEventListener('input',()=>{
-  const q=searchInput.value.toLowerCase();
-  document.querySelectorAll('.card').forEach(c=>{
-    c.style.display=c.dataset.title.toLowerCase().includes(q)?'block':'none';
-  });
+document.getElementById('hamburgerBtn').addEventListener('click',()=>document.getElementById('drawer').classList.add('active'));
+document.getElementById('drawerClose').addEventListener('click',()=>document.getElementById('drawer').classList.remove('active'));
+
+document.getElementById('searchInput').addEventListener('input',()=>{
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('.card').forEach(c=>{c.style.display=c.dataset.title.includes(q)?'block':'none';});
 });
 
-// === Carousel scroll ===
 function scrollCarousel(id,dir){
   const row=document.getElementById(`${id}-carousel`);
   if(row)row.scrollBy({left:dir*220,behavior:'smooth'});
 }
-
-// === Auto-generate Cards ===
-const movieList = [
-  {
-    title: "Inception",
-    poster: "https://via.placeholder.com/180x270?text=Inception",
-    image: "https://via.placeholder.com/240x360?text=Inception",
-    rating: "8.8",
-    overview: "A thief who steals secrets through dream-sharing.",
-    drive: "https://drive.google.com/file/d/abc123XYZ/preview"
-  },
-  {
-    title: "Shrek",
-    poster: "https://via.placeholder.com/180x270?text=Shrek",
-    image: "https://via.placeholder.com/240x360?text=Shrek",
-    rating: "7.9",
-    overview: "An ogre's journey to rescue a princess.",
-    drive: "https://drive.google.com/file/d/def456XYZ/preview"
-  }
-];
-
-const movieContainer = document.getElementById("movies-carousel");
-movieContainer.innerHTML = movieList.map(m => `
-  <div class="card" data-title="${m.title}">
-    <img src="${m.poster}" alt="${m.title} Poster" />
-    <h3>${m.title}</h3>
-    <p class="rating">⭐ ${m.rating}</p>
-    <a href="#" class="watch-btn"
-       data-title="${m.title}"
-       data-overview="${m.overview}"
-       data-image="${m.image}"
-       data-src="${m.drive}">Watch</a>
-  </div>
-`).join('');
-
-bindWatchButtons();
 </script>
+
 </body>
 </html>
