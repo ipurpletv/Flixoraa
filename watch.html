@@ -3,8 +3,58 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Watch</title>
+  <title>Now Watching</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    body.watch-page {
+      margin: 0;
+      background: #0f0f0f;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .watch-header {
+      padding: 1rem;
+      background: #1f1f1f;
+      text-align: center;
+    }
+
+    .back-home {
+      display: inline-block;
+      margin-bottom: 0.5rem;
+      color: #8b5cf6;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .watch-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    #moviePlayer {
+      width: 100%;
+      max-width: 960px;
+      height: 540px;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      background: #000;
+    }
+
+    @media (max-width: 768px) {
+      #moviePlayer {
+        width: 100%;
+        height: 56.25vw; /* maintains 16:9 ratio */
+      }
+    }
+  </style>
 </head>
 <body class="watch-page">
   <header class="watch-header">
@@ -13,7 +63,7 @@
   </header>
 
   <main class="watch-content">
-    <iframe id="moviePlayer" src="" allowfullscreen frameborder="0"></iframe>
+    <iframe id="moviePlayer" src="" allowfullscreen allow="autoplay"></iframe>
   </main>
 
   <script>
