@@ -13,7 +13,7 @@
   <button class="hamburger" id="hamburgerBtn" aria-label="Open Menu">
     <span></span><span></span><span></span>
   </button>
-  <a href="https://flixora.pages.dev/" class="nav-brand">Flixora</a>
+  <a href="#" class="nav-brand">Flixora</a>
   <input type="text" id="searchInput" placeholder="Search..." />
 </nav>
 
@@ -25,9 +25,9 @@
   <a href="#anime">Anime</a>
   <a href="#kdrama">K-Drama</a>
   <div class="social">
-    <a href="#">📘</a>
-    <a href="#">📸</a>
-    <a href="#">📨</a>
+    <a href="#" title="Facebook">📘</a>
+    <a href="#" title="Instagram">📸</a>
+    <a href="#" title="Telegram">📨</a>
   </div>
 </div>
 
@@ -37,11 +37,16 @@
   <div class="carousel-wrap">
     <button class="arrow left" onclick="scrollCarousel('animations', -1)">‹</button>
     <div class="carousel-row" id="animations-carousel">
+      <!-- CARD EXAMPLE -->
       <div class="card" data-title="3D Adventures">
         <img src="https://via.placeholder.com/180x270?text=Animation" alt="Animation Poster"/>
         <h3>3D Adventures</h3>
         <p class="rating">⭐ 8.0</p>
-        <a href="#" class="watch-btn" data-title="3D Adventures" data-overview="A thrilling animated journey." data-image="https://via.placeholder.com/240x360?text=Animation" data-src="https://www.youtube.com/embed/VIDEO_ID1">Watch</a>
+        <a href="#" class="watch-btn"
+           data-title="3D Adventures"
+           data-overview="A thrilling animated journey."
+           data-image="https://via.placeholder.com/240x360?text=Animation"
+           data-src="https://www.youtube.com/embed/VIDEO_ID1">Watch</a>
       </div>
     </div>
     <button class="arrow right" onclick="scrollCarousel('animations', 1)">›</button>
@@ -57,7 +62,11 @@
         <img src="https://via.placeholder.com/180x270?text=Movie" alt="Movie Poster"/>
         <h3>Final Destination</h3>
         <p class="rating">⭐ 8.0</p>
-        <a href="#" class="watch-btn" data-title="Final Destination" data-overview="Death doesn’t give second chances." data-image="https://via.placeholder.com/240x360?text=Movie" data-src="https://www.youtube.com/embed/dQw4w9WgXcQ">Watch</a>
+        <a href="#" class="watch-btn"
+           data-title="Final Destination"
+           data-overview="Death doesn’t give second chances."
+           data-image="https://via.placeholder.com/240x360?text=Movie"
+           data-src="https://www.youtube.com/embed/dQw4w9WgXcQ">Watch</a>
       </div>
     </div>
     <button class="arrow right" onclick="scrollCarousel('movies', 1)">›</button>
@@ -73,7 +82,11 @@
         <img src="https://via.placeholder.com/180x270?text=TV+Series" alt="TV Series Poster"/>
         <h3>Breaking Bad</h3>
         <p class="rating">⭐ 8.0</p>
-        <a href="#" class="watch-btn" data-title="Breaking Bad" data-overview="A chemistry teacher turns drug lord." data-image="https://via.placeholder.com/240x360?text=TV+Series" data-src="https://www.youtube.com/embed/eoOaKN4qCKw">Watch</a>
+        <a href="#" class="watch-btn"
+           data-title="Breaking Bad"
+           data-overview="A chemistry teacher turns drug lord."
+           data-image="https://via.placeholder.com/240x360?text=TV+Series"
+           data-src="https://www.youtube.com/embed/eoOaKN4qCKw">Watch</a>
       </div>
     </div>
     <button class="arrow right" onclick="scrollCarousel('tv', 1)">›</button>
@@ -89,7 +102,11 @@
         <img src="https://via.placeholder.com/180x270?text=Anime" alt="Anime Poster"/>
         <h3>Attack on Titan</h3>
         <p class="rating">⭐ 8.0</p>
-        <a href="#" class="watch-btn" data-title="Attack on Titan" data-overview="Humanity fights for survival." data-image="https://via.placeholder.com/240x360?text=Anime" data-src="https://www.youtube.com/embed/MGRm4IzK1SQ">Watch</a>
+        <a href="#" class="watch-btn"
+           data-title="Attack on Titan"
+           data-overview="Humanity fights for survival."
+           data-image="https://via.placeholder.com/240x360?text=Anime"
+           data-src="https://www.youtube.com/embed/MGRm4IzK1SQ">Watch</a>
       </div>
     </div>
     <button class="arrow right" onclick="scrollCarousel('anime', 1)">›</button>
@@ -97,15 +114,19 @@
 </section>
 
 <section class="carousel-section" id="kdrama">
-  <h2 class="section-title">K-Drama</h2>
+  <h2 class="section-title">K‑Drama</h2>
   <div class="carousel-wrap">
     <button class="arrow left" onclick="scrollCarousel('kdrama', -1)">‹</button>
     <div class="carousel-row" id="kdrama-carousel">
       <div class="card" data-title="Crash Landing">
-        <img src="https://via.placeholder.com/180x270?text=K-Drama" alt="K-Drama Poster"/>
+        <img src="https://via.placeholder.com/180x270?text=K-Drama" alt="K‑Drama Poster"/>
         <h3>Crash Landing</h3>
         <p class="rating">⭐ 8.0</p>
-        <a href="#" class="watch-btn" data-title="Crash Landing" data-overview="Love across borders." data-image="https://via.placeholder.com/240x360?text=K-Drama" data-src="https://www.youtube.com/embed/Zg2TZPpSAP0">Watch</a>
+        <a href="#" class="watch-btn"
+           data-title="Crash Landing"
+           data-overview="Love across borders."
+           data-image="https://via.placeholder.com/240x360?text=K-Drama"
+           data-src="https://www.youtube.com/embed/Zg2TZPpSAP0">Watch</a>
       </div>
     </div>
     <button class="arrow right" onclick="scrollCarousel('kdrama', 1)">›</button>
@@ -113,7 +134,7 @@
 </section>
 
 <!-- ░░░ MODAL ░░░ -->
-<div class="modal" id="watchModal">
+<div class="modal" id="watchModal" style="display:none;">
   <div class="modal-content">
     <span class="close" id="modalClose">&times;</span>
     <div class="modal-flex">
@@ -127,39 +148,44 @@
   </div>
 </div>
 
-<footer class="site-footer">© 2025 Flixora. All rights reserved.</footer>
+<footer class="site-footer">© 2025 Flixora. All rights reserved.</footer>
 
 <!-- ░░░ JS ░░░ -->
 <script>
-  const hamburger = document.getElementById("hamburgerBtn");
-  const drawer = document.getElementById("drawer");
-  const drawerClose = document.getElementById("drawerClose");
+  // Drawer (hamburger menu)
+  const hamburger = document.getElementById('hamburgerBtn');
+  const drawer = document.getElementById('drawer');
+  const drawerClose = document.getElementById('drawerClose');
+  hamburger.addEventListener('click', () => drawer.classList.add('active'));
+  drawerClose.addEventListener('click', () => drawer.classList.remove('active'));
 
-  hamburger.addEventListener("click", () => drawer.classList.add("active"));
-  drawerClose.addEventListener("click", () => drawer.classList.remove("active"));
+  // Modal Elements
+  const modal = document.getElementById('watchModal');
+  const modalImg = document.getElementById('modalImg');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalOverview = document.getElementById('modalOverview');
+  const modalClose = document.getElementById('modalClose');
+  const watchNowBtn = document.getElementById('watchNowBtn');
 
-  const modal = document.getElementById("watchModal");
-  const modalImg = document.getElementById("modalImg");
-  const modalTitle = document.getElementById("modalTitle");
-  const modalOverview = document.getElementById("modalOverview");
-  const modalClose = document.getElementById("modalClose");
-  const watchNowBtn = document.getElementById("watchNowBtn");
-
-  document.querySelectorAll(".watch-btn").forEach(btn => {
-    btn.addEventListener("click", (e) => {
+  // Open modal on card "Watch" click
+  document.querySelectorAll('.watch-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
       e.preventDefault();
-      const title = btn.getAttribute("data-title");
-      const overview = btn.getAttribute("data-overview");
-      const img = btn.getAttribute("data-image");
-      const videoSrc = btn.getAttribute("data-src");
+      const title = btn.dataset.title;
+      const overview = btn.dataset.overview;
+      const img = btn.dataset.image;
+      const videoSrc = btn.dataset.src;
 
       modalTitle.textContent = title;
       modalOverview.textContent = overview;
       modalImg.src = img;
       watchNowBtn.href = `watch.html?title=${encodeURIComponent(title)}&src=${encodeURIComponent(videoSrc)}`;
-      modal.style.display = "flex";
+
+      modal.style.display = 'flex';
     });
   });
 
-  modalClose.addEventListener("click", () => modal.style.display = "none");
-  window.addEventListener("click", (e
+  // Close modal logic
+  modalClose.addEventListener('click', () => (modal.style.display = 'none'));
+  window.addEventListener('click', e => {
+    if (e.target === modal) modal.style
