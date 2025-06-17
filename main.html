@@ -1,31 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Flixora</title>
-  <link rel="stylesheet" href="styles.css"/>
-  <style>
-    .modal{position:fixed;inset:0;display:none;justify-content:center;align-items:center;background:rgba(0,0,0,.8);z-index:99}
-    .modal-content{background:#1a1a1a;color:#fff;padding:1.5rem;border-radius:12px;max-width:600px;width:90%;position:relative}
-    .close{cursor:pointer;font-size:1.5rem;position:absolute;top:10px;right:16px}
-    .card{width:180px;margin-right:1rem;background:#1e1e28;border-radius:12px;color:#fff;padding:1rem}
-    .card img{width:100%;border-radius:8px}
-    .watch-btn{display:inline-block;margin-top:.5rem;padding:.4rem .9rem;background:#8b5cf6;border-radius:6px;color:#fff;text-decoration:none;font-size:.85rem}
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flixora</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>
+    /* --- Your Original Styles --- */
+    .modal{position:fixed;inset:0;display:none;justify-content:center;align-items:center;background:rgba(0,0,0,.8);z-index:99}
+    .modal-content{background:#1a1a1a;color:#fff;padding:1.5rem;border-radius:12px;max-width:600px;width:90%;position:relative}
+    .close{cursor:pointer;font-size:1.5rem;position:absolute;top:10px;right:16px}
+    .card{width:180px;margin-right:1rem;background:#1e1e28;border-radius:12px;color:#fff;padding:1rem;flex-shrink: 0;}
+    .card img{width:100%;border-radius:8px}
+    .watch-btn{display:inline-block;margin-top:.5rem;padding:.4rem .9rem;background:#8b5cf6;border-radius:6px;color:#fff;text-decoration:none;font-size:.85rem}
+
+    /* --- Styles for Arrows --- */
+    section { position: relative; }
+    .carousel-row { 
+      display: flex; 
+      overflow-x: auto; 
+      scroll-behavior: smooth; 
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .carousel-row::-webkit-scrollbar { 
+      display: none;
+    }
+    .scroll-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      display: inline-block;
+      padding: .4rem .9rem;
+      background: #8b5cf6;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 1.5rem;
+      line-height: 1;
+      border: none;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    .scroll-arrow:hover {
+      opacity: 1;
+    }
+    .left-arrow { 
+      left: 10px; 
+      padding-right: 1rem;
+    }
+    .right-arrow { 
+      right: 10px; 
+      padding-left: 1rem;
+    }
+  </style>
 </head>
 <body>
 
 <nav class="main-nav">
-  <button class="hamburger" id="hamburgerBtn" aria-label="Open Menu"><span></span><span></span><span></span></button>
-  <a href="index.html" class="nav-brand">Flixora</a>
-  <input type="text" id="searchInput" placeholder="Search...">
+  <button class="hamburger" id="hamburgerBtn" aria-label="Open Menu"><span></span><span></span><span></span></button>
+  <a href="index.html" class="nav-brand">Flixora</a>
+  <input type="text" id="searchInput" placeholder="Search...">
 </nav>
 
 <div id="drawer" class="nav-links">
-  <button id="drawerClose" class="close-drawer">✖</button>
-  <a href="#movies">Movies</a><a href="#animations">Animations</a>
-  <a href="#tv">TV Series</a><a href="#anime">Anime</a><a href="#kdrama">K‑Drama</a>
+  <button id="drawerClose" class="close-drawer">✖</button>
+  <a href="#movies">Movies</a><a href="#animations">Animations</a>
+  <a href="#tv">TV Series</a><a href="#anime">Anime</a><a href="#kdrama">K‑Drama</a>
   <a href="#filipino">Filipino</a><a href="#vivamax">Vivamax</a>
 </div>
 
@@ -38,17 +80,17 @@
 <section id="vivamax"><h2>Vivamax</h2><div id="vivamax-carousel" class="carousel-row"></div></section>
 
 <div id="watchModal" class="modal">
-  <div class="modal-content">
-    <span id="modalClose" class="close">×</span>
-    <div style="display:flex;gap:1rem;flex-wrap:wrap">
-      <img id="modalImg" src="" alt="Poster" style="width:160px;border-radius:8px">
-      <div style="flex:1;min-width:200px">
-        <h2 id="modalTitle"></h2>
-        <p id="modalOverview"></p>
-        <a id="watchNowBtn" class="watch-btn" href="#" target="_blank">Watch Now</a>
-      </div>
-    </div>
-  </div>
+  <div class="modal-content">
+    <span id="modalClose" class="close">×</span>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap">
+      <img id="modalImg" src="" alt="Poster" style="width:160px;border-radius:8px">
+      <div style="flex:1;min-width:200px">
+        <h2 id="modalTitle"></h2>
+        <p id="modalOverview"></p>
+        <a id="watchNowBtn" class="watch-btn" href="#" target="_blank">Watch Now</a>
+      </div>
+    </div>
+  </div>
 </div>
 
 <footer class="site-footer">© 2025 Flixora. All rights reserved.</footer>
@@ -471,17 +513,34 @@ const contentData = {
 };
 
 function buildCard(item){
-  const c=document.createElement('div');c.className='card';c.dataset.title=item.title.toLowerCase();
-  c.innerHTML=`<img src="${item.poster}" alt="${item.title}"><h3>${item.title}</h3><p class="rating">⭐ ${item.rating}</p>`;
-  const btn=document.createElement('a');btn.href='#';btn.className='watch-btn';btn.textContent='Watch';
-  btn.onclick=e=>{e.preventDefault();openModal(item);};
-  c.appendChild(btn);
-  return c;
+  const c=document.createElement('div');c.className='card';c.dataset.title=item.title.toLowerCase();
+  c.innerHTML=`<img src="${item.poster}" alt="${item.title}"><h3>${item.title}</h3><p class="rating">⭐ ${item.rating}</p>`;
+  const btn=document.createElement('a');btn.href='#';btn.className='watch-btn';btn.textContent='Watch';
+  btn.onclick=e=>{e.preventDefault();openModal(item);};
+  c.appendChild(btn);
+  return c;
 }
 
 ['movies','animations','tv','anime','kdrama','filipino','vivamax'].forEach(sec=>{
-  const row=document.getElementById(`${sec}-carousel`);
-  contentData[sec].forEach(item=>row.appendChild(buildCard(item)));
+  const section = document.getElementById(sec);
+  const row=document.getElementById(`${sec}-carousel`);
+  contentData[sec].forEach(item=>row.appendChild(buildCard(item)));
+
+  const leftArrow = document.createElement('button');
+  leftArrow.className = 'scroll-arrow left-arrow';
+  leftArrow.innerHTML = '&#10094;';
+  leftArrow.onclick = () => {
+      row.scrollBy({ left: -300, behavior: 'smooth' });
+  };
+  section.appendChild(leftArrow);
+
+  const rightArrow = document.createElement('button');
+  rightArrow.className = 'scroll-arrow right-arrow';
+  rightArrow.innerHTML = '&#10095;';
+  rightArrow.onclick = () => {
+      row.scrollBy({ left: 300, behavior: 'smooth' });
+  };
+  section.appendChild(rightArrow);
 });
 
 const modal=document.getElementById('watchModal');
@@ -490,22 +549,22 @@ const mTitle=document.getElementById('modalTitle');
 const mOverview=document.getElementById('modalOverview');
 const mWatch=document.getElementById('watchNowBtn');
 function openModal(item){
-  mTitle.textContent=item.title;
-  mOverview.textContent=item.overview;
-  mImg.src=item.image;
-  const url=new URL('watch.html',location.origin);
-  url.searchParams.set('title',item.title);
-  url.searchParams.set('type',item.type);
-  if(item.episodes){url.searchParams.set('episodes',encodeURIComponent(JSON.stringify(item.episodes)));}else{url.searchParams.set('src',item.src);}
-  mWatch.href=url.toString();
-  modal.style.display='flex';
+  mTitle.textContent=item.title;
+  mOverview.textContent=item.overview;
+  mImg.src=item.image;
+  const url=new URL('watch.html',location.origin);
+  url.searchParams.set('title',item.title);
+  url.searchParams.set('type',item.type);
+  if(item.episodes){url.searchParams.set('episodes',encodeURIComponent(JSON.stringify(item.episodes)));}else{url.searchParams.set('src',item.src);}
+  mWatch.href=url.toString();
+  modal.style.display='flex';
 }
 document.getElementById('modalClose').onclick=()=>modal.style.display='none';
 window.onclick=e=>{if(e.target===modal)modal.style.display='none';};
 
 document.getElementById('searchInput').oninput=e=>{
-  const q=e.target.value.toLowerCase();
-  document.querySelectorAll('.card').forEach(c=>{c.style.display=c.dataset.title.includes(q)?'block':'none';});
+  const q=e.target.value.toLowerCase();
+  document.querySelectorAll('.card').forEach(c=>{c.style.display=c.dataset.title.includes(q)?'block':'none';});
 };
 document.getElementById('hamburgerBtn').onclick=()=>document.getElementById('drawer').classList.add('active');
 document.getElementById('drawerClose').onclick=()=>document.getElementById('drawer').classList.remove('active');
