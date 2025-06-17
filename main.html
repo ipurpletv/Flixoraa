@@ -27,7 +27,6 @@
   <button id="drawerClose" class="close-drawer">✖</button>
   <a href="#movies">Movies</a><a href="#animations">Animations</a>
   <a href="#tv">TV Series</a><a href="#anime">Anime</a><a href="#kdrama">K‑Drama</a>
-  <a href="#filipino">Filipino Movies</a><a href="#vivamax">Vivamax</a>
 </div>
 
 <!-- ─── SECTIONS ─── -->
@@ -36,8 +35,6 @@
 <section id="tv"><h2>TV Series</h2><div id="tv-carousel" class="carousel-row"></div></section>
 <section id="anime"><h2>Anime</h2><div id="anime-carousel" class="carousel-row"></div></section>
 <section id="kdrama"><h2>K‑Drama</h2><div id="kdrama-carousel" class="carousel-row"></div></section>
-<section id="filipino"><h2>Filipino Movies</h2><div id="filipino-carousel" class="carousel-row"></div></section>
-<section id="vivamax"><h2>Vivamax</h2><div id="vivamax-carousel" class="carousel-row"></div></section>
 
 <!-- ─── MODAL ─── -->
 <div id="watchModal" class="modal">
@@ -390,7 +387,7 @@ const contentData = {
       episodes:[
         'https://drive.google.com/file/d/NAR1/preview',
         'https://drive.google.com/file/d/NAR2/preview'
-      ],
+      ]
     },
     {
       type:'anime',
@@ -402,8 +399,8 @@ const contentData = {
       episodes:[
         'https://drive.google.com/file/d/AOT_EP1/preview',
         'https://drive.google.com/file/d/AOT_EP2/preview'
-      ],
-    },
+      ]
+    }
   ],
   kdrama: [
     {
@@ -416,7 +413,7 @@ const contentData = {
       episodes:[
         'https://drive.google.com/file/d/CLY1/preview',
         'https://drive.google.com/file/d/CLY2/preview'
-      ],
+      ]
     },
     {
       type:'kdrama',
@@ -428,64 +425,22 @@ const contentData = {
       episodes:[
         'https://drive.google.com/file/d/TG1/preview',
         'https://drive.google.com/file/d/TG2/preview'
-      ],
-    },
-  ],
-  filipino: [
-    {
-  type: 'filipino',
-  title: 'A Minecraft Movie',
-  poster: 'https://wallpapercave.com/wp/wp14534908.jpg',
-  image: 'https://wallpapercave.com/wp/wp14534908.jpg',
-  rating: '5.7',
-  overview: 'Four misfits are suddenly pulled through a mysterious portal into a bizarre cubic wonderland that thrives on imagination. To get back home they\'ll have to master this world while embarking on a quest with an unexpected expert crafter.',
-  src: 'https://drive.google.com/file/d/1AzXi0IcVcZ-s_436QyduQA4ITv6Ta9EO/preview'
-],
-    },
-    {
-      type:'movie',
-      title:'The Little Mermaid',
-      poster:'https://th.bing.com/th/id/OIP.KRVGM79pJD-ikO2781WW0gHaLN?rs=1&pid=ImgDetMain',
-      image:'https://th.bing.com/th/id/OIP.KRVGM79pJD-ikO2781WW0gHaLN?rs=1&pid=ImgDetMain',
-      rating:'7.2',
-      overview:'A young mermaid makes a deal with a sea witch to trade her beautiful voice for human legs so she can discover the world above water and impress a prince.',
-      src:'https://drive.google.com/file/d/1NKwmsNxFq4Oug4Fxx8Mh-oGoRqmBWERd/preview'
-    },
-  ],
-  vivamax: [
-    {
-  type: 'vivamax',
-  title: 'A Minecraft Movie',
-  poster: 'https://wallpapercave.com/wp/wp14534908.jpg',
-  image: 'https://wallpapercave.com/wp/wp14534908.jpg',
-  rating: '5.7',
-  overview: 'Four misfits are suddenly pulled through a mysterious portal into a bizarre cubic wonderland that thrives on imagination. To get back home they\'ll have to master this world while embarking on a quest with an unexpected expert crafter.',
-  src: 'https://drive.google.com/file/d/1AzXi0IcVcZ-s_436QyduQA4ITv6Ta9EO/preview'
-],
-    },
-    {
-      type:'movie',
-      title:'The Little Mermaid',
-      poster:'https://th.bing.com/th/id/OIP.KRVGM79pJD-ikO2781WW0gHaLN?rs=1&pid=ImgDetMain',
-      image:'https://th.bing.com/th/id/OIP.KRVGM79pJD-ikO2781WW0gHaLN?rs=1&pid=ImgDetMain',
-      rating:'7.2',
-      overview:'A young mermaid makes a deal with a sea witch to trade her beautiful voice for human legs so she can discover the world above water and impress a prince.',
-      src:'https://drive.google.com/file/d/1NKwmsNxFq4Oug4Fxx8Mh-oGoRqmBWERd/preview'
-    },
-  ],
+      ]
+    }
+  ]
 };
 
 function buildCard(item){
   const c=document.createElement('div');c.className='card';c.dataset.title=item.title.toLowerCase();
-  c.innerHTML=<img src="${item.poster}" alt="${item.title}"><h3>${item.title}</h3><p class="rating">⭐ ${item.rating}</p>;
+  c.innerHTML=`<img src="${item.poster}" alt="${item.title}"><h3>${item.title}</h3><p class="rating">⭐ ${item.rating}</p>`;
   const btn=document.createElement('a');btn.href='#';btn.className='watch-btn';btn.textContent='Watch';
   btn.onclick=e=>{e.preventDefault();openModal(item);};
   c.appendChild(btn);
   return c;
 }
 
-['movies','animations','tv','anime','kdrama','filipino',vivamax'].forEach(sec=>{
-  const row=document.getElementById(${sec}-carousel);
+['movies','animations','tv','anime','kdrama'].forEach(sec=>{
+  const row=document.getElementById(`${sec}-carousel`);
   contentData[sec].forEach(item=>row.appendChild(buildCard(item)));
 });
 
