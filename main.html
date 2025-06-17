@@ -6,7 +6,6 @@
   <title>Flixora</title>
   <link rel="stylesheet" href="styles.css"/>
   <style>
-    /* ‑‑ minimal modal/card styling for clarity ‑‑ */
     .modal{position:fixed;inset:0;display:none;justify-content:center;align-items:center;background:rgba(0,0,0,.8);z-index:99}
     .modal-content{background:#1a1a1a;color:#fff;padding:1.5rem;border-radius:12px;max-width:600px;width:90%;position:relative}
     .close{cursor:pointer;font-size:1.5rem;position:absolute;top:10px;right:16px}
@@ -27,13 +26,13 @@
 <div id="drawer" class="nav-links">
   <button id="drawerClose" class="close-drawer">✖</button>
   <a href="#movies">Movies</a><a href="#animations">Animations</a>
-  <a href="#tv">TV Series</a><a href="#anime">Anime</a><a href="#kdrama">K‑Drama</a>
+  <a href="#tv">TV Series</a><a href="#anime">Anime</a><a href="#kdrama">K‑Drama</a>
 </div>
 
 <!-- ─── SECTIONS ─── -->
 <section id="movies"><h2>Movies</h2><div id="movies-carousel" class="carousel-row"></div></section>
 <section id="animations"><h2>Animations</h2><div id="animations-carousel" class="carousel-row"></div></section>
-<section id="tv"><h2>TV Series</h2><div id="tv-carousel" class="carousel-row"></div></section>
+<section id="tv"><h2>TV Series</h2><div id="tv-carousel" class="carousel-row"></div></section>
 <section id="anime"><h2>Anime</h2><div id="anime-carousel" class="carousel-row"></div></section>
 <section id="kdrama"><h2>K‑Drama</h2><div id="kdrama-carousel" class="carousel-row"></div></section>
 
@@ -46,113 +45,160 @@
       <div style="flex:1;min-width:200px">
         <h2 id="modalTitle"></h2>
         <p id="modalOverview"></p>
-        <a id="watchNowBtn" class="watch-btn" href="#" target="_blank">Watch Now</a>
+        <a id="watchNowBtn" class="watch-btn" href="#" target="_blank">Watch Now</a>
       </div>
     </div>
   </div>
 </div>
 
-<footer class="site-footer">© 2025 Flixora. All rights reserved.</footer>
+<footer class="site-footer">© 2025 Flixora. All rights reserved.</footer>
 
 <script>
-/* ── 1. CONTENT DATA ── */
 const contentData = {
   movies: [
     {
-    type:'movie',
-    title:'A Minecraft Movie',
-    poster:'https://www.imdb.com/title/tt3566834/mediaviewer/rm3887434498/?ref_=tt_ov_i',
-    image:'https://www.imdb.com/title/tt3566834/mediaviewer/rm3887434498/?ref_=tt_ov_i',
-    rating:'5.7',
-    overview:'Four misfits are suddenly pulled through a mysterious portal into a bizarre cubic wonderland that thrives on imagination. To get back home they'll have to master this world while embarking on a quest with an unexpected expert crafter.',
-    src:'https://drive.google.com/file/d/1AzXi0IcVcZ-s_436QyduQA4ITv6Ta9EO/preview'
-  }
+      type:'movie',
+      title:'Inception',
+      poster:'https://via.placeholder.com/180x270?text=Inception',
+      image:'https://via.placeholder.com/240x360?text=Inception',
+      rating:'8.8',
+      overview:'Dream‑within‑a‑dream heist.',
+      src:'https://drive.google.com/file/d/MOVIE001/preview'
+    },
     {
-    type:'movie',
-    title:'A Minecraft Movie',
-    poster:'https://via.placeholder.com/180x270?text=Inception',
-    image:'https://via.placeholder.com/240x360?text=Inception',
-    rating:'8.8',
-    overview:'Dream‑within‑a‑dream heist.',
-    src:'https://drive.google.com/file/d/1AzXi0IcVcZ-s_436QyduQA4ITv6Ta9EO/preview'
-  }
-    
-          
+      type:'movie',
+      title:'Avatar',
+      poster:'https://via.placeholder.com/180x270?text=Avatar',
+      image:'https://via.placeholder.com/240x360?text=Avatar',
+      rating:'7.8',
+      overview:'A paraplegic Marine finds a new life on Pandora.',
+      src:'https://drive.google.com/file/d/AVTR001/preview'
+    },
+    {
+      type:'movie',
+      title:'Titanic',
+      poster:'https://via.placeholder.com/180x270?text=Titanic',
+      image:'https://via.placeholder.com/240x360?text=Titanic',
+      rating:'7.9',
+      overview:'A love story aboard the ill-fated RMS Titanic.',
+      src:'https://drive.google.com/file/d/TITANIC001/preview'
+    }
   ],
-  animations: [{
-    type:'animation',
-    title:'Zootopia',
-    poster:'https://via.placeholder.com/180x270?text=Zootopia',
-    image:'https://via.placeholder.com/240x360?text=Zootopia',
-    rating:'8.0',
-    overview:'Bunny cop & sly fox solve a case.',
-    src:'https://drive.google.com/file/d/ANIM001/preview'
-  }],
-  tv: [{
-    type:'tv',
-    title:'Loki',
-    poster:'https://via.placeholder.com/180x270?text=Loki',
-    image:'https://via.placeholder.com/240x360?text=Loki',
-    rating:'8.3',
-    overview:'The God of Mischief breaks reality.',
-    episodes:[
-      'https://drive.google.com/file/d/LOKIEP1/preview',
-      'https://drive.google.com/file/d/LOKIEP2/preview',
-      'https://drive.google.com/file/d/LOKIEP3/preview'
-    ]
-  }],
-  anime: [{
-    type:'anime',
-    title:'Naruto',
-    poster:'https://via.placeholder.com/180x270?text=Naruto',
-    image:'https://via.placeholder.com/240x360?text=Naruto',
-    rating:'8.2',
-    overview:'A loud ninja wants to be Hokage.',
-    episodes:[
-      'https://drive.google.com/file/d/NAR1/preview',
-      'https://drive.google.com/file/d/NAR2/preview',
-      'https://drive.google.com/file/d/NAR3/preview'
-    ]
-  }],
-  kdrama: [{
-    type:'kdrama',
-    title:'Crash Landing on You',
-    poster:'https://via.placeholder.com/180x270?text=CLY',
-    image:'https://via.placeholder.com/240x360?text=CLY',
-    rating:'8.5',
-    overview:'Heiress crash‑lands in North Korea.',
-    episodes:[
-      'https://drive.google.com/file/d/CLY1/preview',
-      'https://drive.google.com/file/d/CLY2/preview',
-      'https://drive.google.com/file/d/CLY3/preview',
-      'https://drive.google.com/file/d/CLY4/preview',
-      'https://drive.google.com/file/d/CLY5/preview'
-    ]
-  }]
+  animations: [
+    {
+      type:'animation',
+      title:'Zootopia',
+      poster:'https://via.placeholder.com/180x270?text=Zootopia',
+      image:'https://via.placeholder.com/240x360?text=Zootopia',
+      rating:'8.0',
+      overview:'Bunny cop & sly fox solve a case.',
+      src:'https://drive.google.com/file/d/ANIM001/preview'
+    },
+    {
+      type:'animation',
+      title:'Toy Story',
+      poster:'https://via.placeholder.com/180x270?text=Toy+Story',
+      image:'https://via.placeholder.com/240x360?text=Toy+Story',
+      rating:'8.3',
+      overview:'Toys come to life when humans aren’t around.',
+      src:'https://drive.google.com/file/d/TOYSTORY001/preview'
+    }
+  ],
+  tv: [
+    {
+      type:'tv',
+      title:'Loki',
+      poster:'https://via.placeholder.com/180x270?text=Loki',
+      image:'https://via.placeholder.com/240x360?text=Loki',
+      rating:'8.3',
+      overview:'The God of Mischief breaks reality.',
+      episodes:[
+        'https://drive.google.com/file/d/LOKIEP1/preview',
+        'https://drive.google.com/file/d/LOKIEP2/preview',
+        'https://drive.google.com/file/d/LOKIEP3/preview'
+      ]
+    },
+    {
+      type:'tv',
+      title:'Stranger Things',
+      poster:'https://via.placeholder.com/180x270?text=Stranger+Things',
+      image:'https://via.placeholder.com/240x360?text=Stranger+Things',
+      rating:'8.7',
+      overview:'Kids face supernatural forces in small-town Indiana.',
+      episodes:[
+        'https://drive.google.com/file/d/ST_EP1/preview',
+        'https://drive.google.com/file/d/ST_EP2/preview'
+      ]
+    }
+  ],
+  anime: [
+    {
+      type:'anime',
+      title:'Naruto',
+      poster:'https://via.placeholder.com/180x270?text=Naruto',
+      image:'https://via.placeholder.com/240x360?text=Naruto',
+      rating:'8.2',
+      overview:'A loud ninja wants to be Hokage.',
+      episodes:[
+        'https://drive.google.com/file/d/NAR1/preview',
+        'https://drive.google.com/file/d/NAR2/preview'
+      ]
+    },
+    {
+      type:'anime',
+      title:'Attack on Titan',
+      poster:'https://via.placeholder.com/180x270?text=AoT',
+      image:'https://via.placeholder.com/240x360?text=AoT',
+      rating:'9.0',
+      overview:'Humans fight against giant man-eating titans.',
+      episodes:[
+        'https://drive.google.com/file/d/AOT_EP1/preview',
+        'https://drive.google.com/file/d/AOT_EP2/preview'
+      ]
+    }
+  ],
+  kdrama: [
+    {
+      type:'kdrama',
+      title:'Crash Landing on You',
+      poster:'https://via.placeholder.com/180x270?text=CLY',
+      image:'https://via.placeholder.com/240x360?text=CLY',
+      rating:'8.5',
+      overview:'Heiress crash-lands in North Korea.',
+      episodes:[
+        'https://drive.google.com/file/d/CLY1/preview',
+        'https://drive.google.com/file/d/CLY2/preview'
+      ]
+    },
+    {
+      type:'kdrama',
+      title:'The Glory',
+      poster:'https://via.placeholder.com/180x270?text=The+Glory',
+      image:'https://via.placeholder.com/240x360?text=The+Glory',
+      rating:'8.9',
+      overview:'A woman seeks revenge for school bullying.',
+      episodes:[
+        'https://drive.google.com/file/d/TG1/preview',
+        'https://drive.google.com/file/d/TG2/preview'
+      ]
+    }
+  ]
 };
 
-/* ── 2. BUILD CARDS ── */
 function buildCard(item){
   const c=document.createElement('div');c.className='card';c.dataset.title=item.title.toLowerCase();
-  c.innerHTML=`<img src="${item.poster}" alt="${item.title}">
-    <h3>${item.title}</h3>
-    <p class="rating">⭐ ${item.rating}</p>`;
+  c.innerHTML=`<img src="${item.poster}" alt="${item.title}"><h3>${item.title}</h3><p class="rating">⭐ ${item.rating}</p>`;
   const btn=document.createElement('a');btn.href='#';btn.className='watch-btn';btn.textContent='Watch';
-  btn.onclick=e=>{
-    e.preventDefault();
-    openModal(item);
-  };
+  btn.onclick=e=>{e.preventDefault();openModal(item);};
   c.appendChild(btn);
   return c;
 }
 
-/* ── 3. POPULATE EACH SECTION ── */
 ['movies','animations','tv','anime','kdrama'].forEach(sec=>{
   const row=document.getElementById(`${sec}-carousel`);
   contentData[sec].forEach(item=>row.appendChild(buildCard(item)));
 });
 
-/* ── 4. MODAL LOGIC ── */
 const modal=document.getElementById('watchModal');
 const mImg=document.getElementById('modalImg');
 const mTitle=document.getElementById('modalTitle');
@@ -165,29 +211,19 @@ function openModal(item){
   const url=new URL('watch.html',location.origin);
   url.searchParams.set('title',item.title);
   url.searchParams.set('type',item.type);
-  if(item.episodes){                 // series → encode episodes
-    url.searchParams.set('episodes',encodeURIComponent(JSON.stringify(item.episodes)));
-  }else{
-    url.searchParams.set('src',item.src);
-  }
+  if(item.episodes){url.searchParams.set('episodes',encodeURIComponent(JSON.stringify(item.episodes)));}else{url.searchParams.set('src',item.src);}
   mWatch.href=url.toString();
   modal.style.display='flex';
 }
 document.getElementById('modalClose').onclick=()=>modal.style.display='none';
 window.onclick=e=>{if(e.target===modal)modal.style.display='none';};
 
-/* ── 5. SEARCH / DRAWER (unchanged) ── */
 document.getElementById('searchInput').oninput=e=>{
   const q=e.target.value.toLowerCase();
-  document.querySelectorAll('.card').forEach(c=>{
-    c.style.display=c.dataset.title.includes(q)?'block':'none';
-  });
+  document.querySelectorAll('.card').forEach(c=>{c.style.display=c.dataset.title.includes(q)?'block':'none';});
 };
 document.getElementById('hamburgerBtn').onclick=()=>document.getElementById('drawer').classList.add('active');
 document.getElementById('drawerClose').onclick=()=>document.getElementById('drawer').classList.remove('active');
-
-/* dummy scroll fn (arrow buttons removed for brevity) */
-function scrollCarousel(){} /* no‑op */
 </script>
 
 </body>
