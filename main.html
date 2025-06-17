@@ -477,7 +477,7 @@ const contentData = {
 
 function buildCard(item){
   const c=document.createElement('div');c.className='card';c.dataset.title=item.title.toLowerCase();
-  c.innerHTML=`<img src="${item.poster}" alt="${item.title}"><h3>${item.title}</h3><p class="rating">⭐ ${item.rating}</p>`;
+  c.innerHTML=<img src="${item.poster}" alt="${item.title}"><h3>${item.title}</h3><p class="rating">⭐ ${item.rating}</p>;
   const btn=document.createElement('a');btn.href='#';btn.className='watch-btn';btn.textContent='Watch';
   btn.onclick=e=>{e.preventDefault();openModal(item);};
   c.appendChild(btn);
@@ -485,7 +485,7 @@ function buildCard(item){
 }
 
 ['movies','animations','tv','anime','kdrama','filipino',vivamax'].forEach(sec=>{
-  const row=document.getElementById(`${sec}-carousel`);
+  const row=document.getElementById(${sec}-carousel);
   contentData[sec].forEach(item=>row.appendChild(buildCard(item)));
 });
 
@@ -518,3 +518,5 @@ document.getElementById('drawerClose').onclick=()=>document.getElementById('draw
 
 </body>
 </html>
+
+Fix what's wrong with my website, after fixing it give me the fully updated entire code without removing anything or dont cut anything even the season, movies, dont remove them just to make it short, keep it
