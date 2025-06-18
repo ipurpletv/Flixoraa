@@ -344,4 +344,19 @@ body {
 #history-results .history-list li:hover {
   background-color: #333;
 }
+.watch-now-btn {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: #e50914;
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+.watch-now-btn:hover {
+  background: #b00610;
+}
 
