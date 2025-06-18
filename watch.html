@@ -146,54 +146,43 @@
     </div>
   </div>
 
-  <script>
-    const API_KEY = "ba0e2f64d29bae320cf0bbd091bbdf3f";
-    const IMG_URL = "https://image.tmdb.org/t/p/w200";
+ <script>
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+  const type = params.get("type");
+  const title = params.get("title");
+  const API_KEY = "ba0e2f64d29bae320cf0bbd091bbdf3f";
 
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("id");
-    const type = params.get("type");
-    const title = params.get("title");
+  if (!id || !type) {
+    document.getElementById("watch-title").textContent = "Invalid stream info.";
+    throw new Error("Missing ID or type.");
+  }
 
-    if (!id || !type) {
-      document.getElementById("watch-title").textContent = "Invalid stream info.";
-      throw new Error("Missing ID or type.");
+  document.getElementById("watch-title").textContent = decodeURIComponent(title || "Now Playing");
+
+  function updateEmbed(server) {
+    let url = "";
+
+    if (server === "vidsrc.cc") {
+      url = `https://vidsrc.cc/v2/embed/${type}/${id}`;
+    } else if (server === "vidsrc.me") {
+      url = `https://vidsrc.net/embed/${type}/?tmdb=${id}`;
+    } else if (server === "player.videasy.net") {
+      url = `https://player.videasy.net/${type}/${id}`;
+    } else if (server === "apimocine-movie") {
+      url = `https://apimocine.vercel.app/movie/${id}`;
+    } else if (server === "apimocine-tv") {
+      url = `https://apimocine.vercel.app/tv/${id}`;
     }
 
-    document.getElementById("watch-title").textContent = decodeURIComponent(title || "Now Playing");
+    document.getElementById("watch-player").src = url;
+  }
 
-    function updateEmbed(server) {
-      let url = "";
+  const serverSelect = document.getElementById("server");
+  serverSelect.addEventListener("change", () => updateEmbed(serverSelect.value));
+  updateEmbed(serverSelect.value);
 
-      switch (server) {
-        case "vidsrc.cc":
-          url = `https://vidsrc.cc/v2/embed/${type}/${id}`;
-          break;
-        case "vidsrc.me":
-          url = `https://vidsrc.net/embed/${type}/?tmdb=${id}`;
-          break;
-        case "player.videasy.net":
-          url = `https://player.videasy.net/${type}/${id}`;
-          break;
-        case "apimocine-movie":
-          url = `https://apimocine.vercel.app/movie/${id}`;
-          break;
-        case "apimocine-tv":
-          url = `https://apimocine.vercel.app/tv/${id}`;
-          break;
-      }
-
-      document.getElementById("watch-player").src = url;
-    }
-
-    document.getElementById("server").addEventListener("change", (e) => {
-      updateEmbed(e.target.value);
-    });
-
-    updateEmbed(document.getElementById("server").value);
-
-    // FETCH RECOMMENDATIONS
-     async function fetchRecommendations() {
+  async function fetchRecommendations() {
     const container = document.getElementById("recommendations-list");
     container.innerHTML = '<p style="color:#888;">Loading recommendations…</p>';
     try {
@@ -201,34 +190,53 @@
       const res = await fetch(url);
       const data = await res.json();
 
-      container.innerHTML = '';
       const items = data.results && data.results.length ? data.results.slice(0, 10) : [];
 
       if (items.length === 0) {
-        container.innerHTML = '<p style="color:#888;">No recommendations available.</p>';
-        return;
+        return fetchTrendingFallback(); // fallback
       }
 
-      items.forEach(item => {
-        if (!item.poster_path) return;
-        const div = document.createElement("div");
-        div.className = "rec-item";
-        div.onclick = () => {
-          const link = `watch.html?id=${item.id}&type=${type}&title=${encodeURIComponent(item.title || item.name)}`;
-          window.location.href = link;
-        };
-        div.innerHTML = `
-          <img src="https://image.tmdb.org/t/p/w200${item.poster_path}" alt="${item.title || item.name}">
-          <span>${item.title || item.name}</span>`;
-        container.appendChild(div);
-      });
+      renderRecommendations(items);
     } catch (err) {
       console.error("Recommendations error:", err);
-      container.innerHTML = '<p style="color:red;">Error loading recommendations.</p>';
+      fetchTrendingFallback();
     }
+  }
+
+  async function fetchTrendingFallback() {
+    const container = document.getElementById("recommendations-list");
+    container.innerHTML = '<p style="color:#888;">Showing trending instead…</p>';
+    try {
+      const res = await fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${API_KEY}`);
+      const data = await res.json();
+      renderRecommendations(data.results.slice(0, 10));
+    } catch (err) {
+      console.error("Trending fallback failed:", err);
+      container.innerHTML = '<p style="color:red;">No fallback available.</p>';
+    }
+  }
+
+  function renderRecommendations(items) {
+    const container = document.getElementById("recommendations-list");
+    container.innerHTML = '';
+    items.forEach(item => {
+      if (!item.poster_path) return;
+      const div = document.createElement("div");
+      div.className = "rec-item";
+      const itemType = item.media_type || (item.first_air_date ? "tv" : "movie");
+      div.onclick = () => {
+        const link = `watch.html?id=${item.id}&type=${itemType}&title=${encodeURIComponent(item.title || item.name)}`;
+        window.location.href = link;
+      };
+      div.innerHTML = `
+        <img src="https://image.tmdb.org/t/p/w200${item.poster_path}" alt="${item.title || item.name}">
+        <span>${item.title || item.name}</span>`;
+      container.appendChild(div);
+    });
   }
 
   fetchRecommendations();
 </script>
+
 </body>
 </html>
