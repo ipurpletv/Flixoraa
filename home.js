@@ -1,6 +1,7 @@
 const API_KEY = 'ba0e2f64d29bae320cf0bbd091bbdf3f';
 const BASE_URL = 'https://api.themoviedb.org/3';
 const IMG_URL = 'https://image.tmdb.org/t/p/w500';
+let currentItem;
 
 document.addEventListener('DOMContentLoaded', () => {
   fetchTrendingMovies();
@@ -8,13 +9,18 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchTVShows();
   fetchAnime();
 
-  // genre clicks
   document.querySelectorAll('#sidebar ul li').forEach(li =>
     li.addEventListener('click', () => {
       fetchByGenre(li.dataset.genre);
       toggleSidebar();
     })
   );
+
+  // Listen to server change
+  const serverSelect = document.getElementById('server');
+  if (serverSelect) {
+    serverSelect.addEventListener('change', changeServer);
+  }
 });
 
 // ── FETCH FUNCTIONS ──
@@ -37,17 +43,22 @@ async function fetchTVShows() {
 }
 
 async function fetchAnime() {
-  const res = await fetch(
-    `${BASE_URL}/discover/tv?api_key=${API_KEY}&with_original_language=ja`
-  );
-  const data = await res.json();
-  displayList(data.results, 'anime-list');
+  let allResults = [];
+
+  for (let page = 1; page <= 3; page++) {
+    const res = await fetch(`${BASE_URL}/trending/tv/week?api_key=${API_KEY}&page=${page}`);
+    const data = await res.json();
+    const filtered = data.results.filter(item =>
+      item.original_language === 'ja' && item.genre_ids.includes(16)
+    );
+    allResults = allResults.concat(filtered);
+  }
+
+  displayList(allResults, 'anime-list');
 }
 
 async function fetchByGenre(genreId) {
-  const res = await fetch(
-    `${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${genreId}`
-  );
+  const res = await fetch(`${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${genreId}`);
   const data = await res.json();
   displayList(data.results, 'movies-list');
   if (data.results[0]) displayBanner(data.results[0]);
@@ -72,13 +83,15 @@ function displayBanner(movie) {
   banner.style.backgroundImage = `url(${IMG_URL + movie.backdrop_path})`;
 }
 
-// ── DETAILS MODAL ──
+// ── DETAILS MODAL WITH STREAMING ──
 function showDetails(item) {
+  currentItem = item;
   const modal = document.getElementById('detail-modal');
   document.getElementById('detail-title').textContent = item.title || item.name;
   document.getElementById('detail-description').textContent = item.overview || '';
   document.getElementById('detail-poster').src = IMG_URL + item.poster_path;
   modal.style.display = 'flex';
+  changeServer(); // set default server
 
   saveToWatchHistory({
     id: item.id,
@@ -87,12 +100,32 @@ function showDetails(item) {
   });
 }
 
+function changeServer() {
+  if (!currentItem) return;
+
+  const server = document.getElementById('server')?.value || 'vidsrc.cc';
+  const type = currentItem.media_type || (currentItem.first_air_date ? 'tv' : 'movie');
+  let embedURL = '';
+
+  if (server === 'vidsrc.cc') {
+    embedURL = `https://vidsrc.cc/v2/embed/${type}/${currentItem.id}`;
+  } else if (server === 'vidsrc.me') {
+    embedURL = `https://vidsrc.net/embed/${type}/?tmdb=${currentItem.id}`;
+  } else if (server === 'player.videasy.net') {
+    embedURL = `https://player.videasy.net/${type}/${currentItem.id}`;
+  }
+
+  const iframe = document.getElementById('modal-video');
+  if (iframe) iframe.src = embedURL;
+}
+
 function closeModal() {
   document.getElementById('detail-modal').style.display = 'none';
+  document.getElementById('modal-video').src = ''; // Stop video
   inlineResults.style.display = 'none';
 }
 
-// ── SEARCH (inline dropdown) ──
+// ── SEARCH ──
 const searchInput = document.getElementById('search-input');
 const inlineResults = document.getElementById('inline-search-results');
 
@@ -108,9 +141,7 @@ async function searchTMDB() {
   inlineResults.style.display = 'block';
 
   try {
-    const res = await fetch(
-      `${BASE_URL}/search/multi?api_key=${API_KEY}&query=${encodeURIComponent(query)}`
-    );
+    const res = await fetch(`${BASE_URL}/search/multi?api_key=${API_KEY}&query=${encodeURIComponent(query)}`);
     const data = await res.json();
     inlineResults.innerHTML = '';
 
@@ -144,7 +175,6 @@ function clearSearch() {
   inlineResults.style.display = 'none';
 }
 
-// close dropdown on click outside
 document.addEventListener('click', e => {
   if (
     !e.target.closest('.search-wrapper') &&
@@ -191,12 +221,11 @@ function toggleHistory() {
   document.getElementById('history-sidebar').classList.toggle('active');
 }
 
-// ── SIDEBAR TOGGLE ──
+// ── SIDEBAR ──
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('active');
 }
 
-// ── CLOSE ON ESCAPE ──
 window.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeModal();
 });
