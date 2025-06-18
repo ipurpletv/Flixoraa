@@ -3,13 +3,9 @@ const API_KEY  = 'ba0e2f64d29bae320cf0bbd091bbdf3f';
 const BASE_URL = 'https://api.themoviedb.org/3';
 const IMG_URL  = 'https://image.tmdb.org/t/p/w500';
 
-/* banner rotation state */
-let trendingBanners = [];
-let bannerIndex = 0;
-
 /* ------------- ON LOAD ------------- */
 document.addEventListener('DOMContentLoaded', () => {
-  fetchTrendingMovies();   // now sets rotating banner
+  fetchTrendingMovies();
   fetchMovies();
   fetchTVShows();
   fetchAnime();
@@ -27,18 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function fetchTrendingMovies() {
   const res = await fetch(`${BASE_URL}/trending/movie/week?api_key=${API_KEY}`);
   const data = await res.json();
-
-  trendingBanners = data.results.filter(m => m.backdrop_path); // keep only movies with backdrop
-
-  if (trendingBanners.length) {
-    displayBanner(trendingBanners[0]);
-
-    // rotate every 10 s
-    setInterval(() => {
-      bannerIndex = (bannerIndex + 1) % trendingBanners.length;
-      displayBanner(trendingBanners[bannerIndex]);
-    }, 10000);
-  }
+  if (data.results[0]) displayBanner(data.results[0]);
 }
 
 async function fetchMovies() {
@@ -71,7 +56,7 @@ async function fetchByGenre(gid) {
   if (data.results[0]) displayBanner(data.results[0]);
 }
 
-/* ----------- DISPLAY LIST ------------- */
+/* ----------- DISPLAY ------------- */
 function displayList(items, targetId) {
   const wrap = document.getElementById(targetId);
   wrap.innerHTML = '';
@@ -85,24 +70,17 @@ function displayList(items, targetId) {
   });
 }
 
-/* ----------- BANNER ------------- */
 function displayBanner(movie) {
-  const banner = document.getElementById('banner');
-  banner.style.backgroundImage = `url(${IMG_URL + movie.backdrop_path})`;
-
-  document.getElementById('banner-title').textContent       = movie.title;
-  document.getElementById('banner-description').textContent = movie.overview || '';
-
-  const watchUrl = `watch.html?id=${movie.id}&type=movie&title=${encodeURIComponent(movie.title)}`;
-  document.getElementById('banner-watch-btn').href = watchUrl;
+  document.getElementById('banner').style.backgroundImage =
+    `url(${IMG_URL + movie.backdrop_path})`;
 }
 
 /* ----------- MODAL --------------- */
 function showDetails(item) {
   const modal = document.getElementById('detail-modal');
-  document.getElementById('detail-title').textContent       = item.title || item.name;
+  document.getElementById('detail-title').textContent = item.title || item.name;
   document.getElementById('detail-description').textContent = item.overview || '';
-  document.getElementById('detail-poster').src              = IMG_URL + item.poster_path;
+  document.getElementById('detail-poster').src = IMG_URL + item.poster_path;
 
   /* build Watch‑Now link */
   const type = item.media_type || (item.first_air_date ? 'tv' : 'movie');
