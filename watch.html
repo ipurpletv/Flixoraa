@@ -193,31 +193,42 @@
     updateEmbed(document.getElementById("server").value);
 
     // FETCH RECOMMENDATIONS
-    async function fetchRecommendations() {
-      try {
-        const res = await fetch(`https://api.themoviedb.org/3/${type}/${id}/recommendations?api_key=${API_KEY}`);
-        const data = await res.json();
-        const list = document.getElementById("recommendations-list");
-        data.results.slice(0, 10).forEach(item => {
-          if (!item.poster_path) return;
-          const div = document.createElement("div");
-          div.className = "rec-item";
-          div.onclick = () => {
-            const query = `watch.html?id=${item.id}&type=${type}&title=${encodeURIComponent(item.title || item.name)}`;
-            window.location.href = query;
-          };
-          div.innerHTML = `
-            <img src="${IMG_URL}${item.poster_path}" alt="${item.title || item.name}">
-            <span>${item.title || item.name}</span>
-          `;
-          list.appendChild(div);
-        });
-      } catch (err) {
-        console.error("Failed to load recommendations:", err);
-      }
-    }
+     async function fetchRecommendations() {
+    const container = document.getElementById("recommendations-list");
+    container.innerHTML = '<p style="color:#888;">Loading recommendations…</p>';
+    try {
+      const url = `https://api.themoviedb.org/3/${type}/${id}/recommendations?api_key=${API_KEY}`;
+      const res = await fetch(url);
+      const data = await res.json();
 
-    fetchRecommendations();
-  </script>
+      container.innerHTML = '';
+      const items = data.results && data.results.length ? data.results.slice(0, 10) : [];
+
+      if (items.length === 0) {
+        container.innerHTML = '<p style="color:#888;">No recommendations available.</p>';
+        return;
+      }
+
+      items.forEach(item => {
+        if (!item.poster_path) return;
+        const div = document.createElement("div");
+        div.className = "rec-item";
+        div.onclick = () => {
+          const link = `watch.html?id=${item.id}&type=${type}&title=${encodeURIComponent(item.title || item.name)}`;
+          window.location.href = link;
+        };
+        div.innerHTML = `
+          <img src="https://image.tmdb.org/t/p/w200${item.poster_path}" alt="${item.title || item.name}">
+          <span>${item.title || item.name}</span>`;
+        container.appendChild(div);
+      });
+    } catch (err) {
+      console.error("Recommendations error:", err);
+      container.innerHTML = '<p style="color:red;">Error loading recommendations.</p>';
+    }
+  }
+
+  fetchRecommendations();
+</script>
 </body>
 </html>
