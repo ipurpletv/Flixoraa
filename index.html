@@ -20,7 +20,7 @@
 
 <body>
   <!-- ╔════ NAVBAR ════╗ -->
-  <header class="navbar">
+  <div class="nav-left">
     <button class="menu-btn" aria-label="Menu" onclick="toggleSidebar()">
       <i class="fas fa-bars"></i>
     </button>
@@ -29,8 +29,10 @@
       <img src="Icosss.png" alt="Flixora logo" class="logo" />
       <span class="brand-name">Flixora</span>
     </a>
+  </div>
 
     <!-- this button just opens search modal -->
+    <div class="nav-right">
     <button class="menu-btn" aria-label="Search" onclick="openSearchModal()">
       <i class="fas fa-search"></i>
     </button>
@@ -39,7 +41,8 @@
       <i class="fas fa-history"></i>
       <span>History</span>
     </button>
-  </header>
+  </div>
+</header>
 
   <!-- ║════ Genre sidebar ════║ -->
   <nav id="sidebar" class="sidebar">
