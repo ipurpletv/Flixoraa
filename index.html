@@ -23,39 +23,55 @@
 
 <body>
   <!-- ╔════════ NAVBAR ════════╗ -->
-  <header class="navbar">
-    <!-- hamburger (placeholder for sidebar) -->
-    <button class="menu-btn" aria-label="Menu" onclick="toggleSidebar()">
-      <i class="fas fa-bars"></i>
-    </button>
+<header class="navbar">
+  <!-- hamburger -->
+  <button class="menu-btn" aria-label="Menu" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+  </button>
 
     <!-- brand -->
-    <a href="index.html" class="brand">
-      <img src="Icosss.png" alt="Flixora logo" class="logo" />
-      <span>Flixora</span>
-    </a>
+     <a href="index.html" class="brand">
+    <img src="Icosss.png" alt="Flixora logo" class="logo" />
+    <span class="brand-name">Flixora</span>
+  </a>
 
     <!-- search -->
-    <form
-      class="search-wrapper"
-      onsubmit="event.preventDefault(); openSearchModal();"
-    >
-      <i class="fas fa-search search-icon"></i>
-      <input
-        type="text"
-        class="search-bar"
-        placeholder="Search movie, TV show…"
-        onfocus="openSearchModal()"
-      />
-      <i class="fas fa-times close-search" onclick="clearSearch()"></i>
-    </form>
+  <div class="search-wrapper">
+    <i class="fas fa-search search-icon"></i>
+    <input
+      type="text"
+      id="search-input"
+      class="search-bar"
+      placeholder="Search movie, TV show…"
+      onfocus="openSearchModal()"
+      oninput="searchTMDB()"
+    />
+    <i
+      class="fas fa-times close-search"
+      onclick="clearSearch()"
+      title="Clear"
+    ></i>
+  </div>
 
     <!-- watch history (kept, download‑app removed) -->
-    <button id="history-btn" class="history-btn" onclick="openHistory()">
-      <i class="fas fa-history"></i>
-      <span>Watch history</span>
-    </button>
-  </header>
+  <button id="history-btn" class="history-btn" onclick="openHistory()">
+    <i class="fas fa-history"></i>
+    <span>History</span>
+  </button>
+</header>
+  <nav id="sidebar" class="sidebar">
+  <span class="close-side" onclick="toggleSidebar()">×</span>
+  <h3>Genres</h3>
+  <ul>
+    <li data-genre="28">Action</li>
+    <li data-genre="35">Comedy</li>
+    <li data-genre="16">Animation</li>
+    <li data-genre="18">Drama</li>
+    <li data-genre="27">Horror</li>
+    <li data-genre="10749">Romance</li>
+    <li data-genre="878">Sci‑Fi</li>
+  </ul>
+</nav>
   <!-- ╚═════════════════════════╝ -->
 
   <!-- BANNER -->
@@ -126,10 +142,10 @@
 
   <!-- WATCH‑HISTORY MODAL -->
   <div class="history-modal" id="history-modal">
-    <span class="close" onclick="closeHistoryModal()">×</span>
-    <h2>Your watch history</h2>
-    <div class="results" id="history-results"></div>
-  </div>
+  <span class="close" onclick="closeHistoryModal()">×</span>
+  <h2>Your watch history</h2>
+  <div class="results" id="history-results"></div> <!-- keep this id -->
+</div>
 
   <!-- FOOTER -->
   <footer class="footer">
