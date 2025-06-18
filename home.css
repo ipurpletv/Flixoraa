@@ -277,12 +277,10 @@ body {
 
 .list {
   display: flex;
-  overflow-x: hidden; /* ← disables horizontal scroll/swipe */
-  gap: 0.5rem;
-  padding: 0 2.5rem;
+  overflow-x: auto;
   scroll-behavior: smooth;
-  touch-action: none;     /* ← disables touch gestures */
-  overscroll-behavior: none; /* ← prevents edge bounce on touch devices */
+  gap: 0.5rem;
+  padding: 0 2.5rem; /* to leave space for buttons */
 }
 
 /* —————————————————————— THUMBNAILS —————————————————————— */
@@ -471,4 +469,3 @@ body {
 .watch-now-btn:hover {
   background-color: #b00610;
 }
-
