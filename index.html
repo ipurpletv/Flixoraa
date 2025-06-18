@@ -94,9 +94,17 @@
   <!-- Rows -->
   <section class="row">
   <h2>Trending Movies</h2>
-  <button class="scroll-btn left" onclick="scrollList('movies-list', -1)">&#10094;</button>
-  <div class="list" id="movies-list"></div>
-  <button class="scroll-btn right" onclick="scrollList('movies-list', 1)">&#10095;</button>
+  <div class="scroll-container">
+    <button class="scroll-btn left" onclick="scrollList('movies-list', -1)">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+
+    <div class="list" id="movies-list"></div>
+
+    <button class="scroll-btn right" onclick="scrollList('movies-list', 1)">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+  </div>
 </section>
 
 <section class="row">
