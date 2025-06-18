@@ -64,12 +64,9 @@ body {
   align-items: center;
 }
 
-.nav-left {
-  gap: 1rem;
-}
-
 .nav-right {
   gap: 1rem;
+  margin-left: auto;   /* <— pushes the group to the far right */
 }
 
 
