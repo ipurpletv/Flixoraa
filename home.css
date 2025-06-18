@@ -14,14 +14,29 @@ body {
 
 /* —————————————————————— NAVBAR —————————————————————— */
 .navbar {
-  display: flex;
-  align-items: center;
-  padding: 0.75rem 1.5rem;
   background-color: #1f1f1f;
+  padding: 0.75rem 1.5rem;
   position: sticky;
   top: 0;
   z-index: 999;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+}
+
+.navbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Left + Right sections */
+.nav-left,
+.nav-right {
+  display: flex;
+  align-items: center;
+}
+
+.nav-right {
+  gap: 1rem;
 }
 
 .menu-btn {
