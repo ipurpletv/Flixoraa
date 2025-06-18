@@ -2,125 +2,96 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Flixora</title>
-
-  <link rel="stylesheet" href="home.css" />
-  <link rel="preload" href="home.css" as="style" />
-
-  <script defer src="home.js"></script>
-  <link rel="preload" href="home.js" as="script" />
-
-  <link rel="manifest" href="manifest.json" />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-  />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
-
 <body>
-  <!-- ╔════ NAVBAR ════╗ -->
+  <!-- Navbar -->
   <header class="navbar">
+    <!-- Hamburger -->
     <button class="menu-btn" aria-label="Menu" onclick="toggleSidebar()">
       <i class="fas fa-bars"></i>
     </button>
 
+    <!-- Brand -->
     <a href="index.html" class="brand">
       <img src="Icosss.png" alt="Flixora logo" class="logo" />
       <span class="brand-name">Flixora</span>
     </a>
 
-    <!-- this button just opens search modal -->
-    <button class="menu-btn" aria-label="Search" onclick="openSearchModal()">
-      <i class="fas fa-search"></i>
-    </button>
+    <!-- Right Side: Search + History -->
+    <div class="navbar-right">
+      <div class="search-wrapper">
+        <i class="fas fa-search search-icon"></i>
+        <input
+          type="text"
+          id="search-input"
+          class="search-bar"
+          placeholder="Search movie, TV show…"
+          onfocus="openSearchModal()"
+          oninput="searchTMDB()"
+        />
+        <i class="fas fa-times close-search" onclick="clearSearch()" title="Clear"></i>
+      </div>
 
-    <button id="history-btn" class="history-btn" onclick="toggleHistory()">
-      <i class="fas fa-history"></i>
-      <span>History</span>
-    </button>
+      <button id="history-btn" class="history-btn" onclick="openHistory()">
+        <i class="fas fa-history"></i>
+        <span>History</span>
+      </button>
+    </div>
   </header>
 
-  <!-- ║════ Genre sidebar ════║ -->
-  <nav id="sidebar" class="sidebar">
-    <span class="close-side" onclick="toggleSidebar()">×</span>
-    <h3>Genres</h3>
-    <ul>
-      <li data-genre="28">Action</li>
-      <li data-genre="35">Comedy</li>
-      <li data-genre="16">Animation</li>
-      <li data-genre="18">Drama</li>
-      <li data-genre="27">Horror</li>
-      <li data-genre="10749">Romance</li>
-      <li data-genre="878">Sci‑Fi</li>
-    </ul>
-  </nav>
-
-  <!-- ║════ History sidebar ════║ -->
-  <aside id="history-sidebar" class="sidebar history">
-    <span class="close-side" onclick="toggleHistory()">×</span>
-    <h3>Watch History</h3>
-    <div id="history-results" class="results"></div>
+  <!-- Sidebar -->
+  <aside id="sidebar" class="sidebar">
+    <nav>
+      <h3>Genres</h3>
+      <ul id="genre-list"></ul>
+    </nav>
   </aside>
 
-  <!-- ╚══════════════════════╝ -->
+  <!-- Main Content -->
+  <main>
+    <!-- Banner -->
+    <section id="banner" class="banner-section">
+      <!-- Banner content will be loaded dynamically -->
+    </section>
 
-  <!-- Banner -->
-  <div class="banner" id="banner"></div>
+    <!-- Movies -->
+    <section>
+      <h2>Popular Movies</h2>
+      <div id="movies-list" class="media-row"></div>
+    </section>
 
-  <!-- Rows -->
-  <section class="row">
-    <h2>Trending Movies</h2>
-    <div class="list" id="movies-list"></div>
-  </section>
+    <!-- TV Shows -->
+    <section>
+      <h2>Popular TV Shows</h2>
+      <div id="tvshows-list" class="media-row"></div>
+    </section>
 
-  <section class="row">
-    <h2>Trending TV Shows</h2>
-    <div class="list" id="tvshows-list"></div>
-  </section>
+    <!-- Anime -->
+    <section>
+      <h2>Popular Anime</h2>
+      <div id="anime-list" class="media-row"></div>
+    </section>
+  </main>
 
-  <section class="row">
-    <h2>Trending Anime</h2>
-    <div class="list" id="anime-list"></div>
-  </section>
-
-  <!-- Detail modal (id must match JS) -->
-  <div class="modal" id="detail-modal">
+  <!-- Modals -->
+  <div id="search-modal" class="modal">
     <div class="modal-content">
-      <span class="close" onclick="closeModal()">×</span>
-
-      <div class="modal-body">
-        <img id="detail-poster" src="" alt="" />
-        <div class="modal-text">
-          <h2 id="detail-title"></h2>
-          <p id="detail-description"></p>
-        </div>
-      </div>
+      <h2>Search Results</h2>
+      <div id="search-results" class="modal-grid"></div>
     </div>
   </div>
 
-  <!-- Search modal with the ONLY search input -->
-  <div class="modal search" id="search-modal">
+  <div id="history-modal" class="modal">
     <div class="modal-content">
-      <span class="close" onclick="closeModal()">×</span>
-      <input
-        type="text"
-        id="search-input"
-        placeholder="Search movie or show…"
-        oninput="searchTMDB()"
-      />
-      <div class="results" id="search-results"></div>
+      <h2>Watch History</h2>
+      <div id="history-results" class="modal-grid"></div>
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <p>&copy; 2025 Flixora. All rights reserved.</p>
-    <div class="footer-links">
-      <a href="#">Disclaimer</a> ·
-      <a href="#">About Us</a> ·
-      <a href="#">Contact Us</a>
-    </div>
-  </footer>
+  <script src="script.js"></script>
 </body>
 </html>
