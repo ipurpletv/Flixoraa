@@ -1,15 +1,15 @@
 /* --- FLIXORA NEW LAYOUT CSS (home.css) --- */
 
-/* ---- Universal & Core Styles (From Your Original CSS) ---- */
-* { 
-  margin: 0; 
-  padding: 0; 
-  box-sizing: border-box; 
+/* ---- Universal & Core Styles ---- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body { 
+body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: #181818; /* Dark background for the whole page */
+  background-color: #181818;
   color: #fff;
 }
 
@@ -25,10 +25,10 @@ body {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  position: fixed; /* Fix the sidebar so it doesn't scroll */
+  position: fixed;
   top: 0;
   left: 0;
-  z-index: 20; /* Ensure it's above other content */
+  z-index: 20;
 }
 
 .sidebar-header {
@@ -38,9 +38,10 @@ body {
 }
 
 .sidebar-header .logo {
-  height: 40px;  /* Set only the height to maintain aspect ratio */
-  width: auto;   /* Allow the width to adjust automatically */
-  margin-right: 12px;
+  height: 30px;  /* Shrunk logo */
+  width: auto;
+  max-width: 100%;
+  margin-right: 10px;
 }
 
 .sidebar-header h1 {
@@ -73,7 +74,7 @@ body {
 
 .nav-menu {
   list-style: none;
-  flex-grow: 1; /* This pushes the footer links to the bottom */
+  flex-grow: 1;
 }
 
 .nav-menu li a {
@@ -89,14 +90,15 @@ body {
   transition: background-color 0.3s, color 0.3s;
 }
 
-.nav-menu li a:hover, .nav-menu li a.active {
+.nav-menu li a:hover,
+.nav-menu li a.active {
   background-color: #282828;
   color: #fff;
 }
 
 .nav-menu li a i {
   margin-right: 15px;
-  width: 20px; /* Aligns icons neatly */
+  width: 20px;
   text-align: center;
 }
 
@@ -117,11 +119,11 @@ body {
   color: #fff;
 }
 
-/* ---- Main Content Area Styles ---- */
+/* ---- Main Content Area ---- */
 .main-content {
   flex-grow: 1;
   padding: 25px;
-  margin-left: 250px; /* This is crucial - it's the width of the sidebar */
+  margin-left: 250px;
 }
 
 .main-header {
@@ -153,8 +155,7 @@ body {
   margin-right: 8px;
 }
 
-
-/* ---- Re-integrated Styles from Your Original CSS ---- */
+/* ---- Banner ---- */
 .banner {
   height: 50vh;
   background-size: cover;
@@ -166,11 +167,12 @@ body {
 }
 
 .banner h1 {
-  background: rgba(0,0,0,0.7);
+  background: rgba(0, 0, 0, 0.7);
   padding: 10px 15px;
   border-radius: 5px;
 }
 
+/* ---- Rows (Trending, etc.) ---- */
 .row {
   margin-top: 20px;
 }
@@ -179,19 +181,24 @@ body {
   margin-bottom: 15px;
 }
 
+/* ---- Scrollable Movie List ---- */
+.trending-container {
+  position: relative;
+}
+
 .list {
   display: flex;
   overflow-x: auto;
-  gap: 10px; /* Use gap for spacing */
+  gap: 10px;
+  scroll-behavior: smooth;
 }
 
-/* Hide scrollbar for a cleaner look */
 .list::-webkit-scrollbar {
   display: none;
 }
 .list {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .list img {
@@ -208,11 +215,42 @@ body {
   z-index: 2;
 }
 
+/* ---- Scroll Arrows for Lists ---- */
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  font-size: 24px;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 50%;
+  transition: background 0.3s;
+}
+
+.scroll-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.scroll-left {
+  left: 0;
+}
+
+.scroll-right {
+  right: 0;
+}
+
+/* ---- Modal ---- */
 .modal {
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.8);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
   display: none;
   justify-content: center;
   align-items: center;
@@ -248,10 +286,14 @@ body {
   text-align: left;
 }
 
-.stars { color: gold; }
+.stars {
+  color: gold;
+}
+
 .close {
   position: absolute;
-  top: 10px; right: 20px;
+  top: 10px;
+  right: 20px;
   cursor: pointer;
   font-size: 24px;
 }
@@ -261,10 +303,13 @@ body {
   text-align: left;
 }
 
+/* ---- Search Modal ---- */
 .search-modal {
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: rgba(0, 0, 0, 0.9);
   display: none;
   justify-content: center;
@@ -303,12 +348,10 @@ body {
 
 /* ---- MOBILE DISPLAY START ---- */
 @media (max-width: 768px) {
-  /* Hides the sidebar on smaller screens */
   .sidebar {
     display: none;
   }
-  
-  /* The main content now takes up the full width */
+
   .main-content {
     margin-left: 0;
     padding: 15px;
@@ -317,14 +360,14 @@ body {
   .banner {
     height: 30vh;
   }
-    
+
   .modal-body {
-    flex-direction: column; /* Stack image and text vertically */
+    flex-direction: column;
     align-items: center;
   }
 
   .modal-body img {
-    width: 50%; /* Make modal image a bit larger */
+    width: 50%;
   }
 
   .modal-text {
