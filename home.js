@@ -12,14 +12,16 @@ let searchInput, inlineResults;
 
 /* ------------- ON LOAD ------------- */
 document.addEventListener('DOMContentLoaded', () => {
+  /* cache refs now that DOM exists */
   searchInput    = document.getElementById('search-input');
   inlineResults  = document.getElementById('inline-search-results');
 
-  fetchTrendingMovies();
+  fetchTrendingMovies();   // rotating banner
   fetchMovies();
   fetchTVShows();
   fetchAnime();
 
+  // genre clicks
   document.querySelectorAll('#sidebar ul li').forEach(li =>
     li.addEventListener('click', () => {
       fetchByGenre(li.dataset.genre);
@@ -96,21 +98,22 @@ function displayList(items, targetId) {
     const download = document.createElement('a');
     download.textContent = 'Download';
     download.className = 'download-btn';
-    download.style.display = 'none';
+    download.style.display = 'none'; // hidden until link is fetched
     download.target = '_blank';
 
     const type = it.first_air_date ? 'tv' : 'movie';
     fetch(`https://apimocine.vercel.app/${type}/${it.id}`)
       .then(res => res.json())
       .then(data => {
-        console.log('Mocine API (thumbnail):', data);
-        const dl = data?.media?.sources?.find(src => src.url)?.url;
+        const dl = data?.media?.sources?.[0]?.url;
         if (dl) {
           download.href = dl;
           download.style.display = 'inline-block';
         }
       })
-      .catch(() => {});
+      .catch(() => {
+        // fail silently
+      });
 
     card.appendChild(img);
     card.appendChild(title);
@@ -118,6 +121,7 @@ function displayList(items, targetId) {
     wrap.appendChild(card);
   });
 }
+
 
 /* ----------- BANNER ------------- */
 function displayBanner(movie) {
@@ -142,13 +146,13 @@ async function showDetails(item) {
   const watchURL = `watch.html?id=${item.id}&type=${type}&title=${encodeURIComponent(item.title || item.name)}`;
   document.getElementById('watch-now-btn').href = watchURL;
 
+  /* ----- DOWNLOAD (Mocine) ----- */
   const downloadBtn = document.getElementById('download-btn');
   if (downloadBtn) {
     try {
       const res = await fetch(`https://apimocine.vercel.app/${type}/${item.id}`);
       const data = await res.json();
-      console.log('Mocine API (modal):', data);
-      const dl = data?.media?.sources?.find(src => src.url)?.url;
+      const dl = data?.media?.sources?.[0]?.url;
       if (dl) {
         downloadBtn.href = dl;
         downloadBtn.style.display = 'inline-block';
