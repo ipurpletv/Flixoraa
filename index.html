@@ -20,27 +20,32 @@
 
 <body>
   <!-- ╔════ NAVBAR ════╗ -->
-  <div class="nav-left">
-    <button class="menu-btn" aria-label="Menu" onclick="toggleSidebar()">
-      <i class="fas fa-bars"></i>
-    </button>
+  <header class="navbar">
+  <div class="navbar-content">
+    <!-- Left side -->
+    <div class="nav-left">
+      <button class="menu-btn" aria-label="Menu" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+      </button>
 
-    <a href="index.html" class="brand">
-      <img src="Icosss.png" alt="Flixora logo" class="logo" />
-      <span class="brand-name">Flixora</span>
-    </a>
-  </div>
+      <a href="index.html" class="brand">
+        <img src="Icosss.png" alt="Flixora logo" class="logo" />
+        <span class="brand-name">Flixora</span>
+      </a>
+    </div>
 
     <!-- this button just opens search modal -->
+    <!-- Right side -->
     <div class="nav-right">
-    <button class="menu-btn" aria-label="Search" onclick="openSearchModal()">
-      <i class="fas fa-search"></i>
-    </button>
+      <button class="menu-btn" aria-label="Search" onclick="openSearchModal()">
+        <i class="fas fa-search"></i>
+      </button>
 
-    <button id="history-btn" class="history-btn" onclick="toggleHistory()">
-      <i class="fas fa-history"></i>
-      <span>History</span>
-    </button>
+      <button id="history-btn" class="history-btn" onclick="toggleHistory()">
+        <i class="fas fa-history"></i>
+        <span>History</span>
+      </button>
+    </div>
   </div>
 </header>
 
