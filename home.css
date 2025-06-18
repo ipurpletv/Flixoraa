@@ -439,3 +439,17 @@ body {
 .watch-now-btn:hover {
   background-color: #b00610;
 }
+
+.download-btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 14px;
+  background-color: #ff3d3d;
+  color: #fff;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+}
+.download-btn:hover {
+  background-color: #ff5f5f;
+}
