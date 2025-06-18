@@ -28,7 +28,6 @@ body {
   align-items: center;
 }
 
-/* Left + Right sections */
 .nav-left,
 .nav-right {
   display: flex;
@@ -39,6 +38,7 @@ body {
   gap: 1rem;
 }
 
+/* Menu button (☰) */
 .menu-btn {
   background: none;
   border: none;
@@ -48,6 +48,7 @@ body {
   margin-right: 1rem;
 }
 
+/* Brand styling */
 .brand {
   display: flex;
   align-items: center;
@@ -62,47 +63,34 @@ body {
   margin-right: 8px;
 }
 
-/* —————————————————————— SEARCH BAR —————————————————————— */
+/* Search Bar in Navbar */
 .search-wrapper {
-  flex: 1;
-  max-width: 400px;
-  margin: 0 1rem;
   position: relative;
 }
 
 .search-bar {
-  width: 100%;
-  padding: 0.5rem 2.5rem 0.5rem 2.5rem;
-  border-radius: 25px;
+  width: 220px;
+  padding: 0.4rem 2.5rem 0.4rem 1.5rem;
+  border-radius: 20px;
   border: none;
-  font-size: 1rem;
   background-color: #333;
-  color: #fff;
+  color: white;
+  font-size: 1rem;
 }
 
 .search-bar::placeholder {
-  color: #bbb;
-}
-
-.search-icon,
-.close-search {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
   color: #aaa;
-  font-size: 1rem;
 }
 
 .search-icon {
-  left: 10px;
-}
-
-.close-search {
+  position: absolute;
   right: 10px;
-  cursor: pointer;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #bbb;
 }
 
-/* —————————————————————— HISTORY BUTTON —————————————————————— */
+/* History button */
 .history-btn {
   display: flex;
   align-items: center;
