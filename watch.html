@@ -170,8 +170,9 @@
           <option value="vidsrc.cc">Martina</option>
           <option value="vidsrc.me">Purple</option>
           <option value="player.videasy.net">Cuz (HD)</option>
-          <option value="apimocine.movie">Cristina (HD)</option>
-          <option value="apimocine.tv">Steechy (TV Series Only)</option>
+          <option value="apimocine-movie">Cristina (HD)</option>
+          <option value="apimocine-tv">Steechy (TV Series Only)</option>
+          <option value="consumet">Flixora Anime (Consumet)</option>
         </select>
       </div>
     </div>
@@ -199,18 +200,26 @@
     titleEl.textContent = decodeURIComponent(title || "Now Playing");
 
     function updateEmbed(server) {
-      let url = "";
-      if (server === "vidsrc.cc") {
-        url = `https://vidsrc.cc/v2/embed/${type}/${id}?autoplay=1`;
-      } else if (server === "vidsrc.me") {
-        url = `https://vidsrc.net/embed/${type}/?tmdb=${id}&autoplay=1`;
-      } else if (server === "player.videasy.net") {
-        url = `https://player.videasy.net/${type}/${id}?autoplay=1`;
-      } else if (server === "apimocine.movie") {
-        url = `https://apimocine.vercel.app/movie/${id}`;
-      } else if (server === "apimocine.tv") {
-        url = `https://apimocine.vercel.app/tv/${id}`;
-      }
+  let url = "";
+
+  if (server === "vidsrc.cc") {
+    url = `https://vidsrc.cc/v2/embed/${type}/${id}`;
+  } else if (server === "vidsrc.me") {
+    url = `https://vidsrc.net/embed/${type}/?tmdb=${id}`;
+  } else if (server === "player.videasy.net") {
+    url = `https://player.videasy.net/${type}/${id}`;
+  } else if (server === "apimocine-movie") {
+    url = `https://apimocine.vercel.app/movie/${id}`;
+  } else if (server === "apimocine-tv") {
+    url = `https://apimocine.vercel.app/tv/${id}`;
+  } else if (server === "consumet") {
+    const titleQuery = encodeURIComponent(title);
+    url = `https://aniwatch.to/embed?query=${titleQuery}`;
+  }
+
+  document.getElementById("watch-player").src = url;
+}
+
       player.src = url;
     }
 
