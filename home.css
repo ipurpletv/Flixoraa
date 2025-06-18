@@ -248,3 +248,28 @@ body {
 .footer-links a:hover {
   text-decoration: underline;
 }
+#movies-list img,
+#tvshows-list img,
+#anime-list img {
+  width: 140px;
+  height: 210px;
+  object-fit: cover;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+#movies-list img:hover,
+#tvshows-list img:hover,
+#anime-list img:hover {
+  transform: scale(1.05);
+}
+
+#movies-list,
+#tvshows-list,
+#anime-list {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding: 1rem 0;
+}
