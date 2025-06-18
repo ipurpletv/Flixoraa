@@ -61,30 +61,6 @@ body {
   height: 35px;
   margin-right: 8px;
 }
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem 1.5rem;
-  background-color: #1f1f1f;
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
-}
-
-.nav-left,
-.nav-right {
-  display: flex;
-  align-items: center;
-}
-
-.nav-right {
-  gap: 1rem;
-  margin-left: auto;   /* <— pushes the group to the far right */
-}
-
-
 
 /* —————————————————————— SEARCH BAR —————————————————————— */
 .search-wrapper {
