@@ -244,13 +244,43 @@ body {
 
 
 /* —————————————————————— SECTIONS —————————————————————— */
-.row {
-  margin: 1rem 1rem;
+.scroll-container {
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
-.row h2 {
-  margin-bottom: 0.5rem;
-  font-size: 1.5rem;
+.scroll-btn {
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  font-size: 1.8rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  z-index: 1;
+  transition: background 0.2s;
+}
+
+.scroll-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.scroll-btn.left {
+  position: absolute;
+  left: 0;
+}
+
+.scroll-btn.right {
+  position: absolute;
+  right: 0;
+}
+
+.list {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 0.5rem;
+  padding: 0 2.5rem; /* to leave space for buttons */
 }
 
 /* —————————————————————— THUMBNAILS —————————————————————— */
