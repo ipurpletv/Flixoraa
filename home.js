@@ -109,13 +109,28 @@ function showDetails(item) {
   const url  = `watch.html?id=${item.id}&type=${type}&title=${encodeURIComponent(item.title || item.name)}`;
   document.getElementById('watch-now-btn').href = url;
 
+  // Fetch download link from Mocine API
+  const downloadBtn = document.getElementById('download-btn');
+  try {
+    const mocineUrl = `https://apimocine.vercel.app/${type}/${item.id}`;
+    const res = await fetch(mocineUrl);
+    const data = await res.json();
+    if (data?.media?.sources?.[0]?.url) {
+      downloadBtn.href = data.media.sources[0].url;
+      downloadBtn.style.display = 'inline-block';
+    } else {
+      downloadBtn.style.display = 'none';
+    }
+  } catch (err) {
+    console.error("Download link fetch error:", err);
+    downloadBtn.style.display = 'none';
+  }
+
+  // open modal
   modal.style.display = 'flex';
 
-  saveToWatchHistory({
-    id:     item.id,
-    title:  item.title || item.name,
-    poster: IMG_URL + item.poster_path,
-  });
+  // save history
+  saveToWatchHistory({ id: item.id, title: item.title || item.name, poster: IMG_URL + item.poster_path });
 }
 
 function closeModal() {
