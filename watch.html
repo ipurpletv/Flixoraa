@@ -1,29 +1,57 @@
+<!-- watch.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Watch Now - Flixora</title>
-    <link rel="stylesheet" href="watch.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Watch</title>
+  <style>
+    body { background: #111; color: #fff; font-family: sans-serif; padding: 20px; }
+    iframe { width: 100%; height: 80vh; border: none; margin-top: 20px; }
+    select { padding: 6px; font-size: 1rem; }
+  </style>
 </head>
 <body>
-    <div class="watch-container">
-        <div class="video-player">
-            <iframe id="video-iframe" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
-        </div>
-        <div class="controls">
-            <h1 id="media-title">Loading...</h1>
-            <div class="server-selector">
-                <label for="server">Change Server:</label>
-                <select id="server">
-                    <option value="vidsrc.cc">Vidsrc.cc</option>
-                    <option value="vidsrc.me">Vidsrc.me</option>
-                    <option value="player.videasy.net">Player.Videasy.net</option>
-                </select>
-            </div>
-            <a href="index.html" class="back-button">Back to Home</a>
-        </div>
-    </div>
-    <script src="watch.js"></script>
+  <h1 id="watch-title">Loading…</h1>
+  <label for="server">Choose Server: </label>
+  <select id="server">
+    <option value="vidsrc.cc">vidsrc.cc</option>
+    <option value="vidsrc.me">vidsrc.me</option>
+    <option value="player.videasy.net">videasy</option>
+  </select>
+  <iframe id="watch-player" allowfullscreen></iframe>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    const type = params.get("type");
+    const title = params.get("title");
+
+    if (!id || !type) {
+      document.getElementById("watch-title").textContent = "Invalid stream info.";
+      throw new Error("Missing ID or type.");
+    }
+
+    document.getElementById("watch-title").textContent = decodeURIComponent(title || "Now Playing");
+
+    function updateEmbed(server) {
+      let url = "";
+
+      if (server === "vidsrc.cc") {
+        url = `https://vidsrc.cc/v2/embed/${type}/${id}`;
+      } else if (server === "vidsrc.me") {
+        url = `https://vidsrc.net/embed/${type}/?tmdb=${id}`;
+      } else if (server === "player.videasy.net") {
+        url = `https://player.videasy.net/${type}/${id}`;
+      }
+
+      document.getElementById("watch-player").src = url;
+    }
+
+    const serverSelect = document.getElementById("server");
+    serverSelect.addEventListener("change", () => updateEmbed(serverSelect.value));
+
+    updateEmbed(serverSelect.value);
+  </script>
 </body>
 </html>
