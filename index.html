@@ -21,43 +21,42 @@
 <body>
   <!-- ╔════ NAVBAR ════╗ -->
   <header class="navbar">
-    <!-- Inline search results -->
-  <div class="navbar-content">
-    <!-- Left side -->
-    <div class="nav-left">
-      <button class="menu-btn" aria-label="Menu" onclick="toggleSidebar()">
-        <i class="fas fa-bars"></i>
-      </button>
+    <div class="navbar-content">
+      <!-- Left side -->
+      <div class="nav-left">
+        <button class="menu-btn" aria-label="Menu" onclick="toggleSidebar()">
+          <i class="fas fa-bars"></i>
+        </button>
 
-      <a href="index.html" class="brand">
-        <img src="Icosss.png" alt="Flixora logo" class="logo" />
-        <span class="brand-name">Flixora</span>
-      </a>
-    </div>
-
-    <!-- this button just opens search modal -->
-    <div class="nav-right">
-      <div class="search-wrapper">
-        <input
-          type="text"
-          class="search-bar"
-          id="search-input"
-          placeholder="Search movie or show…"
-          oninput="searchTMDB()"
-        />
-        <i class="fas fa-search search-icon"></i>
+        <a href="index.html" class="brand">
+          <img src="Icosss.png" alt="Flixora logo" class="logo" />
+          <span class="brand-name">Flixora</span>
+        </a>
       </div>
 
-      <button id="history-btn" class="history-btn" onclick="toggleHistory()">
-        <i class="fas fa-history"></i>
-        <span>History</span>
-      </button>
-    </div>
-  </div>
-    <!-- Inline search results -->
-<div id="inline-search-results" class="inline-search-results"></div>
+      <!-- Right side -->
+      <div class="nav-right">
+        <div class="search-wrapper">
+          <input
+            type="text"
+            class="search-bar"
+            id="search-input"
+            placeholder="Search movie or show…"
+            oninput="searchTMDB()"
+          />
+          <i class="fas fa-search search-icon"></i>
+        </div>
 
-</header>
+        <button id="history-btn" class="history-btn" onclick="toggleHistory()">
+          <i class="fas fa-history"></i>
+          <span>History</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Inline search results dropdown -->
+  <div id="inline-search-results" class="inline-search-results"></div>
 
   <!-- ║════ Genre sidebar ════║ -->
   <nav id="sidebar" class="sidebar">
@@ -102,7 +101,7 @@
     <div class="list" id="anime-list"></div>
   </section>
 
-  <!-- Detail modal (id must match JS) -->
+  <!-- Detail modal with streaming servers -->
   <div class="modal" id="detail-modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal()">×</span>
@@ -112,22 +111,25 @@
         <div class="modal-text">
           <h2 id="detail-title"></h2>
           <p id="detail-description"></p>
+
+          <!-- Server selector -->
+          <label for="server">Choose server:</label>
+          <select id="server">
+            <option value="vidsrc.cc">vidsrc.cc</option>
+            <option value="vidsrc.me">vidsrc.me</option>
+            <option value="player.videasy.net">videasy</option>
+          </select>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Search modal with the ONLY search input -->
-  <div class="modal search" id="search-modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">×</span>
-      <input
-        type="text"
-        id="search-input"
-        placeholder="Search movie or show…"
-        oninput="searchTMDB()"
-      />
-      <div class="results" id="search-results"></div>
+      <!-- Streaming iframe -->
+      <iframe
+        id="modal-video"
+        width="100%"
+        height="400"
+        frameborder="0"
+        allowfullscreen
+      ></iframe>
     </div>
   </div>
 
