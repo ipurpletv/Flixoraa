@@ -12,7 +12,7 @@
     }
 
     body {
-      background: #0b0b0b url('https://www.transparenttextures.com/patterns/dark-mosaic.png');
+      background: #0b0b0b;
       color: #fff;
       font-family: 'Segoe UI', sans-serif;
       overflow-x: hidden;
@@ -21,7 +21,7 @@
     header {
       background: rgba(0, 0, 0, 0.7);
       backdrop-filter: blur(10px);
-      padding: 16px 24px;
+      padding: 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -47,11 +47,12 @@
       display: flex;
       padding: 20px 24px;
       gap: 24px;
+      flex-wrap: wrap;
     }
 
     .video-box {
       flex: 2;
-      max-width: 70%;
+      min-width: 300px;
     }
 
     .video-box iframe {
@@ -82,13 +83,13 @@
 
     .recommendations {
       flex: 1;
-      max-width: 280px;
+      min-width: 250px;
       background: rgba(30, 30, 30, 0.8);
       backdrop-filter: blur(8px);
       padding: 16px;
       border-radius: 10px;
-      overflow-y: auto;
       height: 460px;
+      overflow-y: auto;
     }
 
     .recommendations h3 {
@@ -122,16 +123,33 @@
     }
 
     @media (max-width: 768px) {
-      .watch-container {
-        flex-direction: column;
+      #watch-title {
+        font-size: 1.2rem;
+        padding: 16px;
       }
 
-      .video-box, .recommendations {
-        max-width: 100%;
+      .watch-container {
+        flex-direction: column;
+        padding: 16px;
+      }
+
+      .video-box iframe {
+        height: 240px;
       }
 
       .recommendations {
         height: auto;
+        max-height: 300px;
+        margin-top: 20px;
+      }
+
+      .rec-item img {
+        width: 40px;
+        height: 60px;
+      }
+
+      .rec-item span {
+        font-size: 0.8rem;
       }
     }
   </style>
@@ -166,11 +184,11 @@
 
   <script>
     const params = new URLSearchParams(window.location.search);
-    const id     = params.get("id");
-    const type   = params.get("type");
-    const title  = params.get("title");
+    const id = params.get("id");
+    const type = params.get("type");
+    const title = params.get("title");
     const titleEl = document.getElementById("watch-title");
-    const player  = document.getElementById("watch-player");
+    const player = document.getElementById("watch-player");
     const serverSelect = document.getElementById("server");
 
     if (!id || !type) {
@@ -193,7 +211,6 @@
       } else if (server === "apimocine.tv") {
         url = `https://apimocine.vercel.app/tv/${id}`;
       }
-
       player.src = url;
     }
 
