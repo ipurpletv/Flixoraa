@@ -337,4 +337,28 @@ body {
   overflow-x: auto;
   padding-bottom: 1rem;
 }
+/* ───── Brand placement fix ───── */
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;            /* keep brand glued to hamburger */
+}
+
+/* ───── Watch‑history sidebar ───── */
+.sidebar.history {
+  left: -260px;         /* hidden like genre sidebar */
+  background: #131313;  /* slightly darker so it stands out */
+}
+.sidebar.history.open { left: 0; }
+.sidebar.history img {
+  width: 100px;
+  border-radius: 6px;
+}
+
+/* ───── Search results (just in case) ───── */
+#search-results img {
+  width: 100px;
+  border-radius: 6px;
+  cursor: pointer;
+}
 
