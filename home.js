@@ -79,15 +79,49 @@ async function fetchByGenre(gid) {
 function displayList(items, targetId) {
   const wrap = document.getElementById(targetId);
   wrap.innerHTML = '';
+
   items.forEach(it => {
     if (!it.poster_path) return;
+
+    const card = document.createElement('div');
+    card.className = 'media-card';
+
     const img = document.createElement('img');
-    img.src   = IMG_URL + it.poster_path;
-    img.alt   = it.title || it.name;
+    img.src = IMG_URL + it.poster_path;
+    img.alt = it.title || it.name;
     img.onclick = () => showDetails(it);
-    wrap.appendChild(img);
+
+    const title = document.createElement('p');
+    title.className = 'media-title';
+    title.textContent = it.title || it.name;
+
+    const download = document.createElement('a');
+    download.textContent = 'Download';
+    download.className = 'download-btn';
+    download.style.display = 'none'; // hidden until link is fetched
+    download.target = '_blank';
+
+    const type = it.first_air_date ? 'tv' : 'movie';
+    fetch(`https://apimocine.vercel.app/${type}/${it.id}`)
+      .then(res => res.json())
+      .then(data => {
+        const dl = data?.media?.sources?.[0]?.url;
+        if (dl) {
+          download.href = dl;
+          download.style.display = 'inline-block';
+        }
+      })
+      .catch(() => {
+        // fail silently
+      });
+
+    card.appendChild(img);
+    card.appendChild(title);
+    card.appendChild(download);
+    wrap.appendChild(card);
   });
 }
+
 
 /* ----------- BANNER ------------- */
 function displayBanner(movie) {
