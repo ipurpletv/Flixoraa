@@ -83,60 +83,38 @@
   <!-- ╚══════════════════════╝ -->
 
   <!-- Banner -->
-  <div class="banner" id="banner">
-  <div class="banner-overlay">
-    <h1 id="banner-title"></h1>
-    <p id="banner-description"></p>
-    <a id="banner-watch-btn" class="banner-watch-btn" href="#" target="_blank">▶ Watch Now</a>
-  </div>
-</div>
+  <div class="banner" id="banner"></div>
 
   <!-- Rows -->
   <section class="row">
-  <h2>Trending Movies</h2>
-  <div class="scroll-container">
-    <button class="scroll-btn left" onclick="scrollList('movies-list', -1)">
-      <i class="fas fa-chevron-left"></i>
-    </button>
-
+    <h2>Trending Movies</h2>
     <div class="list" id="movies-list"></div>
+  </section>
 
-    <button class="scroll-btn right" onclick="scrollList('movies-list', 1)">
-      <i class="fas fa-chevron-right"></i>
-    </button>
-  </div>
-</section>
-
-<section class="row">
-  <h2>Trending TV Shows</h2>
-  <div class="scroll-container">
-    <button class="scroll-btn left" onclick="scrollList('tvshows-list', -1)">
-      <i class="fas fa-chevron-left"></i>
-    </button>
-
+  <section class="row">
+    <h2>Trending TV Shows</h2>
     <div class="list" id="tvshows-list"></div>
+  </section>
 
-    <button class="scroll-btn right" onclick="scrollList('tvshows-list', 1)">
-      <i class="fas fa-chevron-right"></i>
-    </button>
-  </div>
-</section>
-
-<section class="row">
-  <h2>Trending Anime</h2>
-  <div class="scroll-container">
-    <button class="scroll-btn left" onclick="scrollList('anime-list', -1)">
-      <i class="fas fa-chevron-left"></i>
-    </button>
-
+  <section class="row">
+    <h2>Trending Anime</h2>
     <div class="list" id="anime-list"></div>
+  </section>
 
-    <button class="scroll-btn right" onclick="scrollList('anime-list', 1)">
-      <i class="fas fa-chevron-right"></i>
-    </button>
+  <!-- Detail modal with streaming servers -->
+ <div class="modal" id="detail-modal">
+  <div class="modal-content small">
+    <span class="close" onclick="closeModal()">×</span>
+    <div class="modal-body">
+      <img id="detail-poster" src="" alt="" />
+      <div class="modal-text">
+        <h2 id="detail-title"></h2>
+        <p id="detail-description"></p>
+        <a id="watch-now-btn" class="watch-now-btn" href="#" target="_blank">▶ Watch Now</a>
+      </div>
+    </div>
   </div>
-</section>
-
+</div>
 
   <!-- Footer -->
   <footer class="footer">
