@@ -1,4 +1,4 @@
-/* ===== BASE RESET ===== */
+/* —————————————————————— RESET & BASE —————————————————————— */
 * {
   margin: 0;
   padding: 0;
@@ -6,25 +6,24 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
   background-color: #141414;
   color: #fff;
+  overflow-x: hidden;
 }
 
-/* ===== NAVBAR ===== */
+/* —————————————————————— NAVBAR —————————————————————— */
 .navbar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  background-color: #1f1f1f;
   padding: 0.75rem 1.5rem;
+  background-color: #1f1f1f;
   position: sticky;
   top: 0;
   z-index: 999;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
 }
 
-/* Hamburger menu */
 .menu-btn {
   background: none;
   border: none;
@@ -34,25 +33,24 @@ body {
   margin-right: 1rem;
 }
 
-/* Brand */
 .brand {
   display: flex;
   align-items: center;
-  text-decoration: none;
   color: #fff;
+  text-decoration: none;
   font-size: 1.4rem;
   font-weight: bold;
 }
 
 .brand .logo {
-  height: 40px;
-  margin-right: 10px;
+  height: 35px;
+  margin-right: 8px;
 }
 
-/* Search */
+/* —————————————————————— SEARCH BAR —————————————————————— */
 .search-wrapper {
   flex: 1;
-  max-width: 500px;
+  max-width: 400px;
   margin: 0 1rem;
   position: relative;
 }
@@ -89,15 +87,15 @@ body {
   cursor: pointer;
 }
 
-/* Watch History Button */
+/* —————————————————————— HISTORY BUTTON —————————————————————— */
 .history-btn {
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  background-color: transparent;
+  padding: 0.4rem 1rem;
   border: 1px solid #555;
   border-radius: 20px;
-  padding: 0.4rem 1rem;
+  background: transparent;
   color: #fff;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -107,154 +105,93 @@ body {
   background-color: #333;
 }
 
-.history-btn i {
-  font-size: 1rem;
+/* —————————————————————— SIDEBARS —————————————————————— */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 250px;
+  height: 100%;
+  background-color: #1d1d1d;
+  padding: 1rem;
+  transition: left 0.3s ease;
+  z-index: 1001;
+  overflow-y: auto;
 }
 
-/* ===== BANNER ===== */
-.banner {
-  background-color: #222;
-  height: 250px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  margin-bottom: 2rem;
+.sidebar.active {
+  left: 0;
 }
 
-.banner h1 {
-  font-size: 2.5rem;
+.sidebar.history {
+  /* Same sliding behavior, right-hand opening */
+  left: auto;
+  right: -250px;
+}
+
+.sidebar.history.active {
+  right: 0;
+}
+
+.sidebar h3 {
+  margin-bottom: 0.5rem;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar ul li {
+  padding: 0.5rem 0;
+  cursor: pointer;
+  color: #ccc;
+  border-bottom: 1px solid #333;
+}
+
+.sidebar ul li:hover {
   color: #fff;
 }
 
-/* ===== ROWS ===== */
+/* Close button inside sidebars */
+.close-side {
+  font-size: 1.5rem;
+  color: red;
+  cursor: pointer;
+  display: block;
+  text-align: right;
+  margin-bottom: 0.5rem;
+}
+
+/* —————————————————————— BANNER —————————————————————— */
+.banner {
+  position: relative;
+  height: 35vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+  padding: 20px;
+  margin-bottom: 1.5rem;
+}
+
+/* —————————————————————— SECTIONS —————————————————————— */
 .row {
-  margin: 2rem 1rem;
+  margin: 1rem 1rem;
 }
 
 .row h2 {
   margin-bottom: 0.5rem;
   font-size: 1.5rem;
-  color: #fff;
 }
 
-.list {
-  display: flex;
-  overflow-x: auto;
-  gap: 1rem;
-}
-
-/* ===== MODAL ===== */
-.modal,
-.search-modal,
-.history-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(20, 20, 20, 0.95);
-  display: none;
-  flex-direction: column;
-  padding: 1rem;
-  overflow-y: auto;
-  z-index: 1000;
-}
-
-.modal-content {
-  background-color: #1e1e1e;
-  margin: auto;
-  padding: 1.5rem;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 800px;
-  color: #fff;
-}
-
-.modal-body {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.modal-body img {
-  width: 200px;
-  border-radius: 10px;
-}
-
-.modal-text h2 {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.stars {
-  margin-bottom: 0.5rem;
-}
-
-.server-selector {
-  margin-top: 1rem;
-}
-
-.server-selector select {
-  padding: 0.3rem;
-  background-color: #333;
-  color: #fff;
-  border: none;
-}
-
-/* Search Modal Input */
-#search-input {
-  padding: 0.75rem;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: none;
-  width: 100%;
-  background-color: #2a2a2a;
-  color: #fff;
-  margin-bottom: 1rem;
-}
-
-.results {
-  display: grid;
-  gap: 1rem;
-}
-
-.close {
-  font-size: 1.8rem;
-  align-self: flex-end;
-  cursor: pointer;
-}
-
-/* ===== FOOTER ===== */
-.footer {
-  background-color: #1c1c1c;
-  padding: 1.5rem;
-  text-align: center;
-  color: #aaa;
-  margin-top: 2rem;
-}
-
-.footer-links {
-  margin-top: 0.5rem;
-}
-
-.footer-links a {
-  color: #888;
-  margin: 0 0.75rem;
-  text-decoration: none;
-  font-size: 0.9rem;
-}
-
-.footer-links a:hover {
-  text-decoration: underline;
-}
+/* —————————————————————— THUMBNAILS —————————————————————— */
 #movies-list img,
 #tvshows-list img,
 #anime-list img {
   width: 140px;
   height: 210px;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
   transition: transform 0.2s ease;
 }
@@ -271,69 +208,79 @@ body {
   display: flex;
   gap: 1rem;
   overflow-x: auto;
-  padding: 1rem 0;
-}
-/* == Banner height smaller == */
-.banner {
-  height: 35vh;              /* was 50vh */
-  background-size: cover;
-  background-position: center center;
+  padding-bottom: 1rem;
 }
 
-/* == Sidebar == */
-.sidebar {
+/* —————————————————————— MODALS —————————————————————— */
+.modal {
   position: fixed;
   top: 0;
-  left: -260px;              /* hidden by default */
-  width: 240px;
+  left: 0;
+  width: 100%;
   height: 100%;
-  background: #1d1d1d;
-  padding: 1rem;
-  box-shadow: 2px 0 8px rgba(0,0,0,.6);
-  transition: left .3s ease;
-  z-index: 1001;
-}
-.sidebar.open { left: 0; }
-.sidebar .close-side {
-  font-size: 1.5rem;
-  cursor: pointer;
-  display: block;
-  text-align: right;
-  margin-bottom: .5rem;
-}
-.sidebar h3 { margin-bottom: .5rem; }
-.sidebar ul { list-style: none; }
-.sidebar li {
-  padding: .5rem 0;
-  cursor: pointer;
-  color: #ccc;
-  border-bottom: 1px solid #333;
-}
-.sidebar li:hover { color: #fff; }
-
-/* == Thumbnails back to normal size == */
-#movies-list img,
-#tvshows-list img,
-#anime-list img {
-  width: 140px;
-  height: 210px;
-  object-fit: cover;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: transform .2s;
-}
-#movies-list img:hover,
-#tvshows-list img:hover,
-#anime-list img:hover {
-  transform: scale(1.05);
+  background: rgba(20, 20, 20, 0.95);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1002;
 }
 
-/* == Lists keep horizontal scroll == */
-#movies-list,
-#tvshows-list,
-#anime-list {
+.modal-content {
+  background: #1e1e1e;
+  padding: 1.5rem;
+  border-radius: 10px;
+  max-width: 800px;
+  width: 90%;
+}
+
+.modal-body {
   display: flex;
   gap: 1rem;
-  overflow-x: auto;
-  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.modal-body img {
+  width: 200px;
+  border-radius: 8px;
+}
+
+.modal-text {
+  flex: 1;
+}
+
+/* —————————————————————— FOOTER —————————————————————— */
+.footer {
+  background-color: #1c1c1c;
+  text-align: center;
+  padding: 20px;
+  margin-top: 2rem;
+  color: #aaa;
+}
+
+.footer-links a {
+  color: #aaa;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+/* —————————————————————— RESPONSIVE —————————————————————— */
+@media (max-width: 768px) {
+  .modal-body {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .search-wrapper {
+    max-width: 100%;
+  }
+
+  #movies-list img,
+  #tvshows-list img,
+  #anime-list img {
+    height: 180px;
+  }
 }
