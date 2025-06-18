@@ -85,13 +85,17 @@ function displayBanner(movie) {
 
 // ── DETAILS MODAL WITH STREAMING ──
 function showDetails(item) {
-  currentItem = item;
   const modal = document.getElementById('detail-modal');
   document.getElementById('detail-title').textContent = item.title || item.name;
   document.getElementById('detail-description').textContent = item.overview || '';
   document.getElementById('detail-poster').src = IMG_URL + item.poster_path;
+
+  const watchBtn = document.getElementById('watch-now-btn');
+  const type = item.media_type || (item.first_air_date ? 'tv' : 'movie');
+  const url = `watch.html?id=${item.id}&type=${type}&title=${encodeURIComponent(item.title || item.name)}`;
+  watchBtn.href = url;
+
   modal.style.display = 'flex';
-  changeServer(); // set default server
 
   saveToWatchHistory({
     id: item.id,
