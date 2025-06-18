@@ -26,7 +26,7 @@ searchInput.addEventListener('input', async () => {
   if (query.length < 2) return;
 
   try {
-    const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=YOUR_API_KEY&query=${query}`);
+    const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=ba0e2f64d29bae320cf0bbd091bbdf3f&query=${query}`);
     const data = await res.json();
 
     data.results.forEach(movie => {
