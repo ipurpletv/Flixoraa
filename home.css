@@ -327,3 +327,21 @@ body {
     height: 180px;
   }
 }
+#history-results .history-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#history-results .history-list li {
+  padding: 10px;
+  border-bottom: 1px solid #444;
+  cursor: pointer;
+  color: #fff;
+  font-size: 14px;
+}
+
+#history-results .history-list li:hover {
+  background-color: #333;
+}
+
