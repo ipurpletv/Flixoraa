@@ -8,23 +8,20 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchTVShows();
   fetchAnime();
 
-  document
-    .querySelectorAll('#sidebar ul li')
-    .forEach(li =>
-      li.addEventListener('click', () => {
-        fetchByGenre(li.dataset.genre);
-        toggleSidebar();
-      })
-    );
+  // genre clicks
+  document.querySelectorAll('#sidebar ul li').forEach(li =>
+    li.addEventListener('click', () => {
+      fetchByGenre(li.dataset.genre);
+      toggleSidebar();
+    })
+  );
 });
 
 // ── FETCH FUNCTIONS ──
 async function fetchTrendingMovies() {
   const res = await fetch(`${BASE_URL}/trending/movie/week?api_key=${API_KEY}`);
   const data = await res.json();
-  if (data.results[0]) {
-    displayBanner(data.results[0]);
-  }
+  if (data.results[0]) displayBanner(data.results[0]);
 }
 
 async function fetchMovies() {
@@ -78,11 +75,9 @@ function displayBanner(movie) {
 // ── DETAILS MODAL ──
 function showDetails(item) {
   const modal = document.getElementById('detail-modal');
-  const titleEl = document.getElementById('detail-title');
-  const descEl = document.getElementById('detail-description');
-
-  titleEl.textContent = item.title || item.name;
-  descEl.textContent = item.overview || '';
+  document.getElementById('detail-title').textContent = item.title || item.name;
+  document.getElementById('detail-description').textContent = item.overview || '';
+  document.getElementById('detail-poster').src = IMG_URL + item.poster_path;
   modal.style.display = 'flex';
 
   saveToWatchHistory({
@@ -94,49 +89,77 @@ function showDetails(item) {
 
 function closeModal() {
   document.getElementById('detail-modal').style.display = 'none';
-  document.getElementById('search-modal').style.display = 'none';
+  inlineResults.style.display = 'none';
 }
 
-// ── SEARCH ──
-function openSearchModal() {
-  document.getElementById('search-modal').style.display = 'flex';
-}
+// ── SEARCH (inline dropdown) ──
+const searchInput = document.getElementById('search-input');
+const inlineResults = document.getElementById('inline-search-results');
 
 async function searchTMDB() {
-  const query = document.getElementById('search-input').value.trim();
-  const container = document.getElementById('search-results');
-  container.innerHTML = '';
+  const query = searchInput.value.trim();
+  if (query.length < 2) {
+    inlineResults.innerHTML = '';
+    inlineResults.style.display = 'none';
+    return;
+  }
 
-  if (query.length < 2) return;
+  inlineResults.innerHTML = '<p style="color:#888;">Loading…</p>';
+  inlineResults.style.display = 'block';
 
-  const res = await fetch(
-    `${BASE_URL}/search/multi?api_key=${API_KEY}&query=${encodeURIComponent(query)}`
-  );
-  const data = await res.json();
-  data.results.forEach(item => {
-    if (!item.poster_path) return;
-    const img = document.createElement('img');
-    img.src = IMG_URL + item.poster_path;
-    img.alt = item.title || item.name;
-    img.onclick = () => showDetails(item);
-    container.appendChild(img);
-  });
+  try {
+    const res = await fetch(
+      `${BASE_URL}/search/multi?api_key=${API_KEY}&query=${encodeURIComponent(query)}`
+    );
+    const data = await res.json();
+    inlineResults.innerHTML = '';
+
+    if (!data.results || data.results.length === 0) {
+      inlineResults.innerHTML = '<p style="color:#888;">No results.</p>';
+      return;
+    }
+
+    data.results.forEach(item => {
+      if (!item.poster_path) return;
+      const ele = document.createElement('div');
+      ele.className = 'search-item';
+      ele.innerHTML = `
+        <img src="https://image.tmdb.org/t/p/w200${item.poster_path}" alt="${item.title || item.name}" />
+        <span>${item.title || item.name}</span>`;
+      ele.onclick = () => {
+        inlineResults.style.display = 'none';
+        showDetails(item);
+      };
+      inlineResults.appendChild(ele);
+    });
+  } catch (err) {
+    console.error(err);
+    inlineResults.innerHTML = '<p style="color:red;">Error fetching data.</p>';
+  }
 }
 
 function clearSearch() {
-  document.getElementById('search-input').value = '';
-  document.getElementById('search-results').innerHTML = '';
+  searchInput.value = '';
+  inlineResults.innerHTML = '';
+  inlineResults.style.display = 'none';
 }
+
+// close dropdown on click outside
+document.addEventListener('click', e => {
+  if (
+    !e.target.closest('.search-wrapper') &&
+    !e.target.closest('#inline-search-results')
+  ) {
+    inlineResults.style.display = 'none';
+  }
+});
 
 // ── WATCH HISTORY ──
 function saveToWatchHistory(item) {
   const history = JSON.parse(localStorage.getItem('watchHistory')) || [];
   if (!history.some(h => h.id === item.id)) {
     history.unshift(item);
-    localStorage.setItem(
-      'watchHistory',
-      JSON.stringify(history.slice(0, 20))
-    );
+    localStorage.setItem('watchHistory', JSON.stringify(history.slice(0, 20)));
   }
 }
 
