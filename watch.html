@@ -5,53 +5,152 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Watch</title>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
   <style>
-    body { background: #111; color: #fff; font-family: sans-serif; padding: 20px; }
-    iframe { width: 100%; height: 80vh; border: none; margin-top: 20px; }
-    select { padding: 6px; font-size: 1rem; }
+    /* ===== RESET & BASE ===== */
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{background:#111;color:#fff;font-family:Arial,Helvetica,sans-serif;}
+
+    /* ===== NAVBAR ===== */
+    .watch-navbar{
+      display:flex;align-items:center;justify-content:space-between;
+      background:#1f1f1f;padding:0.8rem 1.5rem;
+      box-shadow:0 2px 5px rgba(0,0,0,.6);
+    }
+    .back-btn{
+      color:#fff;text-decoration:none;font-weight:bold;
+      background:#e50914;padding:0.45rem 1rem;border-radius:5px;
+    }
+    .back-btn:hover{background:#b40610;}
+
+    /* ===== TITLE ===== */
+    .watch-title{padding:1rem 1.5rem;font-size:1.6rem;}
+
+    /* ===== LAYOUT ===== */
+    .watch-grid{
+      display:flex;
+      gap:1rem;
+      padding:0 1.5rem 2rem;
+    }
+    iframe#watch-player{
+      flex:0 0 70%;      /* video gets 70% width */
+      height:65vh;
+      border:none;
+      border-radius:8px;
+    }
+
+    /* ===== FOR YOU ===== */
+    .for-you{
+      flex:1;max-width:28%;
+    }
+    .for-you h3{margin-bottom:0.5rem;font-size:1.2rem;}
+    .rec-list{
+      display:flex;flex-direction:column;gap:0.5rem;overflow-y:auto;
+      max-height:65vh;padding-right:4px;
+    }
+    .rec-item{
+      display:flex;gap:0.5rem;cursor:pointer;align-items:center;
+    }
+    .rec-item img{
+      width:45px;height:67px;object-fit:cover;border-radius:4px;
+    }
+    .rec-item span{font-size:0.9rem;color:#ddd;}
+    .rec-item:hover span{color:#fff;}
+
+    /* scroll bar */
+    .rec-list::-webkit-scrollbar{width:6px}
+    .rec-list::-webkit-scrollbar-thumb{background:#444;border-radius:4px}
   </style>
 </head>
 <body>
-  <h1 id="watch-title">Loading…</h1>
-  <label for="server">Choose Server: </label>
-  <select id="server">
-    <option value="vidsrc.cc">vidsrc.cc</option>
-    <option value="vidsrc.me">vidsrc.me</option>
-    <option value="player.videasy.net">videasy</option>
-  </select>
-  <iframe id="watch-player" allowfullscreen></iframe>
+  <!-- Navbar -->
+  <nav class="watch-navbar">
+    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Homepage</a>
+    <span></span><!-- spacer -->
+  </nav>
+
+  <!-- Title -->
+  <h1 id="watch-title" class="watch-title">Loading…</h1>
+
+  <!-- Main layout -->
+  <div class="watch-grid">
+    <!-- Video -->
+    <iframe id="watch-player" allowfullscreen></iframe>
+
+    <!-- Recommendations -->
+    <aside class="for-you">
+      <h3>For You</h3>
+      <div id="rec-list" class="rec-list"></div>
+    </aside>
+  </div>
 
   <script>
+    /* === CONFIG === */
+    const API_KEY  = 'ba0e2f64d29bae320cf0bbd091bbdf3f';   // <- replace
+    const BASE_URL = 'https://api.themoviedb.org/3';
+    const IMG_URL  = 'https://image.tmdb.org/t/p/w200';
+
+    /* === Read URL params === */
     const params = new URLSearchParams(window.location.search);
-    const id = params.get("id");
-    const type = params.get("type");
-    const title = params.get("title");
+    const id    = params.get('id');
+    const type  = params.get('type');           // movie | tv
+    const title = params.get('title');
 
-    if (!id || !type) {
-      document.getElementById("watch-title").textContent = "Invalid stream info.";
-      throw new Error("Missing ID or type.");
+    const titleEl = document.getElementById('watch-title');
+    const iframe  = document.getElementById('watch-player');
+    const recList = document.getElementById('rec-list');
+
+    if(!id || !type){
+      titleEl.textContent = 'Invalid stream info.';
+      throw new Error('Missing id or type');
     }
 
-    document.getElementById("watch-title").textContent = decodeURIComponent(title || "Now Playing");
+    titleEl.textContent = decodeURIComponent(title || 'Now Playing');
 
-    function updateEmbed(server) {
-      let url = "";
-
-      if (server === "vidsrc.cc") {
-        url = `https://vidsrc.cc/v2/embed/${type}/${id}`;
-      } else if (server === "vidsrc.me") {
-        url = `https://vidsrc.net/embed/${type}/?tmdb=${id}`;
-      } else if (server === "player.videasy.net") {
-        url = `https://player.videasy.net/${type}/${id}`;
+    /* === Player embed === */
+    function setEmbed(server='vidsrc.cc'){
+      let url='';
+      if(server==='vidsrc.cc'){
+        url=`https://vidsrc.cc/v2/embed/${type}/${id}`;
+      }else if(server==='vidsrc.me'){
+        url=`https://vidsrc.net/embed/${type}/?tmdb=${id}`;
+      }else{
+        url=`https://player.videasy.net/${type}/${id}`;
       }
+      iframe.src=url;
+    }
+    setEmbed();   // default
 
-      document.getElementById("watch-player").src = url;
+    /* === Fetch Recommendations === */
+    async function loadRecommendations(){
+      try{
+        const res = await fetch(`${BASE_URL}/${type}/${id}/recommendations?api_key=${API_KEY}`);
+        const data = await res.json();
+        let recs = data.results || [];
+        if(!recs.length){       // fallback: trending
+          const tr = await fetch(`${BASE_URL}/trending/${type}/week?api_key=${API_KEY}`);
+          recs = (await tr.json()).results || [];
+        }
+        recList.innerHTML='';
+        recs.slice(0,15).forEach(it=>{
+          if(!it.poster_path) return;
+          const div=document.createElement('div');
+          div.className='rec-item';
+          div.innerHTML=`
+            <img src="${IMG_URL+it.poster_path}" alt="${it.title||it.name}">
+            <span>${it.title||it.name}</span>`;
+          div.onclick=()=>window.location.href=
+            \`watch.html?id=\${it.id}&type=\${type}&title=\${encodeURIComponent(it.title||it.name)}\`;
+          recList.appendChild(div);
+        });
+      }catch(err){
+        console.error(err);
+        recList.innerHTML='<p style="color:#888;">Could not load recommendations.</p>';
+      }
     }
 
-    const serverSelect = document.getElementById("server");
-    serverSelect.addEventListener("change", () => updateEmbed(serverSelect.value));
-
-    updateEmbed(serverSelect.value);
+    loadRecommendations();
   </script>
 </body>
 </html>
