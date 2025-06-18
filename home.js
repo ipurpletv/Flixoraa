@@ -167,17 +167,23 @@ function loadWatchHistory() {
   const container = document.getElementById('history-results');
   container.innerHTML = '';
   const history = JSON.parse(localStorage.getItem('watchHistory')) || [];
+
   if (history.length === 0) {
     container.innerHTML = '<p style="color:#ccc;">No history yet.</p>';
     return;
   }
+
+  const list = document.createElement('ul');
+  list.className = 'history-list';
+
   history.forEach(item => {
-    const img = document.createElement('img');
-    img.src = item.poster;
-    img.alt = item.title;
-    img.onclick = () => showDetails(item);
-    container.appendChild(img);
+    const li = document.createElement('li');
+    li.textContent = item.title;
+    li.onclick = () => showDetails(item);
+    list.appendChild(li);
   });
+
+  container.appendChild(list);
 }
 
 function toggleHistory() {
