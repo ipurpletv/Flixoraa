@@ -215,12 +215,3 @@ function toggleSidebar() {
 }
 
 window.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-function scrollList(id, direction) {
-  const container = document.getElementById(id);
-  const scrollAmount = container.clientWidth * 0.8; // scroll 80% of container
-  container.scrollBy({
-    left: direction * scrollAmount,
-    behavior: 'smooth'
-  });
-}
