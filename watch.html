@@ -3,257 +3,226 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Watch</title>
+  <title>Watch - Flixora</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
     body {
-      background: #0b0b0b;
+      margin: 0;
+      background: #111;
       color: #fff;
       font-family: 'Segoe UI', sans-serif;
-      overflow-x: hidden;
     }
 
     header {
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(10px);
-      padding: 16px;
+      background: #1c1c1c;
+      padding: 15px 20px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      align-items: center;
+      border-bottom: 1px solid #333;
     }
 
-    header a {
-      color: #00bfff;
+    .nav-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .back-btn {
+      background: #ff4444;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 4px;
+      font-size: 0.95rem;
       text-decoration: none;
-      font-size: 1rem;
-      font-weight: 600;
     }
 
     #watch-title {
-      font-size: 1.5rem;
-      padding: 20px 24px;
-      border-bottom: 1px solid #222;
+      font-size: 1.4rem;
+      margin: 15px 20px;
     }
 
-    .watch-container {
+    .main-wrapper {
       display: flex;
-      padding: 20px 24px;
-      gap: 24px;
+      padding: 0 20px 20px;
+      gap: 20px;
       flex-wrap: wrap;
     }
 
-    .video-box {
-      flex: 2;
-      min-width: 300px;
+    .video-player {
+      flex: 1 1 640px;
+      max-width: 800px;
     }
 
-    .video-box iframe {
+    .video-player iframe {
       width: 100%;
       height: 420px;
       border: none;
-      border-radius: 10px;
-      background: #000;
+      border-radius: 6px;
     }
 
     .server-select {
-      margin-top: 12px;
+      margin: 10px 0;
     }
 
     .server-select label {
-      font-size: 0.9rem;
       margin-right: 8px;
+      font-size: 1rem;
     }
 
     .server-select select {
-      padding: 6px;
-      background: #222;
-      color: #fff;
-      border: 1px solid #444;
+      padding: 6px 10px;
+      font-size: 1rem;
       border-radius: 4px;
-      font-size: 0.9rem;
+      border: none;
     }
 
     .recommendations {
-      flex: 1;
-      min-width: 250px;
-      background: rgba(30, 30, 30, 0.8);
-      backdrop-filter: blur(8px);
-      padding: 16px;
-      border-radius: 10px;
-      height: 460px;
-      overflow-y: auto;
+      flex: 1 1 240px;
+      max-width: 300px;
     }
 
     .recommendations h3 {
-      font-size: 1rem;
-      margin-bottom: 12px;
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 1.1rem;
     }
 
-    .rec-item {
+    .recommendations .rec-list {
       display: flex;
-      align-items: center;
-      margin-bottom: 10px;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .rec-list img {
+      width: 100%;
+      border-radius: 6px;
       cursor: pointer;
       transition: transform 0.2s;
     }
 
-    .rec-item:hover {
-      transform: scale(1.02);
-    }
-
-    .rec-item img {
-      width: 48px;
-      height: 72px;
-      object-fit: cover;
-      border-radius: 4px;
-      margin-right: 10px;
-    }
-
-    .rec-item span {
-      font-size: 0.85rem;
-      color: #ccc;
+    .rec-list img:hover {
+      transform: scale(1.03);
     }
 
     @media (max-width: 768px) {
-      #watch-title {
-        font-size: 1.2rem;
-        padding: 16px;
-      }
-
-      .watch-container {
+      .main-wrapper {
         flex-direction: column;
-        padding: 16px;
+        padding: 10px;
       }
 
-      .video-box iframe {
-        height: 240px;
+      .video-player iframe {
+        height: 300px;
       }
 
       .recommendations {
-        height: auto;
-        max-height: 300px;
-        margin-top: 20px;
-      }
-
-      .rec-item img {
-        width: 40px;
-        height: 60px;
-      }
-
-      .rec-item span {
-        font-size: 0.8rem;
+        max-width: 100%;
       }
     }
   </style>
 </head>
 <body>
   <header>
-    <a href="index.html">← Back to Homepage</a>
+    <div class="nav-title">Flixora Player</div>
+    <a href="index.html" class="back-btn">← Back to Homepage</a>
   </header>
 
-  <h2 id="watch-title">Loading…</h2>
+  <h1 id="watch-title">Loading…</h1>
 
-  <div class="watch-container">
-    <div class="video-box">
-      <iframe id="watch-player" allowfullscreen></iframe>
+  <div class="main-wrapper">
+    <div class="video-player">
       <div class="server-select">
-        <label for="server">Choose Server:</label>
+        <label for="server">Server:</label>
         <select id="server">
           <option value="vidsrc.cc">Martina</option>
           <option value="vidsrc.me">Purple</option>
           <option value="player.videasy.net">Cuz (HD)</option>
-          <option value="apimocine.movie">Cristina (HD)</option>
-          <option value="apimocine.tv">Steechy (TV Series Only)</option>
+          <option value="apimocine-movie">Cristina (HD)</option>
+          <option value="apimocine-tv">Steechy (TV Series Only)</option>
           <option value="consumet">Flixora Anime (Consumet)</option>
         </select>
       </div>
+      <iframe id="watch-player" allowfullscreen></iframe>
     </div>
 
     <div class="recommendations">
       <h3>For You</h3>
-      <div id="recommend-list">Loading…</div>
+      <div class="rec-list" id="recommendations"></div>
     </div>
   </div>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
+    const params = new URLSearchParams(location.search);
     const id = params.get("id");
     const type = params.get("type");
-    const title = params.get("title");
-    const titleEl = document.getElementById("watch-title");
-    const player = document.getElementById("watch-player");
+    const title = decodeURIComponent(params.get("title") || "Now Playing");
+
+    const watchTitle = document.getElementById("watch-title");
     const serverSelect = document.getElementById("server");
+    const iframe = document.getElementById("watch-player");
+    const recList = document.getElementById("recommendations");
 
     if (!id || !type) {
-      titleEl.textContent = "Invalid stream info.";
-      throw new Error("Missing ID or type.");
+      watchTitle.textContent = "Invalid video ID or type.";
+      throw new Error("Missing required parameters.");
     }
 
-    titleEl.textContent = decodeURIComponent(title || "Now Playing");
+    watchTitle.textContent = title;
 
     function updateEmbed(server) {
       let url = "";
+
       if (server === "vidsrc.cc") {
-        url = `https://vidsrc.cc/v2/embed/${type}/${id}?autoplay=1`;
+        url = `https://vidsrc.cc/v2/embed/${type}/${id}`;
       } else if (server === "vidsrc.me") {
-        url = `https://vidsrc.net/embed/${type}/?tmdb=${id}&autoplay=1`;
+        url = `https://vidsrc.net/embed/${type}/?tmdb=${id}`;
       } else if (server === "player.videasy.net") {
-        url = `https://player.videasy.net/${type}/${id}?autoplay=1`;
-      } else if (server === "apimocine.movie") {
+        url = `https://player.videasy.net/${type}/${id}`;
+      } else if (server === "apimocine-movie") {
         url = `https://apimocine.vercel.app/movie/${id}`;
-      } else if (server === "apimocine.tv") {
+      } else if (server === "apimocine-tv") {
         url = `https://apimocine.vercel.app/tv/${id}`;
       } else if (server === "consumet") {
-    const titleQuery = encodeURIComponent(title);
-    url = `https://aniwatch.to/embed?query=${titleQuery}`;
-      
-      player.src = url;
+        const titleQuery = encodeURIComponent(title);
+        url = `https://aniwatch.to/embed?query=${titleQuery}`;
+      }
+
+      iframe.src = url;
     }
 
     serverSelect.addEventListener("change", () => updateEmbed(serverSelect.value));
     updateEmbed(serverSelect.value);
 
-    async function loadRecommendations() {
-      const container = document.getElementById("recommend-list");
-      container.innerHTML = "";
-
+    // Fetch and display related recommendations
+    async function fetchRecommendations() {
       try {
         const res = await fetch(`https://api.themoviedb.org/3/${type}/${id}/recommendations?api_key=ba0e2f64d29bae320cf0bbd091bbdf3f`);
         const data = await res.json();
+        recList.innerHTML = '';
 
-        if (!data.results.length) {
-          container.innerHTML = "<p style='color:#888;'>No recommendations found.</p>";
+        const items = data.results.slice(0, 8); // show only 8
+        if (!items.length) {
+          recList.innerHTML = '<p style="color:#ccc;">No recommendations.</p>';
           return;
         }
 
-        data.results.slice(0, 10).forEach(item => {
-          if (!item.poster_path) return;
-          const div = document.createElement("div");
-          div.className = "rec-item";
-          div.innerHTML = `
-            <img src="https://image.tmdb.org/t/p/w200${item.poster_path}" alt="${item.title || item.name}">
-            <span>${item.title || item.name}</span>`;
-          div.onclick = () => {
-            const newUrl = `watch.html?id=${item.id}&type=${type}&title=${encodeURIComponent(item.title || item.name)}`;
-            window.location.href = newUrl;
+        items.forEach(it => {
+          if (!it.poster_path) return;
+          const img = document.createElement("img");
+          img.src = `https://image.tmdb.org/t/p/w200${it.poster_path}`;
+          img.alt = it.title || it.name;
+          img.title = it.title || it.name;
+          img.onclick = () => {
+            window.location.href = `watch.html?id=${it.id}&type=${type}&title=${encodeURIComponent(it.title || it.name)}`;
           };
-          container.appendChild(div);
+          recList.appendChild(img);
         });
       } catch (err) {
-        container.innerHTML = "<p style='color:red;'>Error loading recommendations.</p>";
-        console.error(err);
+        console.error("Error loading recommendations", err);
+        recList.innerHTML = '<p style="color:red;">Failed to load recommendations.</p>';
       }
     }
 
-    loadRecommendations();
+    fetchRecommendations();
   </script>
 </body>
 </html>
