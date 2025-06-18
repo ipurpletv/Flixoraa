@@ -24,13 +24,12 @@
 <body>
   <!-- ╔════════ NAVBAR ════════╗ -->
 <header class="navbar">
-  <!-- hamburger -->
   <button class="menu-btn" aria-label="Menu" onclick="toggleSidebar()">
     <i class="fas fa-bars"></i>
   </button>
 
-    <!-- brand -->
-     <a href="index.html" class="brand">
+  <!-- brand now directly beside hamburger -->
+  <a href="index.html" class="brand">
     <img src="Icosss.png" alt="Flixora logo" class="logo" />
     <span class="brand-name">Flixora</span>
   </a>
@@ -54,10 +53,11 @@
   </div>
 
     <!-- watch history (kept, download‑app removed) -->
-  <button id="history-btn" class="history-btn" onclick="openHistory()">
-    <i class="fas fa-history"></i>
-    <span>History</span>
-  </button>
+<aside id="history-sidebar" class="sidebar history">
+  <span class="close-side" onclick="toggleHistory()">×</span>
+  <h3>Watch history</h3>
+  <div id="history-results" class="results"></div>
+</aside>
 </header>
   <nav id="sidebar" class="sidebar">
   <span class="close-side" onclick="toggleSidebar()">×</span>
