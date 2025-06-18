@@ -35,11 +35,17 @@
     </div>
 
     <!-- this button just opens search modal -->
-    <!-- Right side -->
     <div class="nav-right">
-      <button class="menu-btn" aria-label="Search" onclick="openSearchModal()">
-        <i class="fas fa-search"></i>
-      </button>
+      <div class="search-wrapper">
+        <input
+          type="text"
+          class="search-bar"
+          id="search-input"
+          placeholder="Search movie or show…"
+          oninput="searchTMDB()"
+        />
+        <i class="fas fa-search search-icon"></i>
+      </div>
 
       <button id="history-btn" class="history-btn" onclick="toggleHistory()">
         <i class="fas fa-history"></i>
