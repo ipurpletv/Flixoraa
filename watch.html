@@ -65,11 +65,14 @@
 
     .server-select {
       margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
     }
 
     .server-select label {
       font-size: 0.9rem;
-      margin-right: 8px;
     }
 
     .server-select select {
@@ -79,6 +82,16 @@
       border: 1px solid #444;
       border-radius: 4px;
       font-size: 0.9rem;
+    }
+
+    .download-btn {
+      background: #e50914;
+      color: white;
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      text-decoration: none;
+      border-radius: 4px;
+      display: inline-block;
     }
 
     .recommendations {
@@ -151,6 +164,10 @@
       .rec-item span {
         font-size: 0.8rem;
       }
+
+      .download-btn {
+        margin-top: 8px;
+      }
     }
   </style>
 </head>
@@ -191,6 +208,7 @@
     const titleEl = document.getElementById("watch-title");
     const player = document.getElementById("watch-player");
     const serverSelect = document.getElementById("server");
+    const downloadBtn = document.getElementById("watch-download-btn");
 
     if (!id || !type) {
       titleEl.textContent = "Invalid stream info.";
@@ -217,6 +235,20 @@
 
     serverSelect.addEventListener("change", () => updateEmbed(serverSelect.value));
     updateEmbed(serverSelect.value);
+
+    // ✅ Add download link fetch
+    fetch(`https://apimocine.vercel.app/${type}/${id}`)
+      .then(res => res.json())
+      .then(data => {
+        const dl = data?.media?.sources?.[0]?.url;
+        if (dl) {
+          downloadBtn.href = dl;
+          downloadBtn.style.display = 'inline-block';
+        }
+      })
+      .catch(() => {
+        downloadBtn.style.display = 'none';
+      });
 
     async function loadRecommendations() {
       const container = document.getElementById("recommend-list");
