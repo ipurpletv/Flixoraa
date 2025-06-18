@@ -21,37 +21,24 @@
 <body>
   <!-- ╔════ NAVBAR ════╗ -->
   <header class="navbar">
-    <!-- hamburger -->
     <button class="menu-btn" aria-label="Menu" onclick="toggleSidebar()">
       <i class="fas fa-bars"></i>
     </button>
 
-    <!-- brand -->
     <a href="index.html" class="brand">
       <img src="Icosss.png" alt="Flixora logo" class="logo" />
       <span class="brand-name">Flixora</span>
     </a>
 
-    <!-- RIGHT SIDE: search bar + history -->
-    <div class="navbar-right">
-      <div class="search-wrapper">
-        <i class="fas fa-search search-icon"></i>
-        <input
-          type="text"
-          id="search-input"            <!-- only ONE input with this id -->
-          class="search-bar"
-          placeholder="Search movie, TV show…"
-          onfocus="openSearchModal()"
-          oninput="searchTMDB()"
-        />
-        <i class="fas fa-times close-search" onclick="clearSearch()" title="Clear"></i>
-      </div>
+    <!-- this button just opens search modal -->
+    <button class="menu-btn" aria-label="Search" onclick="openSearchModal()">
+      <i class="fas fa-search"></i>
+    </button>
 
-      <button id="history-btn" class="history-btn" onclick="toggleHistory()">
-        <i class="fas fa-history"></i>
-        <span>History</span>
-      </button>
-    </div>
+    <button id="history-btn" class="history-btn" onclick="toggleHistory()">
+      <i class="fas fa-history"></i>
+      <span>History</span>
+    </button>
   </header>
 
   <!-- ║════ Genre sidebar ════║ -->
@@ -97,10 +84,11 @@
     <div class="list" id="anime-list"></div>
   </section>
 
-  <!-- Detail modal -->
+  <!-- Detail modal (id must match JS) -->
   <div class="modal" id="detail-modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal()">×</span>
+
       <div class="modal-body">
         <img id="detail-poster" src="" alt="" />
         <div class="modal-text">
@@ -111,10 +99,16 @@
     </div>
   </div>
 
-  <!-- Search modal — **input removed** (no duplicate id) -->
+  <!-- Search modal with the ONLY search input -->
   <div class="modal search" id="search-modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal()">×</span>
+      <input
+        type="text"
+        id="search-input"
+        placeholder="Search movie or show…"
+        oninput="searchTMDB()"
+      />
       <div class="results" id="search-results"></div>
     </div>
   </div>
