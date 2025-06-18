@@ -5,240 +5,227 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Watch</title>
   <style>
-  body {
-    background: #111;
-    color: #fff;
-    font-family: sans-serif;
-    margin: 0;
-    padding: 0;
-  }
-
-  header {
-    background: #222;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  header a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-  }
-
-  #watch-title {
-    padding: 15px 20px;
-    font-size: 1.3rem;
-    border-bottom: 1px solid #333;
-  }
-
-  .watch-container {
-    display: flex;
-    padding: 20px;
-    gap: 20px;
-    flex-wrap: wrap;
-  }
-
-  iframe {
-    width: 100%;
-    max-width: 750px;
-    height: 420px;
-    border: none;
-    background: #000;
-  }
-
-  .recommendations {
-    flex: 1;
-    min-width: 200px;
-    max-width: 320px;
-    background: #1a1a1a;
-    padding: 10px;
-    border-radius: 6px;
-    overflow-y: auto;
-    height: 420px;
-  }
-
-  .recommendations h3 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 1rem;
-    color: #f0f0f0;
-  }
-
-  .rec-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    cursor: pointer;
-    gap: 8px;
-  }
-
-  .rec-item img {
-    width: 50px;
-    height: 75px;
-    object-fit: cover;
-    border-radius: 4px;
-  }
-
-  .rec-item span {
-    font-size: 0.85rem;
-    color: #ccc;
-  }
-
-  select {
-    margin-left: 20px;
-    padding: 6px;
-    font-size: 0.9rem;
-  }
-
-  @media (max-width: 768px) {
-    .watch-container {
-      flex-direction: column;
-      align-items: center;
+    body {
+      background: #111;
+      color: #fff;
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
     }
 
-    iframe, .recommendations {
-      max-width: 100%;
+    header {
+      background: #222;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    #watch-title {
+      padding: 16px 20px;
+      font-size: 1.3rem;
+      border-bottom: 1px solid #333;
+    }
+
+    .watch-container {
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .video-box {
+      flex: 0 0 70%;
+      max-width: 70%;
+    }
+
+    .video-box iframe {
       width: 100%;
+      height: 420px;
+      border: none;
+      background: #000;
+    }
+
+    .server-select {
+      margin-top: 10px;
+    }
+
+    .server-select label {
+      font-size: 0.95rem;
+      margin-right: 8px;
+    }
+
+    .server-select select {
+      padding: 6px;
+      font-size: 0.95rem;
+    }
+
+    .recommendations {
+      flex: 1;
+      max-width: 300px;
+      background: #1a1a1a;
+      padding: 10px;
+      border-radius: 6px;
+      overflow-y: auto;
+      height: 420px;
+    }
+
+    .recommendations h3 {
+      margin: 0 0 12px;
+      font-size: 1rem;
+      color: #f0f0f0;
+    }
+
+    .rec-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      cursor: pointer;
+      gap: 8px;
     }
 
     .rec-item img {
-      width: 40px;
-      height: 60px;
+      width: 50px;
+      height: 75px;
+      object-fit: cover;
+      border-radius: 4px;
     }
 
     .rec-item span {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
+      color: #ccc;
     }
-  }
-</style>
 
+    @media (max-width: 768px) {
+      .watch-container {
+        flex-direction: column;
+      }
+
+      .video-box, .recommendations {
+        max-width: 100%;
+        width: 100%;
+      }
+
+      .recommendations {
+        height: auto;
+      }
+
+      .rec-item img {
+        width: 40px;
+        height: 60px;
+      }
+
+      .rec-item span {
+        font-size: 0.8rem;
+      }
+    }
+  </style>
 </head>
 <body>
-  <!-- NAVBAR -->
   <header>
-    <a href="index.html" class="back-button">← Back to Homepage</a>
+    <a href="index.html">← Back to Homepage</a>
   </header>
 
-  <!-- TITLE -->
-  <h1 id="watch-title">Loading…</h1>
+  <h2 id="watch-title">Loading…</h2>
 
-  <!-- CONTENT AREA -->
-  <div class="content">
-    <!-- VIDEO PLAYER SECTION -->
-    <div class="player-section">
+  <div class="watch-container">
+    <div class="video-box">
+      <iframe id="watch-player" allowfullscreen></iframe>
       <div class="server-select">
-        <label for="server">Server:</label>
+        <label for="server">Choose Server:</label>
         <select id="server">
           <option value="vidsrc.cc">vidsrc.cc</option>
           <option value="vidsrc.me">vidsrc.me</option>
           <option value="player.videasy.net">videasy</option>
-          <option value="apimocine-movie">apimocine.movie</option>
-          <option value="apimocine-tv">apimocine.tv</option>
+          <option value="apimocine-movie">apimocine (Movie)</option>
+          <option value="apimocine-tv">apimocine (TV)</option>
         </select>
       </div>
-      <iframe id="watch-player" allowfullscreen></iframe>
     </div>
 
-    <!-- RECOMMENDED SECTION -->
     <div class="recommendations">
       <h3>For You</h3>
-      <div id="recommendations-list"></div>
+      <div id="recommend-list">Loading…</div>
     </div>
   </div>
 
- <script>
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
-  const type = params.get("type");
-  const title = params.get("title");
-  const API_KEY = "ba0e2f64d29bae320cf0bbd091bbdf3f";
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    const type = params.get("type");
+    const title = params.get("title");
 
-  if (!id || !type) {
-    document.getElementById("watch-title").textContent = "Invalid stream info.";
-    throw new Error("Missing ID or type.");
-  }
+    const player = document.getElementById("watch-player");
+    const titleEl = document.getElementById("watch-title");
+    const serverSelect = document.getElementById("server");
 
-  document.getElementById("watch-title").textContent = decodeURIComponent(title || "Now Playing");
-
-  function updateEmbed(server) {
-    let url = "";
-
-    if (server === "vidsrc.cc") {
-      url = `https://vidsrc.cc/v2/embed/${type}/${id}`;
-    } else if (server === "vidsrc.me") {
-      url = `https://vidsrc.net/embed/${type}/?tmdb=${id}`;
-    } else if (server === "player.videasy.net") {
-      url = `https://player.videasy.net/${type}/${id}`;
-    } else if (server === "apimocine-movie") {
-      url = `https://apimocine.vercel.app/movie/${id}`;
-    } else if (server === "apimocine-tv") {
-      url = `https://apimocine.vercel.app/tv/${id}`;
+    if (!id || !type) {
+      titleEl.textContent = "Invalid stream info.";
+      throw new Error("Missing ID or type.");
     }
 
-    document.getElementById("watch-player").src = url;
-  }
+    titleEl.textContent = decodeURIComponent(title || "Now Playing");
 
-  const serverSelect = document.getElementById("server");
-  serverSelect.addEventListener("change", () => updateEmbed(serverSelect.value));
-  updateEmbed(serverSelect.value);
+    function updateEmbed(server) {
+      let url = "";
 
-  async function fetchRecommendations() {
-    const container = document.getElementById("recommendations-list");
-    container.innerHTML = '<p style="color:#888;">Loading recommendations…</p>';
-    try {
-      const url = `https://api.themoviedb.org/3/${type}/${id}/recommendations?api_key=${API_KEY}`;
-      const res = await fetch(url);
-      const data = await res.json();
-
-      const items = data.results && data.results.length ? data.results.slice(0, 10) : [];
-
-      if (items.length === 0) {
-        return fetchTrendingFallback(); // fallback
+      if (server === "vidsrc.cc") {
+        url = `https://vidsrc.cc/v2/embed/${type}/${id}`;
+      } else if (server === "vidsrc.me") {
+        url = `https://vidsrc.net/embed/${type}/?tmdb=${id}`;
+      } else if (server === "player.videasy.net") {
+        url = `https://player.videasy.net/${type}/${id}`;
+      } else if (server === "apimocine-movie") {
+        url = `https://apimocine.vercel.app/movie/${id}`;
+      } else if (server === "apimocine-tv") {
+        url = `https://apimocine.vercel.app/tv/${id}`;
       }
 
-      renderRecommendations(items);
-    } catch (err) {
-      console.error("Recommendations error:", err);
-      fetchTrendingFallback();
+      player.src = url;
     }
-  }
 
-  async function fetchTrendingFallback() {
-    const container = document.getElementById("recommendations-list");
-    container.innerHTML = '<p style="color:#888;">Showing trending instead…</p>';
-    try {
-      const res = await fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${API_KEY}`);
-      const data = await res.json();
-      renderRecommendations(data.results.slice(0, 10));
-    } catch (err) {
-      console.error("Trending fallback failed:", err);
-      container.innerHTML = '<p style="color:red;">No fallback available.</p>';
+    serverSelect.addEventListener("change", () => updateEmbed(serverSelect.value));
+    updateEmbed(serverSelect.value);
+
+    async function loadRecommendations() {
+      const container = document.getElementById("recommend-list");
+      container.innerHTML = "";
+
+      try {
+        const res = await fetch(`https://api.themoviedb.org/3/${type}/${id}/recommendations?api_key=ba0e2f64d29bae320cf0bbd091bbdf3f`);
+        const data = await res.json();
+
+        if (!data.results.length) {
+          container.innerHTML = "<p style='color:#888;'>No recommendations found.</p>";
+          return;
+        }
+
+        data.results.slice(0, 10).forEach(item => {
+          if (!item.poster_path) return;
+          const div = document.createElement("div");
+          div.className = "rec-item";
+          div.innerHTML = `
+            <img src="https://image.tmdb.org/t/p/w200${item.poster_path}" alt="${item.title || item.name}">
+            <span>${item.title || item.name}</span>`;
+          div.onclick = () => {
+            const newUrl = `watch.html?id=${item.id}&type=${type}&title=${encodeURIComponent(item.title || item.name)}`;
+            window.location.href = newUrl;
+          };
+          container.appendChild(div);
+        });
+      } catch (err) {
+        container.innerHTML = "<p style='color:red;'>Error loading recommendations.</p>";
+        console.error(err);
+      }
     }
-  }
 
-  function renderRecommendations(items) {
-    const container = document.getElementById("recommendations-list");
-    container.innerHTML = '';
-    items.forEach(item => {
-      if (!item.poster_path) return;
-      const div = document.createElement("div");
-      div.className = "rec-item";
-      const itemType = item.media_type || (item.first_air_date ? "tv" : "movie");
-      div.onclick = () => {
-        const link = `watch.html?id=${item.id}&type=${itemType}&title=${encodeURIComponent(item.title || item.name)}`;
-        window.location.href = link;
-      };
-      div.innerHTML = `
-        <img src="https://image.tmdb.org/t/p/w200${item.poster_path}" alt="${item.title || item.name}">
-        <span>${item.title || item.name}</span>`;
-      container.appendChild(div);
-    });
-  }
-
-  fetchRecommendations();
-</script>
-
+    loadRecommendations();
+  </script>
 </body>
 </html>
