@@ -102,16 +102,20 @@
   </section>
 
   <!-- Detail modal with streaming servers -->
-  <div class="modal" id="detail-modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">×</span>
+ <div class="modal" id="detail-modal">
+  <div class="modal-content small">
+    <span class="close" onclick="closeModal()">×</span>
+    <div class="modal-body">
+      <img id="detail-poster" src="" alt="" />
+      <div class="modal-text">
+        <h2 id="detail-title"></h2>
+        <p id="detail-description"></p>
+        <a id="watch-now-btn" class="watch-now-btn" href="#" target="_blank">▶ Watch Now</a>
+      </div>
+    </div>
+  </div>
+</div>
 
-      <div class="modal-body">
-        <img id="detail-poster" src="" alt="" />
-        <div class="modal-text">
-          <h2 id="detail-title"></h2>
-          <p id="detail-description"></p>
-          <a id="watch-now-btn" class="watch-now-btn" href="#" target="_blank">▶ Watch Now</a>
 
 
           <!-- Server selector -->
