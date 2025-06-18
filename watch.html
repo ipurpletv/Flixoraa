@@ -172,6 +172,9 @@
           <option value="player.videasy.net">Cuz (HD)</option>
           <option value="apimocine.movie">Cristina (HD)</option>
           <option value="apimocine.tv">Steechy (TV Series Only)</option>
+          <option value="gogoanime">GoGoAnime</option>
+          <option value="zoro">Zoro</option>
+          <option value="pahe">AnimePahe</option>
         </select>
       </div>
     </div>
@@ -210,6 +213,12 @@
         url = `https://apimocine.vercel.app/movie/${id}`;
       } else if (server === "apimocine.tv") {
         url = `https://apimocine.vercel.app/tv/${id}`;
+      } else if (server === "gogoanime") {
+        url = `https://gogoplay.io/streaming.php?id=${id}`;
+      } else if (server === "zoro") {
+        url = `https://zoro.to/watch/${id}`;
+      } else if (server === "pahe") {
+        url = `https://animepahe.ru/play/${id}`;
       }
       player.src = url;
     }
