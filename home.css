@@ -208,79 +208,23 @@ body {
 /* —————————————————————— BANNER —————————————————————— */
 .banner {
   position: relative;
-  height: 400px;
+  height: 35vh;
   background-size: cover;
   background-position: center;
   display: flex;
   align-items: flex-end;
+  padding: 20px;
+  margin-bottom: 1.5rem;
 }
-
-.banner-overlay {
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-  color: white;
-  padding: 2rem;
-  width: 100%;
-}
-
-.banner-overlay h1 {
-  font-size: 2rem;
-  margin: 0;
-}
-
-.banner-overlay p {
-  max-width: 600px;
-  margin: 0.5rem 0 1rem;
-  color: #ddd;
-}
-
-.banner-watch-btn {
-  background-color: #ff4444;
-  color: white;
-  padding: 0.5rem 1.2rem;
-  border-radius: 5px;
-  text-decoration: none;
-  font-weight: bold;
-}
-
 
 /* —————————————————————— SECTIONS —————————————————————— */
-.scroll-container {
-  position: relative;
-  display: flex;
-  align-items: center;
+.row {
+  margin: 1rem 1rem;
 }
 
-.scroll-btn {
-  background: rgba(0, 0, 0, 0.5);
-  border: none;
-  color: white;
-  font-size: 1.8rem;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  z-index: 1;
-  transition: background 0.2s;
-}
-
-.scroll-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.scroll-btn.left {
-  position: absolute;
-  left: 0;
-}
-
-.scroll-btn.right {
-  position: absolute;
-  right: 0;
-}
-
-.list {
-  display: flex;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  gap: 0.5rem;
-  padding: 0 2.5rem; /* to leave space for buttons */
+.row h2 {
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
 }
 
 /* —————————————————————— THUMBNAILS —————————————————————— */
