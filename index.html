@@ -12,17 +12,45 @@
   <link rel="preload" href="home.js" as="script" />
 
   <link rel="manifest" href="manifest.json" />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-  />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <!-- ⭐ extra styles just for media‑card & download button -->
+  <style>
+    /* Card injected by JS */
+    .media-card{
+      display:inline-block;
+      width:140px;
+      margin:10px;
+      text-align:center;
+    }
+    .media-card img{
+      width:100%;
+      border-radius:4px;
+      cursor:pointer;
+    }
+    .media-title{
+      font-size:.9em;
+      color:#fff;
+      margin:4px 0;
+    }
+    .download-btn{
+      display:inline-block;
+      background:#e50914;
+      color:#fff;
+      padding:4px 8px;
+      font-size:.8em;
+      text-decoration:none;
+      border-radius:4px;
+      margin-top:4px;
+    }
+  </style>
 </head>
 
 <body>
   <!-- ╔════ NAVBAR ════╗ -->
   <header class="navbar">
     <div class="navbar-content">
-      <!-- Left side -->
       <div class="nav-left">
         <button class="menu-btn" aria-label="Menu" onclick="toggleSidebar()">
           <i class="fas fa-bars"></i>
@@ -34,63 +62,53 @@
         </a>
       </div>
 
-      <!-- Right side -->
       <div class="nav-right">
         <div class="search-wrapper">
-          <input
-            type="text"
-            class="search-bar"
-            id="search-input"
-            placeholder="Search movie or show…"
-            oninput="searchTMDB()"
-          />
+          <input type="text"
+                 class="search-bar"
+                 id="search-input"
+                 placeholder="Search movie or show…"
+                 oninput="searchTMDB()"/>
           <i class="fas fa-search search-icon"></i>
         </div>
 
         <button id="history-btn" class="history-btn" onclick="toggleHistory()">
-          <i class="fas fa-history"></i>
-          <span>History</span>
+          <i class="fas fa-history"></i><span>History</span>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Inline search results dropdown -->
+  <!-- inline search dropdown -->
   <div id="inline-search-results" class="inline-search-results"></div>
 
-  <!-- ║════ Genre sidebar ════║ -->
+  <!-- ║════ sidebars ════║ -->
   <nav id="sidebar" class="sidebar">
     <span class="close-side" onclick="toggleSidebar()">×</span>
     <h3>Genres</h3>
     <ul>
-      <li data-genre="28">Action</li>
-      <li data-genre="35">Comedy</li>
-      <li data-genre="16">Animation</li>
-      <li data-genre="18">Drama</li>
-      <li data-genre="27">Horror</li>
-      <li data-genre="10749">Romance</li>
+      <li data-genre="28">Action</li><li data-genre="35">Comedy</li>
+      <li data-genre="16">Animation</li><li data-genre="18">Drama</li>
+      <li data-genre="27">Horror</li><li data-genre="10749">Romance</li>
       <li data-genre="878">Sci‑Fi</li>
     </ul>
   </nav>
 
-  <!-- ║════ History sidebar ════║ -->
   <aside id="history-sidebar" class="sidebar history">
     <span class="close-side" onclick="toggleHistory()">×</span>
     <h3>Watch History</h3>
     <div id="history-results" class="results"></div>
   </aside>
-
-  <!-- ╚══════════════════════╝ -->
+  <!-- ╚═══════════════════╝ -->
 
   <!-- Banner -->
   <div class="banner" id="banner">
-  <div class="banner-overlay">
-    <h1 id="banner-title"></h1>
-    <p id="banner-description"></p>
-    <a id="banner-watch-btn" class="banner-watch-btn" href="#" target="_blank">▶ Watch Now</a>
+    <div class="banner-overlay">
+      <h1 id="banner-title"></h1>
+      <p id="banner-description"></p>
+      <a id="banner-watch-btn" class="banner-watch-btn" href="#" target="_blank">▶ Watch Now</a>
+    </div>
   </div>
-</div>
-
 
   <!-- Rows -->
   <section class="row">
@@ -108,29 +126,27 @@
     <div class="list" id="anime-list"></div>
   </section>
 
-  <!-- Detail modal with streaming servers -->
- <div class="modal" id="detail-modal">
-  <div class="modal-content small">
-    <span class="close" onclick="closeModal()">×</span>
-    <div class="modal-body">
-      <img id="detail-poster" src="" alt="" />
-      <div class="modal-text">
-        <h2 id="detail-title"></h2>
-        <p id="detail-description"></p>
-        <a id="watch-now-btn" class="watch-now-btn" href="#" target="_blank">▶ Watch Now</a>
-        <a id="download-btn" class="download-btn" href="#" target="_blank" style="display: none;">⬇ Download</a>
+  <!-- Detail modal -->
+  <div class="modal" id="detail-modal">
+    <div class="modal-content small">
+      <span class="close" onclick="closeModal()">×</span>
+      <div class="modal-body">
+        <img id="detail-poster" src="" alt=""/>
+        <div class="modal-text">
+          <h2 id="detail-title"></h2>
+          <p  id="detail-description"></p>
+          <a id="watch-now-btn" class="watch-now-btn" href="#" target="_blank">▶ Watch Now</a>
+          <a id="download-btn"  class="download-btn"  href="#" target="_blank" style="display:none;">⬇ Download</a>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
   <!-- Footer -->
   <footer class="footer">
     <p>&copy; 2025 Flixora. All rights reserved.</p>
     <div class="footer-links">
-      <a href="#">Disclaimer</a> ·
-      <a href="#">About Us</a> ·
-      <a href="#">Contact Us</a>
+      <a href="#">Disclaimer</a> · <a href="#">About Us</a> · <a href="#">Contact Us</a>
     </div>
   </footer>
 </body>
