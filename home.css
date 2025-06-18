@@ -38,8 +38,8 @@ body {
 }
 
 .sidebar-header .logo {
-  width: 40px;
-  height: 40px;
+  height: 40px;  /* Set only the height to maintain aspect ratio */
+  width: auto;   /* Allow the width to adjust automatically */
   margin-right: 12px;
 }
 
