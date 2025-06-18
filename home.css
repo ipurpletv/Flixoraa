@@ -359,4 +359,58 @@ body {
 .watch-now-btn:hover {
   background: #b00610;
 }
+/* Make modal pop-up smaller and centered */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.75);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content.small {
+  background: #1c1c1c;
+  padding: 20px;
+  max-width: 600px;
+  width: 90%;
+  border-radius: 10px;
+  color: #fff;
+}
+
+.modal-body {
+  display: flex;
+  gap: 20px;
+  flex-direction: row;
+}
+
+.modal-body img {
+  width: 150px;
+  border-radius: 6px;
+}
+
+.modal-text {
+  flex: 1;
+}
+
+/* Watch Now button styling */
+.watch-now-btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 24px;
+  background-color: #e50914;
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.watch-now-btn:hover {
+  background-color: #b00610;
+}
 
