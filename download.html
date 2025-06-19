@@ -13,7 +13,6 @@
       text-align: center;
     }
 
-    /* --- Navbar --- */
     .navbar {
       background-color: #000;
       color: #fff;
@@ -40,7 +39,6 @@
       font-weight: bold;
     }
 
-    /* --- Page Content --- */
     .content {
       padding: 3rem 1rem;
     }
@@ -48,8 +46,7 @@
     #poster {
       max-width: 200px;
       border-radius: 8px;
-      margin-bottom: 1.5rem;
-      display: none;
+      margin-bottom: 1rem;
     }
 
     #download-title {
@@ -97,8 +94,8 @@
     const IMG_URL = 'https://image.tmdb.org/t/p/w500';
 
     const params = new URLSearchParams(window.location.search);
-    const title = params.get('title') || 'Your file';
-    const url = params.get('url');
+    const id = params.get('id');
+    const type = params.get('type'); // 'movie' or 'tv'
 
     const titleElem = document.getElementById('download-title');
     const posterElem = document.getElementById('poster');
@@ -106,29 +103,38 @@
     const timerElem = document.getElementById('timer');
     const linkElem = document.getElementById('download-link');
 
-    titleElem.textContent = `Download: ${title}`;
+    // 🔴 Manually map download URLs by TMDB ID
+    const downloadLinks = {
+      '609681': 'https://example.com/the-marvels.mp4',
+      '123456': 'https://example.com/another-movie.mp4',
+      '999999': 'https://example.com/sample-tv-show.mp4'
+      // Add more ID: URL pairs here
+    };
 
-    // Fetch TMDB poster
-    async function fetchPoster(title) {
+    async function fetchDetails() {
+      if (!id || !type || !downloadLinks[id]) {
+        titleElem.textContent = 'Download link not available.';
+        countdownElem.style.display = 'none';
+        return;
+      }
+
       try {
-        const res = await fetch(`https://api.themoviedb.org/3/search/multi?api_key=${API_KEY}&query=${encodeURIComponent(title)}`);
+        const res = await fetch(`https://api.themoviedb.org/3/${type}/${id}?api_key=${API_KEY}`);
         const data = await res.json();
-        const match = data.results?.[0];
-        if (match?.poster_path) {
-          posterElem.src = IMG_URL + match.poster_path;
-          posterElem.style.display = 'block';
-        }
+
+        const title = data.title || data.name || 'Unknown Title';
+        titleElem.textContent = `Download: ${title}`;
+        posterElem.src = IMG_URL + data.poster_path;
+
+        startCountdown(downloadLinks[id]);
       } catch (err) {
-        console.error('Failed to fetch poster:', err);
+        titleElem.textContent = 'Failed to load movie data.';
+        countdownElem.style.display = 'none';
+        console.error(err);
       }
     }
 
-    fetchPoster(title);
-
-    // Download countdown
-    if (!url) {
-      countdownElem.textContent = 'No download link found.';
-    } else {
+    function startCountdown(downloadUrl) {
       let seconds = 10;
       const countdown = setInterval(() => {
         seconds--;
@@ -137,11 +143,13 @@
         if (seconds <= 0) {
           clearInterval(countdown);
           countdownElem.style.display = 'none';
-          linkElem.href = url;
+          linkElem.href = downloadUrl;
           linkElem.style.display = 'inline-block';
         }
       }, 1000);
     }
+
+    fetchDetails();
   </script>
 
 </body>
