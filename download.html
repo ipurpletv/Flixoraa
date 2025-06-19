@@ -1,76 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Download - Flixora</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #111;
-      color: #fff;
-      text-align: center;
-    }
-
-    .navbar {
-      background-color: #000;
-      color: #fff;
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid #222;
-    }
-
-    .navbar .logo {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #e50914;
-      text-decoration: none;
-    }
-
-    .navbar .back-btn {
-      background-color: #e50914;
-      color: #fff;
-      padding: 8px 16px;
-      text-decoration: none;
-      border-radius: 4px;
-      font-weight: bold;
-    }
-
-    .content {
-      padding: 3rem 1rem;
-    }
-
-    #poster {
-      max-width: 200px;
-      border-radius: 8px;
-      margin-bottom: 1rem;
-    }
-
-    #download-title {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-    }
-
-    #countdown {
-      font-size: 1.2rem;
-      color: #aaa;
-    }
-
-    #download-link {
-      display: none;
-      margin-top: 2rem;
-      background-color: #e50914;
-      color: #fff;
-      padding: 12px 24px;
-      border: none;
-      text-decoration: none;
-      font-size: 1rem;
-      border-radius: 5px;
-      font-weight: bold;
-    }
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#111;color:#fff;text-align:center}
+    .navbar{background:#000;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #222}
+    .logo{font-size:1.5rem;font-weight:bold;color:#e50914;text-decoration:none}
+    .back-btn{background:#e50914;color:#fff;padding:8px 16px;border-radius:4px;text-decoration:none;font-weight:bold}
+    .content{padding:3rem 1rem}
+    #poster{max-width:200px;border-radius:8px;margin-bottom:1rem;display:none}
+    #download-title{font-size:1.8rem;margin-bottom:1rem}
+    #countdown{font-size:1.2rem;color:#aaa}
+    #download-link{display:none;margin-top:2rem;background:#e50914;color:#fff;padding:12px 24px;border:none;border-radius:5px;font-weight:bold;text-decoration:none}
   </style>
 </head>
 <body>
@@ -83,73 +26,72 @@
 
   <!-- Page Content -->
   <div class="content">
-    <img id="poster" src="" alt="Poster" />
-    <h1 id="download-title">Preparing download...</h1>
-    <p id="countdown">Your download will be ready in <span id="timer">10</span> seconds...</p>
-    <a id="download-link" href="#" target="_blank">Download Now</a>
+    <img id="poster" alt="Poster">
+    <h1 id="download-title">Preparing download…</h1>
+    <p id="countdown">Your download will be ready in <span id="timer">10</span> seconds…</p>
+    <a id="download-link" target="_blank">Download Now</a>
   </div>
 
   <script>
+    /* --- CONFIG --- */
     const API_KEY = 'ba0e2f64d29bae320cf0bbd091bbdf3f';
     const IMG_URL = 'https://image.tmdb.org/t/p/w500';
 
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
-    const type = params.get('type'); // 'movie' or 'tv'
-
-    const titleElem = document.getElementById('download-title');
-    const posterElem = document.getElementById('poster');
-    const countdownElem = document.getElementById('countdown');
-    const timerElem = document.getElementById('timer');
-    const linkElem = document.getElementById('download-link');
-
-    // 🔴 Manually map download URLs by TMDB ID
+    /* 🔴  Map TMDB ID ➜ actual file URL */
     const downloadLinks = {
-      '609681': 'https://dl2.vid1.site/https%3A%2F%2Fmacdn.hakunaymatata.com%2Fresource%2F37897e3f839b6f45541103327929d6fa.mp4%3FExpires%3D1750789239%26Signature%3DDMWz6cL2rLDtFXOx09-bJy6FKs3AU-Tfb~0zdpIV3yzr2ngUQ0qUALb0c82ITLIWmTfBDZX-gBeCfKUPb33Zf7d6CXC~dmJ5tYfykMDJyacLzvtFHrd8CFZyP9q78CTs7rIjc2-icvbsJ-pPyZb7lkC6a-WTyZ-qc8~7VGGWbWxZFg~wnqkOPLjyyi3w6AcYE9Bth1VrB5RdL2rNDRebNK7kaeRsW1MKptvCgmCYe-aOchOmYwqftNMRSAV6~GdUlNq4JdfAYlzhswP4f~KoDepCFPFQPxGH7~~k0qR~rg4yZUFrpL~plBWj0-msZWO9XKNzGgFvYDbDTk-VcVV8Sw__%26Key-Pair-Id%3DKMHN1LQ1HEUPL?n=The+Marvels+%282023%29',
-      '123456': 'https://example.com/another-movie.mp4',
-      '999999': 'https://example.com/sample-tv-show.mp4'
-      // Add more ID: URL pairs here
+      '609681': 'https://dl.example.com/The_Marvels_2023.mp4',
+      '123456': 'https://example.com/another‑movie.mp4',
+      '999999': 'https://example.com/sample‑tv‑show.mp4'
+      // add more here
     };
 
-    async function fetchDetails() {
-      if (!id || !type || !downloadLinks[id]) {
-        titleElem.textContent = 'Download link not available.';
-        countdownElem.style.display = 'none';
+    /* --- Grab query params --- */
+    const qs   = new URLSearchParams(location.search);
+    const id   = qs.get('id');             // required
+    const type = qs.get('type') || 'movie';// default 'movie'
+
+    /* --- DOM refs --- */
+    const poster   = document.getElementById('poster');
+    const h1       = document.getElementById('download-title');
+    const cdWrap   = document.getElementById('countdown');
+    const timer    = document.getElementById('timer');
+    const dlBtn    = document.getElementById('download-link');
+
+    /* --- Main flow --- */
+    (async () => {
+      /* 1. Look up manual link */
+      const fileURL = downloadLinks[id];
+      if (!id || !fileURL) {
+        h1.textContent = 'Download link not available.';
+        cdWrap.style.display = 'none';
         return;
       }
 
+      /* 2. Fetch poster + title from TMDB */
       try {
-        const res = await fetch(`https://api.themoviedb.org/3/${type}/${id}?api_key=${API_KEY}`);
+        const res  = await fetch(`https://api.themoviedb.org/3/${type}/${id}?api_key=${API_KEY}`);
         const data = await res.json();
-
-        const title = data.title || data.name || 'Unknown Title';
-        titleElem.textContent = `Download: ${title}`;
-        posterElem.src = IMG_URL + data.poster_path;
-
-        startCountdown(downloadLinks[id]);
-      } catch (err) {
-        titleElem.textContent = 'Failed to load movie data.';
-        countdownElem.style.display = 'none';
-        console.error(err);
+        h1.textContent = `Download: ${data.title || data.name || 'Unknown Title'}`;
+        if (data.poster_path) {
+          poster.src = IMG_URL + data.poster_path;
+          poster.style.display = 'block';
+        }
+      } catch(e){
+        console.warn('TMDB fetch failed', e);
       }
-    }
 
-    function startCountdown(downloadUrl) {
-      let seconds = 10;
-      const countdown = setInterval(() => {
-        seconds--;
-        timerElem.textContent = seconds;
-
-        if (seconds <= 0) {
-          clearInterval(countdown);
-          countdownElem.style.display = 'none';
-          linkElem.href = downloadUrl;
-          linkElem.style.display = 'inline-block';
+      /* 3. 10‑second countdown then reveal button */
+      let sec = 10;
+      const tick = setInterval(() => {
+        timer.textContent = --sec;
+        if (sec < 0) {
+          clearInterval(tick);
+          cdWrap.style.display = 'none';
+          dlBtn.href = fileURL;
+          dlBtn.style.display = 'inline-block';
         }
       }, 1000);
-    }
-
-    fetchDetails();
+    })();
   </script>
 
 </body>
