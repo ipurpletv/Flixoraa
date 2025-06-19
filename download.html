@@ -45,6 +45,13 @@
       padding: 3rem 1rem;
     }
 
+    #poster {
+      max-width: 200px;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      display: none;
+    }
+
     #download-title {
       font-size: 1.8rem;
       margin-bottom: 1rem;
@@ -79,23 +86,46 @@
 
   <!-- Page Content -->
   <div class="content">
+    <img id="poster" src="" alt="Poster" />
     <h1 id="download-title">Preparing download...</h1>
     <p id="countdown">Your download will be ready in <span id="timer">10</span> seconds...</p>
     <a id="download-link" href="#" target="_blank">Download Now</a>
   </div>
 
   <script>
+    const API_KEY = 'ba0e2f64d29bae320cf0bbd091bbdf3f';
+    const IMG_URL = 'https://image.tmdb.org/t/p/w500';
+
     const params = new URLSearchParams(window.location.search);
     const title = params.get('title') || 'Your file';
     const url = params.get('url');
 
     const titleElem = document.getElementById('download-title');
+    const posterElem = document.getElementById('poster');
     const countdownElem = document.getElementById('countdown');
     const timerElem = document.getElementById('timer');
     const linkElem = document.getElementById('download-link');
 
     titleElem.textContent = `Download: ${title}`;
 
+    // Fetch TMDB poster
+    async function fetchPoster(title) {
+      try {
+        const res = await fetch(`https://api.themoviedb.org/3/search/multi?api_key=${API_KEY}&query=${encodeURIComponent(title)}`);
+        const data = await res.json();
+        const match = data.results?.[0];
+        if (match?.poster_path) {
+          posterElem.src = IMG_URL + match.poster_path;
+          posterElem.style.display = 'block';
+        }
+      } catch (err) {
+        console.error('Failed to fetch poster:', err);
+      }
+    }
+
+    fetchPoster(title);
+
+    // Download countdown
     if (!url) {
       countdownElem.textContent = 'No download link found.';
     } else {
