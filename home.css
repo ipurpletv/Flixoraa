@@ -256,7 +256,8 @@ body {
 /* —————————————————————— THUMBNAILS —————————————————————— */
 #movies-list,
 #tvshows-list,
-#anime-list {
+#anime-list,
+#vivamax-list {
   display: flex;
   gap: 1rem;
   overflow-x: auto;
@@ -264,22 +265,24 @@ body {
   scroll-behavior: smooth;
 }
 
-/* Hide native scrollbars */
 #movies-list,
 #tvshows-list,
-#anime-list {
+#anime-list,
+#vivamax-list {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 #movies-list::-webkit-scrollbar,
 #tvshows-list::-webkit-scrollbar,
-#anime-list::-webkit-scrollbar {
+#anime-list::-webkit-scrollbar,
+#vivamax-list::-webkit-scrollbar {
   display: none;
 }
 
 #movies-list img,
 #tvshows-list img,
-#anime-list img {
+#anime-list img,
+#vivamax-list img {
   width: 140px;
   height: 210px;
   object-fit: cover;
@@ -287,10 +290,10 @@ body {
   cursor: pointer;
   transition: transform 0.2s ease;
 }
-
 #movies-list img:hover,
 #tvshows-list img:hover,
-#anime-list img:hover {
+#anime-list img:hover,
+#vivamax-list img:hover {
   transform: scale(1.05);
 }
 
