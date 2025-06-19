@@ -3,13 +3,6 @@ const API_KEY  = 'ba0e2f64d29bae320cf0bbd091bbdf3f';
 const BASE_URL = 'https://api.themoviedb.org/3';
 const IMG_URL  = 'https://image.tmdb.org/t/p/w500';
 
-/* --------- MANUAL DOWNLOAD LINKS --------- */
-// Add or edit entries:  [TMDB_ID]: 'DOWNLOAD_URL'
-const manualDownloads = {
-  // 550: 'https://example.com/fight-club.mp4',
-  // 603: 'https://example.com/matrix.mp4'
-};
-
 /* banner rotation state */
 let trendingBanners = [];
 let bannerIndex = 0;
@@ -20,8 +13,8 @@ let searchInput, inlineResults;
 /* ------------- ON LOAD ------------- */
 document.addEventListener('DOMContentLoaded', () => {
   /* cache refs now that DOM exists */
-  searchInput   = document.getElementById('search-input');
-  inlineResults = document.getElementById('inline-search-results');
+  searchInput    = document.getElementById('search-input');
+  inlineResults  = document.getElementById('inline-search-results');
 
   fetchTrendingMovies();   // rotating banner
   fetchMovies();
@@ -105,29 +98,22 @@ function displayList(items, targetId) {
     const download = document.createElement('a');
     download.textContent = 'Download';
     download.className = 'download-btn';
-    download.style.display = 'none';          // hidden until link is set
+    download.style.display = 'none'; // hidden until link is fetched
     download.target = '_blank';
 
     const type = it.first_air_date ? 'tv' : 'movie';
-    const manualLink = manualDownloads[it.id];
-
-    if (manualLink) {
-      // manual override
-      download.href = manualLink;
-      download.style.display = 'inline-block';
-    } else {
-      // try Mocine API
-      fetch(`https://apimocine.vercel.app/${type}/${it.id}`)
-        .then(res => res.json())
-        .then(data => {
-          const dl = data?.media?.sources?.[0]?.url;
-          if (dl) {
-            download.href = dl;
-            download.style.display = 'inline-block';
-          }
-        })
-        .catch(() => {/* silent fail */});
-    }
+    fetch(`https://apimocine.vercel.app/${type}/${it.id}`)
+      .then(res => res.json())
+      .then(data => {
+        const dl = data?.media?.sources?.[0]?.url;
+        if (dl) {
+          download.href = dl;
+          download.style.display = 'inline-block';
+        }
+      })
+      .catch(() => {
+        // fail silently
+      });
 
     card.appendChild(img);
     card.appendChild(title);
@@ -135,6 +121,7 @@ function displayList(items, targetId) {
     wrap.appendChild(card);
   });
 }
+
 
 /* ----------- BANNER ------------- */
 function displayBanner(movie) {
@@ -159,28 +146,22 @@ async function showDetails(item) {
   const watchURL = `watch.html?id=${item.id}&type=${type}&title=${encodeURIComponent(item.title || item.name)}`;
   document.getElementById('watch-now-btn').href = watchURL;
 
+  /* ----- DOWNLOAD (Mocine) ----- */
   const downloadBtn = document.getElementById('download-btn');
   if (downloadBtn) {
-    let dl = manualDownloads[item.id];
-    if (dl) {
-      // manual override
-      downloadBtn.href = dl;
-      downloadBtn.style.display = 'inline-block';
-    } else {
-      try {
-        const res  = await fetch(`https://apimocine.vercel.app/${type}/${item.id}`);
-        const data = await res.json();
-        dl = data?.media?.sources?.[0]?.url;
-        if (dl) {
-          downloadBtn.href = dl;
-          downloadBtn.style.display = 'inline-block';
-        } else {
-          downloadBtn.style.display = 'none';
-        }
-      } catch (err) {
-        console.error('Download link fetch error:', err);
+    try {
+      const res = await fetch(`https://apimocine.vercel.app/${type}/${item.id}`);
+      const data = await res.json();
+      const dl = data?.media?.sources?.[0]?.url;
+      if (dl) {
+        downloadBtn.href = dl;
+        downloadBtn.style.display = 'inline-block';
+      } else {
         downloadBtn.style.display = 'none';
       }
+    } catch (err) {
+      console.error('Download link fetch error:', err);
+      downloadBtn.style.display = 'none';
     }
   }
 
