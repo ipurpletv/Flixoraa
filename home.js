@@ -3,20 +3,20 @@ const API_KEY  = 'ba0e2f64d29bae320cf0bbd091bbdf3f';
 const BASE_URL = 'https://api.themoviedb.org/3';
 const IMG_URL  = 'https://image.tmdb.org/t/p/w500';
 
-/* Manual download overrides by TMDB ID (used only to decide if we show a button) */
+/* Optional manual URLs (only for your reference) */
 const manualDownloads = {
-  609681: 'https://dl.example.com/The_Marvels_2023.mp4',
+  609681: 'https://dl.example.com/The_Marvels_2023.mp4'
   // 603692: 'https://example.com/john_wick_4.mp4'
 };
 
-/* Banner rotation */
+/* Banner rotation */
 let trendingBanners = [];
 let bannerIndex = 0;
 
-/* Cached DOM refs */
+/* Cached DOM refs */
 let searchInput, inlineResults;
 
-/* ------------- ON LOAD ------------- */
+/* ------------- ON LOAD ------------- */
 document.addEventListener('DOMContentLoaded', () => {
   searchInput   = document.getElementById('search-input');
   inlineResults = document.getElementById('inline-search-results');
@@ -27,21 +27,16 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchTVShows();
   fetchAnime();
 
-  /* sidebar genre filter */
   document.querySelectorAll('#sidebar ul li').forEach(li =>
-    li.addEventListener('click', () => {
-      fetchByGenre(li.dataset.genre);
-      toggleSidebar();
-    })
+    li.addEventListener('click', () => { fetchByGenre(li.dataset.genre); toggleSidebar(); })
   );
 });
 
-/* ----------- ARROW SCROLL ------------ */
+/* ----------- ARROW SCROLL ------------ */
 function createScrollButtons() {
   document.querySelectorAll('.row').forEach(row => {
     const list = row.querySelector('.list');
     if (!list?.id) return;
-
     const mk = dir => {
       const b = document.createElement('button');
       b.className = `scroll-btn ${dir}`;
@@ -52,7 +47,6 @@ function createScrollButtons() {
     row.insertBefore(mk('left'), list);
     row.appendChild(mk('right'));
   });
-
   document.querySelectorAll('.scroll-btn').forEach(btn =>
     btn.addEventListener('click', () => {
       const list = document.getElementById(btn.dataset.target);
@@ -67,7 +61,6 @@ async function fetchTrendingMovies() {
   const res = await fetch(`${BASE_URL}/trending/movie/week?api_key=${API_KEY}`);
   const { results } = await res.json();
   trendingBanners = results.filter(r => r.backdrop_path);
-
   if (trendingBanners.length) {
     displayBanner(trendingBanners[0]);
     setInterval(() => {
@@ -76,7 +69,6 @@ async function fetchTrendingMovies() {
     }, 10000);
   }
 }
-
 const fetchMovies  = () => fetchAndDisplay('movie/popular', 'movies-list');
 const fetchTVShows = () => fetchAndDisplay('tv/popular',    'tvshows-list');
 
@@ -106,13 +98,16 @@ async function fetchByGenre(gid) {
   if (results[0]) displayBanner(results[0]);
 }
 
-/* ----------- DISPLAY LIST ------------ */
+/* ----------- DISPLAY LIST ------------ */
 function displayList(items, targetId) {
   const wrap = document.getElementById(targetId);
   wrap.innerHTML = '';
 
-  items.forEach(async movie => {
+  items.forEach(movie => {
     if (!movie.poster_path) return;
+
+    const id   = movie.id;
+    const type = movie.first_air_date ? 'tv' : 'movie';
 
     const card  = document.createElement('div'); card.className = 'media-card';
     const img   = document.createElement('img'); img.src = IMG_URL + movie.poster_path;
@@ -122,30 +117,11 @@ function displayList(items, targetId) {
     const title = document.createElement('p'); title.className = 'media-title';
     title.textContent = movie.title || movie.name;
 
+    /* Always show a Download link → goes to download.html */
     const dl = document.createElement('a');
     dl.textContent = 'Download';
     dl.className   = 'watch-now-btn download-btn';
-    dl.style.display = 'none';
-    dl.target = '_blank';
-
-    const id   = movie.id;
-    const type = movie.first_air_date ? 'tv' : 'movie';
-
-    /* Decide if we should show the button */
-    let hasLink = !!manualDownloads[id];
-    if (!hasLink) {
-      try {
-        const r = await fetch(`https://apimocine.vercel.app/${type}/${id}`);
-        const { media } = await r.json();
-        hasLink = !!media?.sources?.[0]?.url;
-      } catch {}
-    }
-
-    if (hasLink) {
-      dl.href = `download.html?id=${id}&type=${type}&title=${encodeURIComponent(movie.title || movie.name)}`;
-      dl.style.display = 'inline-block';
-    }
-
+    dl.href = `download.html?id=${id}&type=${type}&title=${encodeURIComponent(movie.title || movie.name)}`;
     card.append(img, title, dl);
     wrap.appendChild(card);
   });
@@ -161,7 +137,7 @@ function displayBanner(m) {
 }
 
 /* ----------- MODAL --------------- */
-async function showDetails(item) {
+function showDetails(item) {
   const modal = document.getElementById('detail-modal');
   document.getElementById('detail-title').textContent = item.title || item.name;
   document.getElementById('detail-description').textContent = item.overview || '';
@@ -173,30 +149,11 @@ async function showDetails(item) {
 
   const dlBtn = document.getElementById('download-btn');
   dlBtn.classList.add('watch-now-btn');
-
-  /* Only show if a link exists somewhere */
-  let showBtn = !!manualDownloads[item.id];
-  if (!showBtn) {
-    try {
-      const r = await fetch(`https://apimocine.vercel.app/${mediaType}/${item.id}`);
-      const { media } = await r.json();
-      showBtn = !!media?.sources?.[0]?.url;
-    } catch {}
-  }
-
-  if (showBtn) {
-    dlBtn.href = `download.html?id=${item.id}&type=${mediaType}&title=${encodeURIComponent(item.title || item.name)}`;
-    dlBtn.style.display = 'inline-block';
-  } else {
-    dlBtn.style.display = 'none';
-  }
+  dlBtn.href = `download.html?id=${item.id}&type=${mediaType}&title=${encodeURIComponent(item.title || item.name)}`;
+  dlBtn.style.display = 'inline-block';
 
   modal.style.display = 'flex';
-  saveToWatchHistory({
-    id: item.id,
-    title: item.title || item.name,
-    poster: IMG_URL + item.poster_path
-  });
+  saveToWatchHistory({ id: item.id, title: item.title || item.name, poster: IMG_URL + item.poster_path });
 }
 
 function closeModal() {
@@ -231,9 +188,8 @@ async function searchTMDB() {
 }
 
 document.addEventListener('click', e => {
-  if (!e.target.closest('.search-wrapper') && !e.target.closest('#inline-search-results')) {
+  if (!e.target.closest('.search-wrapper') && !e.target.closest('#inline-search-results'))
     inlineResults.style.display = 'none';
-  }
 });
 
 /* -------- WATCH HISTORY ---------- */
