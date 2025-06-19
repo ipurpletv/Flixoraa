@@ -8,42 +8,37 @@
   <link rel="stylesheet" href="home.css" />
   <link rel="preload" href="home.css" as="style" />
   <link rel="icon" type="image/png" sizes="32x32" href="android-chrome-512x512.png">
-
   <script defer src="home.js"></script>
   <link rel="preload" href="home.js" as="script" />
-
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
-  <!-- ⭐ extra styles just for media‑card & download button -->
   <style>
-    /* Card injected by JS */
-    .media-card{
-      display:inline-block;
-      width:140px;
-      margin:10px;
-      text-align:center;
+    .media-card {
+      display: inline-block;
+      width: 140px;
+      margin: 10px;
+      text-align: center;
     }
-    .media-card img{
-      width:100%;
-      border-radius:4px;
-      cursor:pointer;
+    .media-card img {
+      width: 100%;
+      border-radius: 4px;
+      cursor: pointer;
     }
-    .media-title{
-      font-size:.9em;
-      color:#fff;
-      margin:4px 0;
+    .media-title {
+      font-size: 0.9em;
+      color: #fff;
+      margin: 4px 0;
     }
-    .download-btn{
-      display:inline-block;
-      background:#e50914;
-      color:#fff;
-      padding:4px 8px;
-      font-size:.8em;
-      text-decoration:none;
-      border-radius:4px;
-      margin-top:4px;
+    .download-btn {
+      display: inline-block;
+      background: #e50914;
+      color: #fff;
+      padding: 4px 8px;
+      font-size: 0.8em;
+      text-decoration: none;
+      border-radius: 4px;
+      margin-top: 4px;
     }
   </style>
 </head>
@@ -56,7 +51,6 @@
         <button class="menu-btn" aria-label="Menu" onclick="toggleSidebar()">
           <i class="fas fa-bars"></i>
         </button>
-
         <a href="index.html" class="brand">
           <img src="Icosss.png" alt="Flixora logo" class="logo" />
           <span class="brand-name">Flixora</span>
@@ -65,14 +59,9 @@
 
       <div class="nav-right">
         <div class="search-wrapper">
-          <input type="text"
-                 class="search-bar"
-                 id="search-input"
-                 placeholder="Search movie or show…"
-                 oninput="searchTMDB()"/>
+          <input type="text" id="search-input" class="search-bar" placeholder="Search movie or show…" oninput="searchTMDB()">
           <i class="fas fa-search search-icon"></i>
         </div>
-
         <button id="history-btn" class="history-btn" onclick="toggleHistory()">
           <i class="fas fa-history"></i><span>History</span>
         </button>
@@ -80,7 +69,6 @@
     </div>
   </header>
 
-  <!-- inline search dropdown -->
   <div id="inline-search-results" class="inline-search-results"></div>
 
   <!-- ║════ sidebars ════║ -->
@@ -100,7 +88,6 @@
     <h3>Watch History</h3>
     <div id="history-results" class="results"></div>
   </aside>
-  <!-- ╚═══════════════════╝ -->
 
   <!-- Banner -->
   <div class="banner" id="banner">
@@ -135,9 +122,9 @@
         <img id="detail-poster" src="" alt=""/>
         <div class="modal-text">
           <h2 id="detail-title"></h2>
-          <p  id="detail-description"></p>
+          <p id="detail-description"></p>
           <a id="watch-now-btn" class="watch-now-btn" href="#" target="_blank">▶ Watch Now</a>
-          <a id="download-btn"  class="download-btn"  href="#" target="_blank" style="display:none;">⬇ Download</a>
+          <a id="download-btn" class="download-btn" href="#" target="_blank" style="display:none;">⬇ Download</a>
         </div>
       </div>
     </div>
