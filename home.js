@@ -3,11 +3,6 @@ const API_KEY  = 'ba0e2f64d29bae320cf0bbd091bbdf3f';
 const BASE_URL = 'https://api.themoviedb.org/3';
 const IMG_URL  = 'https://image.tmdb.org/t/p/w500';
 
-/* (optional) manual URLs just to decide if a link exists, not used here */
-const manualDownloads = {
-  609681: 'https://dl.example.com/The_Marvels_2023.mp4'
-};
-
 /* Banner rotation */
 let trendingBanners = [];
 let bannerIndex = 0;
@@ -21,11 +16,15 @@ document.addEventListener('DOMContentLoaded', () => {
   inlineResults = document.getElementById('inline-search-results');
 
   createScrollButtons();
+
+  /* initial content */
   fetchTrendingMovies();
   fetchMovies();
   fetchTVShows();
   fetchAnime();
+  fetchVivamax();            /* ➜ NEW */
 
+  /* sidebar genre links */
   document.querySelectorAll('#sidebar ul li').forEach(li =>
     li.addEventListener('click', () => { fetchByGenre(li.dataset.genre); toggleSidebar(); })
   );
@@ -57,8 +56,8 @@ function createScrollButtons() {
 
 /* ----------- FETCHERS ------------ */
 async function fetchTrendingMovies() {
-  const res = await fetch(`${BASE_URL}/trending/movie/week?api_key=${API_KEY}`);
-  const { results } = await res.json();
+  const r = await fetch(`${BASE_URL}/trending/movie/week?api_key=${API_KEY}`);
+  const { results } = await r.json();
   trendingBanners = results.filter(r => r.backdrop_path);
   if (trendingBanners.length) {
     displayBanner(trendingBanners[0]);
@@ -72,27 +71,38 @@ const fetchMovies  = () => fetchAndDisplay('movie/popular', 'movies-list');
 const fetchTVShows = () => fetchAndDisplay('tv/popular',    'tvshows-list');
 
 async function fetchAndDisplay(endpoint, target) {
-  const res = await fetch(`${BASE_URL}/${endpoint}?api_key=${API_KEY}`);
-  const { results } = await res.json();
+  const r = await fetch(`${BASE_URL}/${endpoint}?api_key=${API_KEY}`);
+  const { results } = await r.json();
   displayList(results, target);
 }
 
-async function buildAnimeList() {
+/* Anime = JA language + animation genre */
+async function fetchAnime() {
   let all = [];
   for (let p = 1; p <= 3; p++) {
-    const r  = await fetch(`${BASE_URL}/trending/tv/week?api_key=${API_KEY}&page=${p}`);
+    const r = await fetch(`${BASE_URL}/trending/tv/week?api_key=${API_KEY}&page=${p}`);
     const { results } = await r.json();
-    all = all.concat(results.filter(it =>
-      it.original_language === 'ja' && it.genre_ids.includes(16)
-    ));
+    all = all.concat(results.filter(it => it.original_language === 'ja' && it.genre_ids.includes(16)));
   }
   displayList(all, 'anime-list');
 }
-const fetchAnime = buildAnimeList;
+
+/* ➜ NEW: Vivamax (popular Filipino‑language movies) */
+async function fetchVivamax() {
+  const url = `${BASE_URL}/discover/movie?api_key=${API_KEY}` +
+              `&with_original_language=tl&sort_by=popularity.desc&page=1`;
+  try {
+    const r = await fetch(url);
+    const { results } = await r.json();
+    displayList(results, 'vivamax-list');
+  } catch (err) {
+    console.error('Vivamax fetch error:', err);
+  }
+}
 
 async function fetchByGenre(gid) {
-  const res = await fetch(`${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${gid}`);
-  const { results } = await res.json();
+  const r = await fetch(`${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${gid}`);
+  const { results } = await r.json();
   displayList(results, 'movies-list');
   if (results[0]) displayBanner(results[0]);
 }
@@ -100,23 +110,21 @@ async function fetchByGenre(gid) {
 /* ----------- DISPLAY LIST ------------ */
 function displayList(items, targetId) {
   const wrap = document.getElementById(targetId);
+  if (!wrap) return;
   wrap.innerHTML = '';
 
-  items.forEach(movie => {
-    if (!movie.poster_path) return;
-
-    const id   = movie.id;
-    const type = movie.first_air_date ? 'tv' : 'movie';
+  items.forEach(media => {
+    if (!media.poster_path) return;
 
     const card  = document.createElement('div'); card.className = 'media-card';
     const img   = document.createElement('img');
-    img.src = IMG_URL + movie.poster_path;
-    img.alt = movie.title || movie.name;
-    img.onclick = () => showDetails(movie);
+    img.src = IMG_URL + media.poster_path;
+    img.alt = media.title || media.name;
+    img.onclick = () => showDetails(media);
 
     const title = document.createElement('p');
     title.className = 'media-title';
-    title.textContent = movie.title || movie.name;
+    title.textContent = media.title || media.name;
 
     card.append(img, title);
     wrap.appendChild(card);
@@ -166,18 +174,16 @@ async function searchTMDB() {
   inlineResults.innerHTML = '<p style="color:#888;">Loading…</p>';
 
   try {
-    const res = await fetch(`${BASE_URL}/search/multi?api_key=${API_KEY}&query=${encodeURIComponent(q)}`);
-    const { results } = await res.json();
+    const r = await fetch(`${BASE_URL}/search/multi?api_key=${API_KEY}&query=${encodeURIComponent(q)}`);
+    const { results } = await r.json();
 
     inlineResults.innerHTML = results.length ? '' : '<p style="color:#888;">No results.</p>';
-    results.forEach(r => {
-      if (!r.poster_path) return;
-      const div = document.createElement('div');
-      div.className = 'search-item';
-      div.innerHTML =
-        `<img src="https://image.tmdb.org/t/p/w200${r.poster_path}" alt=""><span>${r.title || r.name}</span>`;
-      div.onclick = () => { inlineResults.style.display = 'none'; showDetails(r); };
-      inlineResults.appendChild(div);
+    results.forEach(it => {
+      if (!it.poster_path) return;
+      const row = document.createElement('div'); row.className = 'search-item';
+      row.innerHTML = `<img src="https://image.tmdb.org/t/p/w200${it.poster_path}" alt=""><span>${it.title || it.name}</span>`;
+      row.onclick = () => { inlineResults.style.display = 'none'; showDetails(it); };
+      inlineResults.appendChild(row);
     });
   } catch {
     inlineResults.innerHTML = '<p style="color:red;">Error fetching data.</p>';
