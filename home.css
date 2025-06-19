@@ -468,10 +468,10 @@ body {
 .download-btn {
   display: inline-block;
   background: #e50914;
-  color: white;
-  padding: 4px 8px;
-  margin-top: 4px;
-  font-size: 0.8em;
+  color: #fff;
+  padding: 10px 24px; /* same as watch-now-btn */
+  font-weight: bold;
   text-decoration: none;
-  border-radius: 4px;
+  border-radius: 6px;
+  margin-top: 10px;
 }
