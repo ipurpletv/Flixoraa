@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Download - Flixora</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      text-align: center;
+      background-color: #111;
+      color: #fff;
+    }
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      background: #e50914;
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 2rem;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="download-title">Preparing Download...</h1>
+  <a id="download-link" class="btn" href="#" target="_blank" style="display: none;">Download Now</a>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const title = params.get('title') || 'Your file';
+    const url = params.get('url');
+
+    document.getElementById('download-title').textContent = `Download: ${title}`;
+
+    if (url) {
+      const link = document.getElementById('download-link');
+      link.href = url;
+      link.style.display = 'inline-block';
+    } else {
+      document.getElementById('download-title').textContent = 'No download link found.';
+    }
+  </script>
+</body>
+</html>
