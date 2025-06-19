@@ -5,8 +5,8 @@ const IMG_URL  = 'https://image.tmdb.org/t/p/w500';
 
 /* Manual download overrides by TMDB ID */
 const manualDownloads = {
-  // 609681: 'https://dl2.vid1.site/https%3A%2F%2Fmacdn.hakunaymatata.com%2Fresource%2F37897e3f839b6f45541103327929d6fa.mp4%3FExpires%3D1750789239%26Signature%3DDMWz6cL2rLDtFXOx09-bJy6FKs3AU-Tfb~0zdpIV3yzr2ngUQ0qUALb0c82ITLIWmTfBDZX-gBeCfKUPb33Zf7d6CXC~dmJ5tYfykMDJyacLzvtFHrd8CFZyP9q78CTs7rIjc2-icvbsJ-pPyZb7lkC6a-WTyZ-qc8~7VGGWbWxZFg~wnqkOPLjyyi3w6AcYE9Bth1VrB5RdL2rNDRebNK7kaeRsW1MKptvCgmCYe-aOchOmYwqftNMRSAV6~GdUlNq4JdfAYlzhswP4f~KoDepCFPFQPxGH7~~k0qR~rg4yZUFrpL~plBWj0-msZWO9XKNzGgFvYDbDTk-VcVV8Sw__%26Key-Pair-Id%3DKMHN1LQ1HEUPL?n=The+Marvels+%282023%29',
-  // 603692: 'https://example.com/john_wick_4.mp4'
+  // 609681: 'https://…/The_Marvels_2023.mp4',
+  // 603692: 'https://…/John_Wick_4.mp4'
 };
 
 /* Banner rotation state */
@@ -115,7 +115,7 @@ function displayList(items, targetId) {
   const wrap = document.getElementById(targetId);
   wrap.innerHTML = '';
 
-  items.forEach(it => {
+  items.forEach(async (it) => {
     if (!it.poster_path) return;
 
     const card = document.createElement('div');
@@ -136,37 +136,30 @@ function displayList(items, targetId) {
     dlBtn.style.display = 'none';
     dlBtn.target = '_blank';
 
-    const id = it.id;
+    const id   = it.id;
     const type = it.first_air_date ? 'tv' : 'movie';
 
-    let dlUrl = '';
+    let dlUrl = manualDownloads[id] || '';
 
-if (manualDownloads[id]) {
-  dlUrl = manualDownloads[id];
-} else {
-  try {
-    const res = await fetch(`https://apimocine.vercel.app/${type}/${id}`);
-    const { media } = await res.json();
-    dlUrl = media?.sources?.[0]?.url || '';
-  } catch (e) {
-    dlUrl = '';
-  }
-}
+    if (!dlUrl) {
+      try {
+        const res = await fetch(`https://apimocine.vercel.app/${type}/${id}`);
+        const { media } = await res.json();
+        dlUrl = media?.sources?.[0]?.url || '';
+      } catch (err) {
+        console.error('Fetch error for', id, err);
+      }
+    }
 
-if (dlUrl) {
-  dlBtn.href = `download.html?title=${encodeURIComponent(item.title || item.name)}&url=${encodeURIComponent(dlUrl)}`;
-  dlBtn.style.display = 'inline-block';
-} else {
-  dlBtn.style.display = 'none';
-}
-        .catch(err => console.error('Fetch error for', id, err));
+    if (dlUrl) {
+      dlBtn.href = `download.html?title=${encodeURIComponent(it.title || it.name)}&url=${encodeURIComponent(dlUrl)}`;
+      dlBtn.style.display = 'inline-block';
     }
 
     card.append(img, title, dlBtn);
     wrap.appendChild(card);
   });
 }
-
 
 /* ----------- BANNER ------------- */
 function displayBanner(movie) {
@@ -190,25 +183,25 @@ async function showDetails(item) {
     `watch.html?id=${item.id}&type=${mediaType}&title=${encodeURIComponent(item.title || item.name)}`;
 
   const dlBtn = document.getElementById('download-btn');
-  dlBtn.classList.add('watch-now-btn');  // ensure same size
+  dlBtn.classList.add('watch-now-btn');
 
-  if (manualDownloads[item.id]) {
-    dlBtn.href = manualDownloads[item.id];
-    dlBtn.style.display = 'inline-block';
-  } else {
+  let dlUrl = manualDownloads[item.id] || '';
+
+  if (!dlUrl) {
     try {
       const res = await fetch(`https://apimocine.vercel.app/${mediaType}/${item.id}`);
       const { media } = await res.json();
-      const url = media?.sources?.[0]?.url;
-      if (url) {
-        dlBtn.href = url;
-        dlBtn.style.display = 'inline-block';
-      } else {
-        dlBtn.style.display = 'none';
-      }
+      dlUrl = media?.sources?.[0]?.url || '';
     } catch {
-      dlBtn.style.display = 'none';
+      dlUrl = '';
     }
+  }
+
+  if (dlUrl) {
+    dlBtn.href = `download.html?title=${encodeURIComponent(item.title || item.name)}&url=${encodeURIComponent(dlUrl)}`;
+    dlBtn.style.display = 'inline-block';
+  } else {
+    dlBtn.style.display = 'none';
   }
 
   modal.style.display = 'flex';
