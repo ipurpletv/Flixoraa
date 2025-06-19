@@ -52,39 +52,32 @@
   </div>
 
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const id    = urlParams.get('id');
-    const title = decodeURIComponent(urlParams.get('title') || 'This title');
+  const id = new URLSearchParams(location.search).get('id');
+  const title = decodeURIComponent(new URLSearchParams(location.search).get('title') || 'Unknown');
 
-    document.getElementById('title-text').textContent = `“${title}” is getting ready…`;
+  /* Manual URLs */
+  const downloadLinks = {
+    609681: 'https://dl.example.com/The_Marvels_2023.mp4'
+    // add more IDs here
+  };
 
-    const ADSTERRA_URL = 'https://transparentdefender.com/fzx5vx39c5?key=09263ca14b7f49bf19b6871b2c82f9f4';
+  const ADSTERRA_URL = 'https://transparentdefender.com/fzx5vx39c5?key=09263ca14b7f49bf19b6871b2c82f9f4';
 
-    const downloadLinks = {
-    '609681': 'https://dl2.vid1.site/https%3A%2F%2Fmacdn.hakunaymatata.com%2Fresource%2F37897e3f839b6f45541103327929d6fa.mp4%3FExpires%3D1750789239%26Signature%3DDMWz6cL2rLDtFXOx09-bJy6FKs3AU-Tfb~0zdpIV3yzr2ngUQ0qUALb0c82ITLIWmTfBDZX-gBeCfKUPb33Zf7d6CXC~dmJ5tYfykMDJyacLzvtFHrd8CFZyP9q78CTs7rIjc2-icvbsJ-pPyZb7lkC6a-WTyZ-qc8~7VGGWbWxZFg~wnqkOPLjyyi3w6AcYE9Bth1VrB5RdL2rNDRebNK7kaeRsW1MKptvCgmCYe-aOchOmYwqftNMRSAV6~GdUlNq4JdfAYlzhswP4f~KoDepCFPFQPxGH7~~k0qR~rg4yZUFrpL~plBWj0-msZWO9XKNzGgFvYDbDTk-VcVV8Sw__%26Key-Pair-Id%3DKMHN1LQ1HEUPL?n=The+Marvels+%282023%29',
-      // Add more here manually by id
-    };
+  const linkElem  = document.getElementById('download-link');
+  const timerElem = document.getElementById('timer');
+  const h1        = document.getElementById('title-text');
+  h1.textContent  = `“${title}” is getting ready…`;
 
-    const linkElem = document.getElementById('download-link');
-    const timerElem = document.getElementById('timer');
-    const countdownElem = document.getElementById('countdown');
-
-    function startCountdown() {
-      let seconds = 10;
-      const interval = setInterval(() => {
-        timerElem.textContent = seconds--;
-        if (seconds < 0) {
-          clearInterval(interval);
-          countdownElem.style.display = 'none';
-
-          const finalUrl = downloadLinks[id] || ADSTERRA_URL;
-          linkElem.href = finalUrl;
-          linkElem.style.display = 'inline-block';
-        }
-      }, 1000);
+  let sec = 10;
+  const tick = setInterval(() => {
+    timerElem.textContent = sec;
+    if (--sec < 0) {
+      clearInterval(tick);
+      document.getElementById('countdown').style.display = 'none';
+      linkElem.href = downloadLinks[id] || ADSTERRA_URL;
+      linkElem.style.display = 'inline-block';
     }
-
-    startCountdown();
-  </script>
+  }, 1000);
+</script>
 </body>
 </html>
