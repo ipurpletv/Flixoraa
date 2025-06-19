@@ -5,7 +5,7 @@ const IMG_URL  = 'https://image.tmdb.org/t/p/w500';
 
 /* Manual download overrides by TMDB ID */
 const manualDownloads = {
-  // 872585: 'https://example.com/the_marvels_2023.mp4',
+  // 872585: 'https://dl2.vid1.site/https%3A%2F%2Fmacdn.hakunaymatata.com%2Fresource%2F37897e3f839b6f45541103327929d6fa.mp4%3FExpires%3D1750789239%26Signature%3DDMWz6cL2rLDtFXOx09-bJy6FKs3AU-Tfb~0zdpIV3yzr2ngUQ0qUALb0c82ITLIWmTfBDZX-gBeCfKUPb33Zf7d6CXC~dmJ5tYfykMDJyacLzvtFHrd8CFZyP9q78CTs7rIjc2-icvbsJ-pPyZb7lkC6a-WTyZ-qc8~7VGGWbWxZFg~wnqkOPLjyyi3w6AcYE9Bth1VrB5RdL2rNDRebNK7kaeRsW1MKptvCgmCYe-aOchOmYwqftNMRSAV6~GdUlNq4JdfAYlzhswP4f~KoDepCFPFQPxGH7~~k0qR~rg4yZUFrpL~plBWj0-msZWO9XKNzGgFvYDbDTk-VcVV8Sw__%26Key-Pair-Id%3DKMHN1LQ1HEUPL?n=The+Marvels+%282023%29',
   // 603692: 'https://example.com/john_wick_4.mp4'
 };
 
