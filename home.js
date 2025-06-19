@@ -12,16 +12,19 @@ let searchInput, inlineResults;
 
 /* ------------- ON LOAD ------------- */
 document.addEventListener('DOMContentLoaded', () => {
-  /* cache refs now that DOM exists */
-  searchInput    = document.getElementById('search-input');
-  inlineResults  = document.getElementById('inline-search-results');
+  searchInput   = document.getElementById('search-input');
+  inlineResults = document.getElementById('inline-search-results');
 
-  fetchTrendingMovies();   // rotating banner
+  /* build arrow buttons for every .row */
+  createScrollButtons();
+
+  /* initial data fetches */
+  fetchTrendingMovies();
   fetchMovies();
   fetchTVShows();
   fetchAnime();
 
-  // genre clicks
+  /* genre sidebar clicks */
   document.querySelectorAll('#sidebar ul li').forEach(li =>
     li.addEventListener('click', () => {
       fetchByGenre(li.dataset.genre);
@@ -30,12 +33,40 @@ document.addEventListener('DOMContentLoaded', () => {
   );
 });
 
+/* ----------- ARROW‑SCROLL LOGIC ------------ */
+function createScrollButtons() {
+  document.querySelectorAll('.row').forEach(row => {
+    const list = row.querySelector('.list');
+    if (!list?.id) return;
+
+    const makeBtn = (dir) => {
+      const btn = document.createElement('button');
+      btn.className = `scroll-btn ${dir}`;
+      btn.dataset.target = list.id;
+      btn.setAttribute('aria-label', `Scroll ${dir}`);
+      btn.innerHTML = `<i class="fas fa-chevron-${dir}"></i>`;
+      return btn;
+    };
+
+    row.insertBefore(makeBtn('left'), list);
+    row.appendChild(makeBtn('right'));
+  });
+
+  document.querySelectorAll('.scroll-btn').forEach(btn =>
+    btn.addEventListener('click', () => {
+      const list = document.getElementById(btn.dataset.target);
+      if (!list) return;
+      const offset = list.clientWidth * 0.9 * (btn.classList.contains('left') ? -1 : 1);
+      list.scrollBy({ left: offset, behavior: 'smooth' });
+    })
+  );
+}
+
 /* ----------- FETCHERS ------------ */
 async function fetchTrendingMovies() {
   const res = await fetch(`${BASE_URL}/trending/movie/week?api_key=${API_KEY}`);
-  const data = await res.json();
-
-  trendingBanners = data.results.filter(m => m.backdrop_path);
+  const { results } = await res.json();
+  trendingBanners = results.filter(m => m.backdrop_path);
 
   if (trendingBanners.length) {
     displayBanner(trendingBanners[0]);
@@ -46,22 +77,22 @@ async function fetchTrendingMovies() {
   }
 }
 
-async function fetchMovies() {
-  const res = await fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}`);
-  displayList((await res.json()).results, 'movies-list');
+async function fetchMovies()   { fetchAndDisplay('movie/popular',  'movies-list'); }
+async function fetchTVShows()  { fetchAndDisplay('tv/popular',     'tvshows-list'); }
+async function fetchAnime()    { buildAnimeList(); }
+
+async function fetchAndDisplay(endpoint, target) {
+  const res = await fetch(`${BASE_URL}/${endpoint}?api_key=${API_KEY}`);
+  const { results } = await res.json();
+  displayList(results, target);
 }
 
-async function fetchTVShows() {
-  const res = await fetch(`${BASE_URL}/tv/popular?api_key=${API_KEY}`);
-  displayList((await res.json()).results, 'tvshows-list');
-}
-
-async function fetchAnime() {
+async function buildAnimeList() {
   let all = [];
   for (let p = 1; p <= 3; p++) {
-    const r  = await fetch(`${BASE_URL}/trending/tv/week?api_key=${API_KEY}&page=${p}`);
-    const d  = await r.json();
-    all = all.concat(d.results.filter(it =>
+    const r = await fetch(`${BASE_URL}/trending/tv/week?api_key=${API_KEY}&page=${p}`);
+    const { results } = await r.json();
+    all = all.concat(results.filter(it =>
       it.original_language === 'ja' && it.genre_ids.includes(16)
     ));
   }
@@ -70,9 +101,9 @@ async function fetchAnime() {
 
 async function fetchByGenre(gid) {
   const res = await fetch(`${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${gid}`);
-  const data = await res.json();
-  displayList(data.results, 'movies-list');
-  if (data.results[0]) displayBanner(data.results[0]);
+  const { results } = await res.json();
+  displayList(results, 'movies-list');
+  if (results[0]) displayBanner(results[0]);
 }
 
 /* ----------- DISPLAY LIST ------------- */
@@ -83,56 +114,42 @@ function displayList(items, targetId) {
   items.forEach(it => {
     if (!it.poster_path) return;
 
-    const card = document.createElement('div');
-    card.className = 'media-card';
+    const card  = document.createElement('div');  card.className = 'media-card';
+    const img   = document.createElement('img');  img.src  = IMG_URL + it.poster_path;
+    img.alt = it.title || it.name; img.onclick = () => showDetails(it);
 
-    const img = document.createElement('img');
-    img.src = IMG_URL + it.poster_path;
-    img.alt = it.title || it.name;
-    img.onclick = () => showDetails(it);
-
-    const title = document.createElement('p');
-    title.className = 'media-title';
+    const title = document.createElement('p');    title.className = 'media-title';
     title.textContent = it.title || it.name;
 
-    const download = document.createElement('a');
-    download.textContent = 'Download';
-    download.className = 'download-btn';
-    download.style.display = 'none'; // hidden until link is fetched
-    download.target = '_blank';
+    const dlBtn = document.createElement('a');
+    dlBtn.textContent = 'Download';
+    dlBtn.className   = 'download-btn';
+    dlBtn.style.display = 'none';
+    dlBtn.target      = '_blank';
 
+    /* fetch download link (Mocine) */
     const type = it.first_air_date ? 'tv' : 'movie';
     fetch(`https://apimocine.vercel.app/${type}/${it.id}`)
-      .then(res => res.json())
-      .then(data => {
-        const dl = data?.media?.sources?.[0]?.url;
-        if (dl) {
-          download.href = dl;
-          download.style.display = 'inline-block';
-        }
+      .then(r => r.json())
+      .then(d => {
+        const url = d?.media?.sources?.[0]?.url;
+        if (url) { dlBtn.href = url; dlBtn.style.display = 'inline-block'; }
       })
-      .catch(() => {
-        // fail silently
-      });
+      .catch(() => {/* ignore */});
 
-    card.appendChild(img);
-    card.appendChild(title);
-    card.appendChild(download);
+    card.append(img, title, dlBtn);
     wrap.appendChild(card);
   });
 }
-
 
 /* ----------- BANNER ------------- */
 function displayBanner(movie) {
   document.getElementById('banner').style.backgroundImage =
     `url(${IMG_URL + movie.backdrop_path})`;
-
   document.getElementById('banner-title').textContent       = movie.title;
   document.getElementById('banner-description').textContent = movie.overview || '';
-
-  const watchUrl = `watch.html?id=${movie.id}&type=movie&title=${encodeURIComponent(movie.title)}`;
-  document.getElementById('banner-watch-btn').href = watchUrl;
+  document.getElementById('banner-watch-btn').href =
+    `watch.html?id=${movie.id}&type=movie&title=${encodeURIComponent(movie.title)}`;
 }
 
 /* ----------- MODAL --------------- */
@@ -143,26 +160,18 @@ async function showDetails(item) {
   document.getElementById('detail-poster').src              = IMG_URL + item.poster_path;
 
   const type = item.media_type || (item.first_air_date ? 'tv' : 'movie');
-  const watchURL = `watch.html?id=${item.id}&type=${type}&title=${encodeURIComponent(item.title || item.name)}`;
-  document.getElementById('watch-now-btn').href = watchURL;
+  document.getElementById('watch-now-btn').href =
+    `watch.html?id=${item.id}&type=${type}&title=${encodeURIComponent(item.title || item.name)}`;
 
-  /* ----- DOWNLOAD (Mocine) ----- */
-  const downloadBtn = document.getElementById('download-btn');
-  if (downloadBtn) {
-    try {
-      const res = await fetch(`https://apimocine.vercel.app/${type}/${item.id}`);
-      const data = await res.json();
-      const dl = data?.media?.sources?.[0]?.url;
-      if (dl) {
-        downloadBtn.href = dl;
-        downloadBtn.style.display = 'inline-block';
-      } else {
-        downloadBtn.style.display = 'none';
-      }
-    } catch (err) {
-      console.error('Download link fetch error:', err);
-      downloadBtn.style.display = 'none';
-    }
+  const dlBtn = document.getElementById('download-btn');
+  try {
+    const res = await fetch(`https://apimocine.vercel.app/${type}/${item.id}`);
+    const { media } = await res.json();
+    const url = media?.sources?.[0]?.url;
+    if (url) { dlBtn.href = url; dlBtn.style.display = 'inline-block'; }
+    else     dlBtn.style.display = 'none';
+  } catch (e) {
+    dlBtn.style.display = 'none';
   }
 
   modal.style.display = 'flex';
@@ -171,59 +180,37 @@ async function showDetails(item) {
 
 function closeModal() {
   document.getElementById('detail-modal').style.display = 'none';
-  if (inlineResults) inlineResults.style.display = 'none';
+  inlineResults.style.display = 'none';
 }
 
 /* ----------- SEARCH -------------- */
 async function searchTMDB() {
   const q = searchInput.value.trim();
-  if (q.length < 2) {
-    inlineResults.style.display = 'none';
-    inlineResults.innerHTML = '';
-    return;
-  }
+  if (q.length < 2) { inlineResults.style.display = 'none'; return; }
 
   inlineResults.style.display = 'block';
   inlineResults.innerHTML = '<p style="color:#888;">Loading…</p>';
 
   try {
     const res = await fetch(`${BASE_URL}/search/multi?api_key=${API_KEY}&query=${encodeURIComponent(q)}`);
-    const data = await res.json();
-    inlineResults.innerHTML = '';
+    const { results } = await res.json();
+    inlineResults.innerHTML = results.length ? '' : '<p style="color:#888;">No results.</p>';
 
-    if (!data.results.length) {
-      inlineResults.innerHTML = '<p style="color:#888;">No results.</p>';
-      return;
-    }
-
-    data.results.forEach(it => {
+    results.forEach(it => {
       if (!it.poster_path) return;
-      const div = document.createElement('div');
-      div.className = 'search-item';
-      div.innerHTML = `
-        <img src="https://image.tmdb.org/t/p/w200${it.poster_path}" alt="${it.title || it.name}" />
-        <span>${it.title || it.name}</span>`;
-      div.onclick = () => { inlineResults.style.display = 'none'; showDetails(it); };
-      inlineResults.appendChild(div);
+      const row = document.createElement('div'); row.className = 'search-item';
+      row.innerHTML = `<img src="https://image.tmdb.org/t/p/w200${it.poster_path}" alt="">
+                       <span>${it.title || it.name}</span>`;
+      row.onclick = () => { inlineResults.style.display = 'none'; showDetails(it); };
+      inlineResults.appendChild(row);
     });
-  } catch (err) {
-    console.error(err);
+  } catch (e) {
     inlineResults.innerHTML = '<p style="color:red;">Error fetching data.</p>';
   }
 }
 
-function clearSearch() {
-  if (!searchInput) return;
-  searchInput.value = '';
-  inlineResults.style.display = 'none';
-  inlineResults.innerHTML = '';
-}
-
 document.addEventListener('click', e => {
-  if (
-    !e.target.closest('.search-wrapper') &&
-    !e.target.closest('#inline-search-results')
-  ) {
+  if (!e.target.closest('.search-wrapper') && !e.target.closest('#inline-search-results')) {
     inlineResults.style.display = 'none';
   }
 });
@@ -241,16 +228,12 @@ function loadWatchHistory() {
   const box = document.getElementById('history-results');
   box.innerHTML = '';
   const hist = JSON.parse(localStorage.getItem('watchHistory')) || [];
-  if (!hist.length) {
-    box.innerHTML = '<p style="color:#ccc;">No history yet.</p>';
-    return;
-  }
-  const ul = document.createElement('ul');
-  ul.className = 'history-list';
-  hist.forEach(it => {
-    const li = document.createElement('li');
-    li.textContent = it.title;
-    li.onclick = () => showDetails(it);
+  if (!hist.length) { box.innerHTML = '<p style="color:#ccc;">No history yet.</p>'; return; }
+
+  const ul = document.createElement('ul'); ul.className = 'history-list';
+  hist.forEach(h => {
+    const li = document.createElement('li'); li.textContent = h.title;
+    li.onclick = () => showDetails(h);
     ul.appendChild(li);
   });
   box.appendChild(ul);
@@ -266,6 +249,4 @@ function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('active');
 }
 
-window.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeModal();
-});
+window.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
