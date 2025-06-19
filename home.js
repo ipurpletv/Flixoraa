@@ -139,21 +139,26 @@ function displayList(items, targetId) {
     const id = it.id;
     const type = it.first_air_date ? 'tv' : 'movie';
 
-    if (manualDownloads[id]) {
-      console.log(`Manual link found for ID ${id}`);
-      dlBtn.href = manualDownloads[id];
-      dlBtn.style.display = 'inline-block';
-    } else {
-      fetch(`https://apimocine.vercel.app/${type}/${id}`)
-        .then(r => r.json())
-        .then(d => {
-          const url = d?.media?.sources?.[0]?.url;
-          console.log(`API link for ID ${id}:`, url);
-          if (url) {
-            dlBtn.href = url;
-            dlBtn.style.display = 'inline-block';
-          }
-        })
+    let dlUrl = '';
+
+if (manualDownloads[id]) {
+  dlUrl = manualDownloads[id];
+} else {
+  try {
+    const res = await fetch(`https://apimocine.vercel.app/${type}/${id}`);
+    const { media } = await res.json();
+    dlUrl = media?.sources?.[0]?.url || '';
+  } catch (e) {
+    dlUrl = '';
+  }
+}
+
+if (dlUrl) {
+  dlBtn.href = `download.html?title=${encodeURIComponent(item.title || item.name)}&url=${encodeURIComponent(dlUrl)}`;
+  dlBtn.style.display = 'inline-block';
+} else {
+  dlBtn.style.display = 'none';
+}
         .catch(err => console.error('Fetch error for', id, err));
     }
 
