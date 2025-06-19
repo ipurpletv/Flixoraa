@@ -118,8 +118,10 @@ function displayList(items, targetId) {
   items.forEach(it => {
     if (!it.poster_path) return;
 
-    const card  = document.createElement('div'); card.className = 'media-card';
-    const img   = document.createElement('img');
+    const card = document.createElement('div');
+    card.className = 'media-card';
+
+    const img = document.createElement('img');
     img.src = IMG_URL + it.poster_path;
     img.alt = it.title || it.name;
     img.onclick = () => showDetails(it);
@@ -130,14 +132,15 @@ function displayList(items, targetId) {
 
     const dlBtn = document.createElement('a');
     dlBtn.textContent = 'Download';
-    dlBtn.className   = 'watch-now-btn download-btn';
+    dlBtn.className = 'watch-now-btn download-btn';
     dlBtn.style.display = 'none';
     dlBtn.target = '_blank';
 
-    const id   = it.id;
+    const id = it.id;
     const type = it.first_air_date ? 'tv' : 'movie';
 
     if (manualDownloads[id]) {
+      console.log(`Manual link found for ID ${id}`);
       dlBtn.href = manualDownloads[id];
       dlBtn.style.display = 'inline-block';
     } else {
@@ -145,15 +148,20 @@ function displayList(items, targetId) {
         .then(r => r.json())
         .then(d => {
           const url = d?.media?.sources?.[0]?.url;
-          if (url) { dlBtn.href = url; dlBtn.style.display = 'inline-block'; }
+          console.log(`API link for ID ${id}:`, url);
+          if (url) {
+            dlBtn.href = url;
+            dlBtn.style.display = 'inline-block';
+          }
         })
-        .catch(() => {/* ignore */});
+        .catch(err => console.error('Fetch error for', id, err));
     }
 
     card.append(img, title, dlBtn);
     wrap.appendChild(card);
   });
 }
+
 
 /* ----------- BANNER ------------- */
 function displayBanner(movie) {
