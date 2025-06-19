@@ -3,6 +3,13 @@ const API_KEY  = 'ba0e2f64d29bae320cf0bbd091bbdf3f';
 const BASE_URL = 'https://api.themoviedb.org/3';
 const IMG_URL  = 'https://image.tmdb.org/t/p/w500';
 
+/* --------- MANUAL DOWNLOAD LINKS --------- */
+const manualDownloads = {
+  // Format: [TMDB_ID]: 'YOUR_CUSTOM_DOWNLOAD_LINK'
+  550: 'https://example.com/download/fight-club.mp4',
+  12345: 'https://example.com/download/my-custom-movie.mp4'
+};
+
 /* banner rotation state */
 let trendingBanners = [];
 let bannerIndex = 0;
@@ -12,20 +19,14 @@ let searchInput, inlineResults;
 
 /* ------------- ON LOAD ------------- */
 document.addEventListener('DOMContentLoaded', () => {
-  /* cache refs now that DOM exists */
-  searchInput   = document.getElementById('search-input');
-  inlineResults = document.getElementById('inline-search-results');
+  searchInput    = document.getElementById('search-input');
+  inlineResults  = document.getElementById('inline-search-results');
 
-  /* build arrow buttons for every row and wire the handlers */
-  createScrollButtons();
-
-  /* data fetchers */
-  fetchTrendingMovies();   // rotating banner
+  fetchTrendingMovies();
   fetchMovies();
   fetchTVShows();
   fetchAnime();
 
-  /* genre click handlers */
   document.querySelectorAll('#sidebar ul li').forEach(li =>
     li.addEventListener('click', () => {
       fetchByGenre(li.dataset.genre);
@@ -34,48 +35,10 @@ document.addEventListener('DOMContentLoaded', () => {
   );
 });
 
-/* ----------- ARROW‑SCROLL LOGIC ------------ */
-function createScrollButtons() {
-  /* add buttons into each .row, before & after its .list */
-  document.querySelectorAll('.row').forEach(row => {
-    const list = row.querySelector('.list');
-    if (!list || !list.id) return;              // safety check
-    const id = list.id;
-
-    const leftBtn  = document.createElement('button');
-    leftBtn.className = 'scroll-btn left';
-    leftBtn.dataset.target = id;
-    leftBtn.setAttribute('aria-label', 'Scroll left');
-    leftBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
-
-    const rightBtn = document.createElement('button');
-    rightBtn.className = 'scroll-btn right';
-    rightBtn.dataset.target = id;
-    rightBtn.setAttribute('aria-label', 'Scroll right');
-    rightBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
-
-    /* insert buttons */
-    row.insertBefore(leftBtn, list);
-    row.appendChild(rightBtn);
-  });
-
-  /* click => smooth scroll */
-  document.querySelectorAll('.scroll-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const list = document.getElementById(btn.dataset.target);
-      if (!list) return;
-      const step = list.clientWidth * 0.9;       // ≈ one “page”
-      const offset = btn.classList.contains('left') ? -step : step;
-      list.scrollBy({ left: offset, behavior: 'smooth' });
-    });
-  });
-}
-
 /* ----------- FETCHERS ------------ */
 async function fetchTrendingMovies() {
   const res = await fetch(`${BASE_URL}/trending/movie/week?api_key=${API_KEY}`);
   const data = await res.json();
-
   trendingBanners = data.results.filter(m => m.backdrop_path);
 
   if (trendingBanners.length) {
@@ -139,22 +102,26 @@ function displayList(items, targetId) {
     const download = document.createElement('a');
     download.textContent = 'Download';
     download.className = 'download-btn';
-    download.style.display = 'none'; // hidden until link is fetched
+    download.style.display = 'none';
     download.target = '_blank';
 
     const type = it.first_air_date ? 'tv' : 'movie';
-    fetch(`https://apimocine.vercel.app/${type}/${it.id}`)
-      .then(res => res.json())
-      .then(data => {
-        const dl = data?.media?.sources?.[0]?.url;
-        if (dl) {
-          download.href = dl;
-          download.style.display = 'inline-block';
-        }
-      })
-      .catch(() => {
-        /* fail silently */
-      });
+    const manualLink = manualDownloads[it.id];
+    if (manualLink) {
+      download.href = manualLink;
+      download.style.display = 'inline-block';
+    } else {
+      fetch(`https://apimocine.vercel.app/${type}/${it.id}`)
+        .then(res => res.json())
+        .then(data => {
+          const dl = data?.media?.sources?.[0]?.url;
+          if (dl) {
+            download.href = dl;
+            download.style.display = 'inline-block';
+          }
+        })
+        .catch(() => {});
+    }
 
     card.appendChild(img);
     card.appendChild(title);
@@ -167,10 +134,8 @@ function displayList(items, targetId) {
 function displayBanner(movie) {
   document.getElementById('banner').style.backgroundImage =
     `url(${IMG_URL + movie.backdrop_path})`;
-
   document.getElementById('banner-title').textContent       = movie.title;
   document.getElementById('banner-description').textContent = movie.overview || '';
-
   const watchUrl = `watch.html?id=${movie.id}&type=movie&title=${encodeURIComponent(movie.title)}`;
   document.getElementById('banner-watch-btn').href = watchUrl;
 }
@@ -186,22 +151,27 @@ async function showDetails(item) {
   const watchURL = `watch.html?id=${item.id}&type=${type}&title=${encodeURIComponent(item.title || item.name)}`;
   document.getElementById('watch-now-btn').href = watchURL;
 
-  /* ----- DOWNLOAD (Mocine) ----- */
   const downloadBtn = document.getElementById('download-btn');
   if (downloadBtn) {
-    try {
-      const res = await fetch(`https://apimocine.vercel.app/${type}/${item.id}`);
-      const data = await res.json();
-      const dl = data?.media?.sources?.[0]?.url;
-      if (dl) {
-        downloadBtn.href = dl;
-        downloadBtn.style.display = 'inline-block';
-      } else {
+    let dl = manualDownloads[item.id];
+    if (dl) {
+      downloadBtn.href = dl;
+      downloadBtn.style.display = 'inline-block';
+    } else {
+      try {
+        const res = await fetch(`https://apimocine.vercel.app/${type}/${item.id}`);
+        const data = await res.json();
+        dl = data?.media?.sources?.[0]?.url;
+        if (dl) {
+          downloadBtn.href = dl;
+          downloadBtn.style.display = 'inline-block';
+        } else {
+          downloadBtn.style.display = 'none';
+        }
+      } catch (err) {
+        console.error('Download link fetch error:', err);
         downloadBtn.style.display = 'none';
       }
-    } catch (err) {
-      console.error('Download link fetch error:', err);
-      downloadBtn.style.display = 'none';
     }
   }
 
