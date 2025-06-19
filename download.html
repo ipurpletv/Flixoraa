@@ -6,42 +6,113 @@
   <title>Download - Flixora</title>
   <style>
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
-      padding: 2rem;
-      text-align: center;
       background-color: #111;
       color: #fff;
+      text-align: center;
     }
-    .btn {
-      display: inline-block;
-      padding: 12px 24px;
-      background: #e50914;
+
+    /* --- Navbar --- */
+    .navbar {
+      background-color: #000;
       color: #fff;
-      text-decoration: none;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #222;
+    }
+
+    .navbar .logo {
+      font-size: 1.5rem;
       font-weight: bold;
+      color: #e50914;
+      text-decoration: none;
+    }
+
+    .navbar .back-btn {
+      background-color: #e50914;
+      color: #fff;
+      padding: 8px 16px;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    /* --- Page Content --- */
+    .content {
+      padding: 3rem 1rem;
+    }
+
+    #download-title {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    #countdown {
+      font-size: 1.2rem;
+      color: #aaa;
+    }
+
+    #download-link {
+      display: none;
       margin-top: 2rem;
+      background-color: #e50914;
+      color: #fff;
+      padding: 12px 24px;
+      border: none;
+      text-decoration: none;
+      font-size: 1rem;
       border-radius: 5px;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <h1 id="download-title">Preparing Download...</h1>
-  <a id="download-link" class="btn" href="#" target="_blank" style="display: none;">Download Now</a>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <a href="index.html" class="logo">Flixora</a>
+    <a href="index.html" class="back-btn">Back to Homepage</a>
+  </div>
+
+  <!-- Page Content -->
+  <div class="content">
+    <h1 id="download-title">Preparing download...</h1>
+    <p id="countdown">Your download will be ready in <span id="timer">10</span> seconds...</p>
+    <a id="download-link" href="#" target="_blank">Download Now</a>
+  </div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
     const title = params.get('title') || 'Your file';
     const url = params.get('url');
 
-    document.getElementById('download-title').textContent = `Download: ${title}`;
+    const titleElem = document.getElementById('download-title');
+    const countdownElem = document.getElementById('countdown');
+    const timerElem = document.getElementById('timer');
+    const linkElem = document.getElementById('download-link');
 
-    if (url) {
-      const link = document.getElementById('download-link');
-      link.href = url;
-      link.style.display = 'inline-block';
+    titleElem.textContent = `Download: ${title}`;
+
+    if (!url) {
+      countdownElem.textContent = 'No download link found.';
     } else {
-      document.getElementById('download-title').textContent = 'No download link found.';
+      let seconds = 10;
+      const countdown = setInterval(() => {
+        seconds--;
+        timerElem.textContent = seconds;
+
+        if (seconds <= 0) {
+          clearInterval(countdown);
+          countdownElem.style.display = 'none';
+          linkElem.href = url;
+          linkElem.style.display = 'inline-block';
+        }
+      }, 1000);
     }
   </script>
+
 </body>
 </html>
