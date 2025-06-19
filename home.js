@@ -3,6 +3,12 @@ const API_KEY  = 'ba0e2f64d29bae320cf0bbd091bbdf3f';
 const BASE_URL = 'https://api.themoviedb.org/3';
 const IMG_URL  = 'https://image.tmdb.org/t/p/w500';
 
+/* manual download overrides by TMDB ID */
+const manualDownloads = {
+  872585: 'https://example.com/the_marvels_2023.mp4',
+  603692: 'https://example.com/john_wick_4.mp4'
+};
+
 /* banner rotation state */
 let trendingBanners = [];
 let bannerIndex = 0;
@@ -123,24 +129,31 @@ function displayList(items, targetId) {
 
     const dlBtn = document.createElement('a');
     dlBtn.textContent = 'Download';
-    dlBtn.className   = 'download-btn';
+    dlBtn.className   = 'watch-now-btn'; // match "Watch Now" button size
     dlBtn.style.display = 'none';
-    dlBtn.target      = '_blank';
+    dlBtn.target = '_blank';
 
-    /* fetch download link (Mocine) */
+    const id = it.id;
     const type = it.first_air_date ? 'tv' : 'movie';
-    fetch(`https://apimocine.vercel.app/${type}/${it.id}`)
-      .then(r => r.json())
-      .then(d => {
-        const url = d?.media?.sources?.[0]?.url;
-        if (url) { dlBtn.href = url; dlBtn.style.display = 'inline-block'; }
-      })
-      .catch(() => {/* ignore */});
+
+    if (manualDownloads[id]) {
+      dlBtn.href = manualDownloads[id];
+      dlBtn.style.display = 'inline-block';
+    } else {
+      fetch(`https://apimocine.vercel.app/${type}/${id}`)
+        .then(r => r.json())
+        .then(d => {
+          const url = d?.media?.sources?.[0]?.url;
+          if (url) { dlBtn.href = url; dlBtn.style.display = 'inline-block'; }
+        })
+        .catch(() => {/* ignore */});
+    }
 
     card.append(img, title, dlBtn);
     wrap.appendChild(card);
   });
 }
+
 
 /* ----------- BANNER ------------- */
 function displayBanner(movie) {
@@ -163,16 +176,29 @@ async function showDetails(item) {
   document.getElementById('watch-now-btn').href =
     `watch.html?id=${item.id}&type=${type}&title=${encodeURIComponent(item.title || item.name)}`;
 
-  const dlBtn = document.getElementById('download-btn');
+const dlBtn = document.getElementById('download-btn');
+const id = item.id;
+const type = item.media_type || (item.first_air_date ? 'tv' : 'movie');
+
+if (manualDownloads[id]) {
+  dlBtn.href = manualDownloads[id];
+  dlBtn.style.display = 'inline-block';
+} else {
   try {
-    const res = await fetch(`https://apimocine.vercel.app/${type}/${item.id}`);
+    const res = await fetch(`https://apimocine.vercel.app/${type}/${id}`);
     const { media } = await res.json();
     const url = media?.sources?.[0]?.url;
-    if (url) { dlBtn.href = url; dlBtn.style.display = 'inline-block'; }
-    else     dlBtn.style.display = 'none';
+    if (url) {
+      dlBtn.href = url;
+      dlBtn.style.display = 'inline-block';
+    } else {
+      dlBtn.style.display = 'none';
+    }
   } catch (e) {
     dlBtn.style.display = 'none';
   }
+}
+
 
   modal.style.display = 'flex';
   saveToWatchHistory({ id: item.id, title: item.title || item.name, poster: IMG_URL + item.poster_path });
