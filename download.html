@@ -1,159 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Download - Flixora</title>
+  <meta charset="UTF-8">
+  <title>Download | Flixora</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css"> <!-- Your existing styles if needed -->
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #111;
-      color: #fff;
-    }
-
-    .navbar {
-      background-color: #000;
-      color: #fff;
-      padding: 1rem 2rem;
+      background-color: #0f0f0f;
+      color: white;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid #222;
-    }
-
-    .navbar .logo {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #e50914;
-      text-decoration: none;
-    }
-
-    .navbar .back-btn {
-      background-color: #e50914;
-      color: #fff;
-      padding: 8px 16px;
-      text-decoration: none;
-      border-radius: 4px;
-      font-weight: bold;
-    }
-
-    .content {
-      padding: 3rem 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      justify-content: center;
+      height: 100vh;
       text-align: center;
+      padding: 20px;
     }
-
-    #poster {
-      max-width: 200px;
-      border-radius: 8px;
-      margin-bottom: 1rem;
+    .container {
+      max-width: 500px;
     }
-
-    #download-title {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
+    h1 {
+      margin-bottom: 10px;
     }
-
     #countdown {
-      font-size: 1.2rem;
-      color: #aaa;
+      margin-top: 20px;
+      font-size: 1.1em;
     }
-
     #download-link {
       display: none;
-      margin-top: 2rem;
+      margin-top: 30px;
       background-color: #e50914;
-      color: #fff;
+      color: white;
       padding: 12px 24px;
-      border: none;
       text-decoration: none;
-      font-size: 1rem;
-      border-radius: 5px;
+      border-radius: 6px;
       font-weight: bold;
+    }
+    #download-link:hover {
+      background-color: #b20710;
     }
   </style>
 </head>
 <body>
-
-  <!-- Navbar -->
-  <div class="navbar">
-    <a href="index.html" class="logo">Flixora</a>
-    <a href="index.html" class="back-btn">Back to Homepage</a>
-  </div>
-
-  <!-- Page Content -->
-  <div class="content">
-    <img id="poster" src="" alt="Poster" />
-    <h1 id="download-title">Preparing download...</h1>
-    <p id="countdown">Your download will be ready in <span id="timer">10</span> seconds...</p>
-    <a id="download-link" href="#" target="_blank">Download Now</a>
+  <div class="container">
+    <h1>Preparing Your Download</h1>
+    <p id="title-text">Please wait…</p>
+    <p id="countdown">Your download will be ready in <span id="timer">10</span> seconds.</p>
+    <a id="download-link" href="#" target="_blank">Click Here to Download</a>
   </div>
 
   <script>
-    const API_KEY = 'ba0e2f64d29bae320cf0bbd091bbdf3f';
-    const IMG_URL = 'https://image.tmdb.org/t/p/w500';
+    const urlParams = new URLSearchParams(window.location.search);
+    const id    = urlParams.get('id');
+    const title = decodeURIComponent(urlParams.get('title') || 'This title');
 
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
-    const type = params.get('type'); // 'movie' or 'tv'
+    document.getElementById('title-text').textContent = `“${title}” is getting ready…`;
 
-    const titleElem = document.getElementById('download-title');
-    const posterElem = document.getElementById('poster');
-    const countdownElem = document.getElementById('countdown');
-    const timerElem = document.getElementById('timer');
-    const linkElem = document.getElementById('download-link');
+    const ADSTERRA_URL = 'https://transparentdefender.com/fzx5vx39c5?key=09263ca14b7f49bf19b6871b2c82f9f4';
 
-    // Manual download links
     const downloadLinks = {
-      '609681': 'https://dl.example.com/The_Marvels_2023.mp4',
-      '123456': 'https://example.com/another-movie.mp4',
-      '999999': 'https://example.com/sample-tv-show.mp4'
-      // Add more ID: URL pairs here
+    '609681': 'https://dl2.vid1.site/https%3A%2F%2Fmacdn.hakunaymatata.com%2Fresource%2F37897e3f839b6f45541103327929d6fa.mp4%3FExpires%3D1750789239%26Signature%3DDMWz6cL2rLDtFXOx09-bJy6FKs3AU-Tfb~0zdpIV3yzr2ngUQ0qUALb0c82ITLIWmTfBDZX-gBeCfKUPb33Zf7d6CXC~dmJ5tYfykMDJyacLzvtFHrd8CFZyP9q78CTs7rIjc2-icvbsJ-pPyZb7lkC6a-WTyZ-qc8~7VGGWbWxZFg~wnqkOPLjyyi3w6AcYE9Bth1VrB5RdL2rNDRebNK7kaeRsW1MKptvCgmCYe-aOchOmYwqftNMRSAV6~GdUlNq4JdfAYlzhswP4f~KoDepCFPFQPxGH7~~k0qR~rg4yZUFrpL~plBWj0-msZWO9XKNzGgFvYDbDTk-VcVV8Sw__%26Key-Pair-Id%3DKMHN1LQ1HEUPL?n=The+Marvels+%282023%29',
+      // Add more here manually by id
     };
 
-    async function fetchDetails() {
-      if (!id || !type || !downloadLinks[id]) {
-        titleElem.textContent = 'Download link not available.';
-        countdownElem.style.display = 'none';
-        return;
-      }
+    const linkElem = document.getElementById('download-link');
+    const timerElem = document.getElementById('timer');
+    const countdownElem = document.getElementById('countdown');
 
-      try {
-        const res = await fetch(`https://api.themoviedb.org/3/${type}/${id}?api_key=${API_KEY}`);
-        const data = await res.json();
-
-        const title = data.title || data.name || 'Unknown Title';
-        titleElem.textContent = `Download: ${title}`;
-        posterElem.src = IMG_URL + data.poster_path;
-
-        startCountdown(downloadLinks[id]);
-      } catch (err) {
-        titleElem.textContent = 'Failed to load movie data.';
-        countdownElem.style.display = 'none';
-        console.error(err);
-      }
-    }
-
-    function startCountdown(downloadUrl) {
+    function startCountdown() {
       let seconds = 10;
-      const countdown = setInterval(() => {
-        seconds--;
-        timerElem.textContent = seconds;
-
-        if (seconds <= 0) {
-          clearInterval(countdown);
+      const interval = setInterval(() => {
+        timerElem.textContent = seconds--;
+        if (seconds < 0) {
+          clearInterval(interval);
           countdownElem.style.display = 'none';
-          linkElem.href = downloadUrl;
+
+          const finalUrl = downloadLinks[id] || ADSTERRA_URL;
+          linkElem.href = finalUrl;
           linkElem.style.display = 'inline-block';
         }
       }, 1000);
     }
 
-    fetchDetails();
+    startCountdown();
   </script>
-
 </body>
 </html>
