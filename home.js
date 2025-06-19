@@ -13,15 +13,19 @@ let searchInput, inlineResults;
 /* ------------- ON LOAD ------------- */
 document.addEventListener('DOMContentLoaded', () => {
   /* cache refs now that DOM exists */
-  searchInput    = document.getElementById('search-input');
-  inlineResults  = document.getElementById('inline-search-results');
+  searchInput   = document.getElementById('search-input');
+  inlineResults = document.getElementById('inline-search-results');
 
+  /* build arrow buttons for every row and wire the handlers */
+  createScrollButtons();
+
+  /* data fetchers */
   fetchTrendingMovies();   // rotating banner
   fetchMovies();
   fetchTVShows();
   fetchAnime();
 
-  // genre clicks
+  /* genre click handlers */
   document.querySelectorAll('#sidebar ul li').forEach(li =>
     li.addEventListener('click', () => {
       fetchByGenre(li.dataset.genre);
@@ -29,6 +33,43 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   );
 });
+
+/* ----------- ARROW‑SCROLL LOGIC ------------ */
+function createScrollButtons() {
+  /* add buttons into each .row, before & after its .list */
+  document.querySelectorAll('.row').forEach(row => {
+    const list = row.querySelector('.list');
+    if (!list || !list.id) return;              // safety check
+    const id = list.id;
+
+    const leftBtn  = document.createElement('button');
+    leftBtn.className = 'scroll-btn left';
+    leftBtn.dataset.target = id;
+    leftBtn.setAttribute('aria-label', 'Scroll left');
+    leftBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+
+    const rightBtn = document.createElement('button');
+    rightBtn.className = 'scroll-btn right';
+    rightBtn.dataset.target = id;
+    rightBtn.setAttribute('aria-label', 'Scroll right');
+    rightBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+
+    /* insert buttons */
+    row.insertBefore(leftBtn, list);
+    row.appendChild(rightBtn);
+  });
+
+  /* click => smooth scroll */
+  document.querySelectorAll('.scroll-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const list = document.getElementById(btn.dataset.target);
+      if (!list) return;
+      const step = list.clientWidth * 0.9;       // ≈ one “page”
+      const offset = btn.classList.contains('left') ? -step : step;
+      list.scrollBy({ left: offset, behavior: 'smooth' });
+    });
+  });
+}
 
 /* ----------- FETCHERS ------------ */
 async function fetchTrendingMovies() {
@@ -112,7 +153,7 @@ function displayList(items, targetId) {
         }
       })
       .catch(() => {
-        // fail silently
+        /* fail silently */
       });
 
     card.appendChild(img);
@@ -121,7 +162,6 @@ function displayList(items, targetId) {
     wrap.appendChild(card);
   });
 }
-
 
 /* ----------- BANNER ------------- */
 function displayBanner(movie) {
