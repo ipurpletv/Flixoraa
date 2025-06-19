@@ -3,10 +3,9 @@ const API_KEY  = 'ba0e2f64d29bae320cf0bbd091bbdf3f';
 const BASE_URL = 'https://api.themoviedb.org/3';
 const IMG_URL  = 'https://image.tmdb.org/t/p/w500';
 
-/* Optional manual URLs (only for your reference) */
+/* (optional) manual URLs just to decide if a link exists, not used here */
 const manualDownloads = {
   609681: 'https://dl.example.com/The_Marvels_2023.mp4'
-  // 603692: 'https://example.com/john_wick_4.mp4'
 };
 
 /* Banner rotation */
@@ -32,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
   );
 });
 
-/* ----------- ARROW SCROLL ------------ */
+/* ----------- SCROLL BUTTONS ------------ */
 function createScrollButtons() {
   document.querySelectorAll('.row').forEach(row => {
     const list = row.querySelector('.list');
@@ -110,19 +109,16 @@ function displayList(items, targetId) {
     const type = movie.first_air_date ? 'tv' : 'movie';
 
     const card  = document.createElement('div'); card.className = 'media-card';
-    const img   = document.createElement('img'); img.src = IMG_URL + movie.poster_path;
+    const img   = document.createElement('img');
+    img.src = IMG_URL + movie.poster_path;
     img.alt = movie.title || movie.name;
     img.onclick = () => showDetails(movie);
 
-    const title = document.createElement('p'); title.className = 'media-title';
+    const title = document.createElement('p');
+    title.className = 'media-title';
     title.textContent = movie.title || movie.name;
 
-    /* Always show a Download link → goes to download.html */
-    const dl = document.createElement('a');
-    dl.textContent = 'Download';
-    dl.className   = 'watch-now-btn download-btn';
-    dl.href = `download.html?id=${id}&type=${type}&title=${encodeURIComponent(movie.title || movie.name)}`;
-    card.append(img, title, dl);
+    card.append(img, title);
     wrap.appendChild(card);
   });
 }
@@ -139,9 +135,9 @@ function displayBanner(m) {
 /* ----------- MODAL --------------- */
 function showDetails(item) {
   const modal = document.getElementById('detail-modal');
-  document.getElementById('detail-title').textContent = item.title || item.name;
+  document.getElementById('detail-title').textContent       = item.title || item.name;
   document.getElementById('detail-description').textContent = item.overview || '';
-  document.getElementById('detail-poster').src = IMG_URL + item.poster_path;
+  document.getElementById('detail-poster').src              = IMG_URL + item.poster_path;
 
   const mediaType = item.media_type || (item.first_air_date ? 'tv' : 'movie');
   document.getElementById('watch-now-btn').href =
@@ -178,7 +174,8 @@ async function searchTMDB() {
       if (!r.poster_path) return;
       const div = document.createElement('div');
       div.className = 'search-item';
-      div.innerHTML = `<img src="https://image.tmdb.org/t/p/w200${r.poster_path}" alt=""><span>${r.title || r.name}</span>`;
+      div.innerHTML =
+        `<img src="https://image.tmdb.org/t/p/w200${r.poster_path}" alt=""><span>${r.title || r.name}</span>`;
       div.onclick = () => { inlineResults.style.display = 'none'; showDetails(r); };
       inlineResults.appendChild(div);
     });
