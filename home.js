@@ -232,3 +232,111 @@ function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('active');
 }
 window.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* ========== GLOBAL CHAT MODULE (at bottom) ========== */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  onAuthStateChanged,
+} from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+import {
+  getDatabase,
+  ref,
+  push,
+  onChildAdded,
+  serverTimestamp,
+  onDisconnect,
+  set,
+  onValue,
+} from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAbEajCx_wAYT0PJp_foa9d6mGhHmh9OgI",
+  authDomain: "flixora-chat.firebaseapp.com",
+  databaseURL: "https://flixora-chat-default-rtdb.firebaseio.com",
+  projectId: "flixora-chat",
+  storageBucket: "flixora-chat.firebasestorage.app",
+  messagingSenderId: "715555545977",
+  appId: "1:715555545977:web:da8dadfc38773436fc05a8",
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getDatabase(app);
+const provider = new GoogleAuthProvider();
+
+const $toggle   = document.getElementById("chat-toggle");
+const $chatBox  = document.getElementById("chat-box");
+const $closeBtn = document.getElementById("close-chat");
+const $messages = document.getElementById("chat-messages");
+const $form     = document.getElementById("chat-form");
+const $input    = document.getElementById("chat-input");
+const $online   = document.getElementById("online-count");
+
+async function ensureLogin() {
+  if (!auth.currentUser) {
+    await signInWithPopup(auth, provider).catch(() => {
+      alert("Google sign‑in was cancelled or failed.");
+    });
+  }
+}
+
+function addMessage(text) {
+  if (!text.trim()) return;
+  const { uid, displayName, photoURL } = auth.currentUser;
+  push(ref(db, "messages"), {
+    uid,
+    name : displayName,
+    photo: photoURL,
+    text,
+    ts   : serverTimestamp(),
+  });
+}
+
+function render(msg) {
+  const el = document.createElement("div");
+  el.className = "chat-msg";
+  el.innerHTML = `<span class="name">${msg.name}:</span> ${msg.text}`;
+  $messages.appendChild(el);
+  $messages.scrollTop = $messages.scrollHeight;
+}
+
+function setPresence(user) {
+  if (!user) return;
+  const userRef = ref(db, `presence/${user.uid}`);
+  set(userRef, { name: user.displayName, online: true });
+  onDisconnect(userRef).remove();
+
+  onValue(ref(db, "presence"), (snap) => {
+    $online.textContent = snap.size ?? snap.numChildren();
+  });
+}
+
+$toggle.addEventListener("click", async () => {
+  $chatBox.hidden = !$chatBox.hidden;
+  $toggle.classList.toggle("open");
+
+  if (!$chatBox.hidden && !$messages.dataset.ready) {
+    await ensureLogin();
+    const user = auth.currentUser;
+    setPresence(user);
+
+    onChildAdded(ref(db, "messages"), (snap) => render(snap.val()));
+    $messages.dataset.ready = "1";
+  }
+});
+
+$closeBtn.addEventListener("click", () => {
+  $chatBox.hidden = true;
+  $toggle.classList.remove("open");
+});
+
+$form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  if (auth.currentUser) addMessage($input.value);
+  $input.value = "";
+});
+
+onAuthStateChanged(auth, setPresence);
