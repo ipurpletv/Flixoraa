@@ -178,10 +178,15 @@
     const cnt   = document.getElementById('user-count');
 
     /* header toggle */
-    hdr.onclick = ()=>{
-      const cur = getComputedStyle(box).display;
-      box.style.display = (cur==='none') ? 'flex' : 'none';
-    };
+    // toggle chat box with fallback
+hdr.addEventListener('click', () => {
+  if (box.style.display === 'none' || box.style.display === '') {
+    box.style.display = 'flex';
+  } else {
+    box.style.display = 'none';
+  }
+});
+
 
     /* google sign‑in */
     btn.onclick = ()=>{
