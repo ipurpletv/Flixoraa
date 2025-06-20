@@ -145,10 +145,12 @@ body {
   border-radius:6px;margin-top:10px;
 }
 
-/* —————————————————————— CHAT WIDGET (Netplex‑style) —————————————————————— */
+/* —————————————————————— CHAT WIDGET V2 —————————————————————— */
 #chat-toggle,#chat-box{position:fixed;right:18px;font-family:inherit;z-index:9999}
+
+/* toggle pill */
 #chat-toggle{
-  bottom:18px;background:#1e1e1e;color:#0f0;padding:5px 10px;border-radius:18px;
+  bottom:18px;background:#1e1e1e;color:#0f0;padding:6px 12px;border-radius:18px;
   font-size:13px;display:flex;align-items:center;gap:6px;cursor:pointer;
   box-shadow:0 2px 6px rgba(0,0,0,.4);
 }
@@ -156,15 +158,16 @@ body {
 #chat-toggle .arrow{color:#fff;transition:transform .25s}
 #chat-toggle.open .arrow{transform:rotate(180deg)}
 
+/* panel */
 #chat-box{
-  bottom:60px;width:300px;max-height:420px;display:flex;flex-direction:column;
+  bottom:60px;width:360px;max-height:500px;display:flex;flex-direction:column;
   background:#0d0d0d;border:1px solid #333;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.5);
   overflow:hidden;transform:translateY(120%);transition:transform .3s;
 }
 #chat-box.open{transform:translateY(0)}
 
 #chat-box header{
-  background:#111;color:#fff;padding:6px 10px;font-size:14px;
+  background:#111;color:#fff;padding:8px 12px;font-size:14px;
   display:flex;justify-content:space-between;align-items:center;
 }
 #chat-box header button{
@@ -172,15 +175,41 @@ body {
 }
 
 #chat-messages{
-  flex:1;padding:10px;overflow-y:auto;font-size:13px;scrollbar-width:thin;
+  flex:1;padding:12px;overflow-y:auto;font-size:13px;scrollbar-width:thin;
 }
-.chat-msg{margin-bottom:8px}
-.chat-msg .name{color:#e50914;font-weight:600;margin-right:4px}
 
+/* message layout */
+.chat-msg{
+  display:flex;align-items:flex-start;margin-bottom:10px;
+}
+.chat-avatar{
+  width:36px;height:36px;border-radius:50%;margin-right:8px;object-fit:cover;
+}
+.chat-bubble{
+  background:#222;padding:6px 10px;border-radius:8px;max-width:80%;
+  display:flex;flex-direction:column;
+}
+.chat-name{
+  font-weight:700;font-size:.85em;color:#ffdd57;margin-bottom:2px;
+}
+.chat-text{font-size:.9em;color:#fff;margin-bottom:4px;word-wrap:break-word}
+.chat-time{
+  font-size:.7em;color:#aaa;text-align:right;
+}
+
+/* form */
 #chat-form{display:flex;border-top:1px solid #333}
 #chat-input{
-  flex:1;padding:8px;background:#111;border:0;color:#fff;font-size:13px;outline:none;
+  flex:1;padding:10px;background:#111;border:0;color:#fff;font-size:14px;outline:none;
 }
 #chat-form button{
-  background:#e50914;border:0;color:#fff;padding:0 14px;font-size:14px;cursor:pointer;
+  background:#e50914;border:0;color:#fff;padding:0 16px;font-size:14px;cursor:pointer;
 }
+
+/* sign‑in button inside panel */
+#signin-btn{
+  background:#fff;border:0;color:#555;display:flex;align-items:center;justify-content:center;
+  gap:8px;font-weight:600;padding:10px;width:80%;margin:40px auto 20px;border-radius:4px;
+  box-shadow:0 2px 4px rgba(0,0,0,.25);cursor:pointer;
+}
+#signin-btn img{width:18px;height:18px}
