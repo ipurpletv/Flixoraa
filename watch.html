@@ -1,250 +1,192 @@
-<!-- watch.html – fully updated -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Watch</title>
-  <style>
-    /* ========== BASE / LAYOUT (unchanged from your file) ========== */
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{background:#0b0b0b;color:#fff;font-family:'Segoe UI',sans-serif;overflow-x:hidden}
-    header{background:rgba(0,0,0,.7);backdrop-filter:blur(10px);padding:16px;
-           display:flex;justify-content:space-between;position:sticky;top:0;z-index:10}
-    header a{color:#00bfff;text-decoration:none;font-weight:600}
-    #watch-title{font-size:1.5rem;padding:20px 24px;border-bottom:1px solid #222}
-    .watch-container{display:flex;gap:24px;flex-wrap:wrap;padding:20px 24px}
-    .video-box{flex:2;min-width:300px}
-    .video-box iframe{width:100%;height:420px;border:none;border-radius:10px;background:#000}
-    .server-select{margin-top:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-    .server-select label{font-size:.9rem}
-    .server-select select{padding:6px;background:#222;color:#fff;border:1px solid #444;
-                          border-radius:4px;font-size:.9rem}
-    .download-btn{background:#e50914;color:#fff;padding:6px 12px;font-size:.85rem;
-                  text-decoration:none;border-radius:4px}
-    .recommendations{flex:1;min-width:250px;background:rgba(30,30,30,.8);
-                     backdrop-filter:blur(8px);padding:16px;border-radius:10px;
-                     height:460px;overflow-y:auto}
-    .recommendations h3{font-size:1rem;margin-bottom:12px}
-    .rec-item{display:flex;align-items:center;margin-bottom:10px;cursor:pointer;
-              transition:transform .2s}
-    .rec-item:hover{transform:scale(1.02)}
-    .rec-item img{width:48px;height:72px;object-fit:cover;border-radius:4px;margin-right:10px}
-    .rec-item span{font-size:.85rem;color:#ccc}
-    @media(max-width:768px){
-      #watch-title{font-size:1.2rem;padding:16px}
-      .watch-container{flex-direction:column;padding:16px}
-      .video-box iframe{height:240px}
-      .recommendations{height:auto;max-height:300px;margin-top:20px}
-      .rec-item img{width:40px;height:60px}
-      .rec-item span{font-size:.8rem}
-    }
-	  <script type='text/javascript' src='//transparentdefender.com/9b/51/58/9b515880df5fea539a7b50bb52210585.js'></script>
-  </style>
-</head>
-<body>
-  <!-- ===== NAV ===== -->
-  <header><a href="index.html">← Back to Homepage</a></header>
+<!-- Place this just before </body> in your existing watch.html -->
+<!-- ===== GLOBAL CHAT WIDGET (START) ===== -->
+<style>
+  #chat-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #00bfff;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 14px;
+    cursor: pointer;
+    z-index: 9999;
+  }
 
-  <!-- ===== TITLE ===== -->
-  <h2 id="watch-title">Loading…</h2>
-	<center>
- <script type="text/javascript">
-	atOptions = {
-		'key' : '3e8dc7cbcc31780cad2727b4bc64a1df',
-		'format' : 'iframe',
-		'height' : 90,
-		'width' : 728,
-		'params' : {}
-	};
-</script>
-<script type="text/javascript" src="//transparentdefender.com/3e8dc7cbcc31780cad2727b4bc64a1df/invoke.js"></script>
-		</center>
+  #chat-box {
+    position: fixed;
+    bottom: 70px;
+    right: 20px;
+    width: 300px;
+    max-height: 400px;
+    background: #111;
+    border: 1px solid #444;
+    border-radius: 10px;
+    display: none;
+    flex-direction: column;
+    z-index: 9999;
+  }
 
-  <!-- ===== MAIN CONTAINER ===== -->
-  <div class="watch-container">
-    <!-- video & controls -->
-    <div class="video-box">
-      <iframe id="watch-player" allowfullscreen></iframe>
+  #chat-header {
+    background: #222;
+    padding: 8px 12px;
+    font-weight: bold;
+    border-bottom: 1px solid #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
-      <div class="server-select">
-        <label for="server">Server:</label>
-        <select id="server">
-          <option value="vidsrc.cc">Martina</option>
-          <option value="vidsrc.me">Purple</option>
-          <option value="player.videasy.net">Cuz (HD)</option>
-          <option value="apimocine.movie">Cristina (4K)</option>
-          <option value="apimocine.tv">Steechy (4K TV)</option>
-        </select>
+  #chat-messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    font-size: 0.9rem;
+  }
 
-        <!-- Season / Episode (only for TV) -->
-        <label id="season-label" for="season-select" style="display:none;">Season:</label>
-        <select id="season-select" style="display:none;"></select>
+  #chat-messages p {
+    margin-bottom: 8px;
+    word-wrap: break-word;
+  }
 
-        <label id="episode-label" for="episode-select" style="display:none;">Episode:</label>
-        <select id="episode-select" style="display:none;"></select>
+  #chat-input {
+    display: flex;
+    border-top: 1px solid #333;
+  }
 
-        <a id="watch-download-btn" class="download-btn" target="_blank" style="display:none;">Download</a>
-      </div>
-    </div>
+  #chat-input input {
+    flex: 1;
+    padding: 8px;
+    background: #222;
+    border: none;
+    color: #fff;
+    font-size: 0.85rem;
+  }
 
-    <!-- recommendations -->
-    <div class="recommendations">
-      <h3>For You</h3>
-      <div id="recommend-list">Loading…</div>
-    </div>
+  #chat-input button {
+    padding: 8px 12px;
+    background: #00bfff;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  #chat-login {
+    padding: 10px;
+    text-align: center;
+  }
+
+  .chat-timestamp {
+    font-size: 0.75rem;
+    color: #777;
+    margin-left: 5px;
+  }
+</style>
+
+<button id="chat-toggle">💬 Chat</button>
+
+<div id="chat-box">
+  <div id="chat-header">
+    Global Chat <span id="chat-users" style="font-weight:normal;font-size:0.85rem;"></span>
   </div>
+  <div id="chat-messages">Loading chat…</div>
+  <div id="chat-input" style="display:none;">
+    <input type="text" id="chat-text" placeholder="Type a message..." />
+    <button id="chat-send">Send</button>
+  </div>
+  <div id="chat-login">
+    <button id="chat-login-btn">Sign in with Google</button>
+  </div>
+</div>
 
-  <!-- ===== SCRIPT ===== -->
-  <script>
-  /* ---------- PARAMS ---------- */
-  const TMDB_KEY = 'ba0e2f64d29bae320cf0bbd091bbdf3f';
-  const urlParams = new URLSearchParams(location.search);
-  const mediaId   = urlParams.get('id');
-  const mediaType = urlParams.get('type'); // 'movie' or 'tv'
-  const mediaTitle= decodeURIComponent(urlParams.get('title') || 'Now Playing');
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 
-  /* ---------- DOM REFS ---------- */
-  const titleEl   = document.getElementById('watch-title');
-  const playerEl  = document.getElementById('watch-player');
-  const serverSel = document.getElementById('server');
-  const dlBtn     = document.getElementById('watch-download-btn');
-  const seasonSel = document.getElementById('season-select');
-  const episodeSel= document.getElementById('episode-select');
-  const sLabel    = document.getElementById('season-label');
-  const eLabel    = document.getElementById('episode-label');
+<script>
+  // Firebase Config (Replace with your own config if needed)
+  const firebaseConfig = {
+    apiKey: "AIzaSyAp-Izn4Cnk-9A1OZcYqob4IkBTaOazbNc",
+    authDomain: "flixora-chat.firebaseapp.com",
+    databaseURL: "https://flixora-chat-default-rtdb.firebaseio.com",
+    projectId: "flixora-chat",
+    storageBucket: "flixora-chat.appspot.com",
+    messagingSenderId: "663750708652",
+    appId: "1:663750708652:web:f3f4cf4c2a44571cf2c4fb"
+  };
 
-  if(!mediaId || !mediaType){ titleEl.textContent='Invalid stream info.'; throw new Error('Missing params'); }
-  titleEl.textContent = mediaTitle;
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.database();
 
-  /* ---------- EMBED URL BUILDER ---------- */
-  function embedURL(server, sNum, eNum){
-    const hasSE = mediaType==='tv' && sNum && eNum;
-    switch(server){
-      case 'vidsrc.cc':
-        return mediaType==='tv'
-          ? `https://vidsrc.cc/v2/embed/tv/${mediaId}/${sNum}/${eNum}?autoplay=1`
-          : `https://vidsrc.cc/v2/embed/movie/${mediaId}?autoplay=1`;
-      case 'vidsrc.me':
-        return mediaType==='tv'
-          ? `https://vidsrc.net/embed/tv/?tmdb=${mediaId}&season=${sNum}&episode=${eNum}&autoplay=1`
-          : `https://vidsrc.net/embed/movie/?tmdb=${mediaId}&autoplay=1`;
-      case 'player.videasy.net':
-        return mediaType==='tv'
-          ? `https://player.videasy.net/tv/${mediaId}/${sNum}/${eNum}?autoplay=1`
-          : `https://player.videasy.net/movie/${mediaId}?autoplay=1`;
-      case 'apimocine.movie':
-        return `https://apimocine.vercel.app/movie/${mediaId}`;
-      case 'apimocine.tv':
-        return hasSE
-          ? `https://apimocine.vercel.app/tv/${mediaId}?season=${sNum}&episode=${eNum}`
-          : `https://apimocine.vercel.app/tv/${mediaId}`;
-      default: return '';
+  const toggleBtn = document.getElementById('chat-toggle');
+  const chatBox = document.getElementById('chat-box');
+  const loginBtn = document.getElementById('chat-login-btn');
+  const inputArea = document.getElementById('chat-input');
+  const chatText = document.getElementById('chat-text');
+  const chatSend = document.getElementById('chat-send');
+  const chatMsgs = document.getElementById('chat-messages');
+  const userCount = document.getElementById('chat-users');
+
+  toggleBtn.onclick = () => {
+    chatBox.style.display = chatBox.style.display === 'none' ? 'flex' : 'none';
+  };
+
+  loginBtn.onclick = () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider).catch(alert);
+  };
+
+  let currentUser = null;
+
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      currentUser = user;
+      inputArea.style.display = 'flex';
+      loginBtn.style.display = 'none';
+    } else {
+      currentUser = null;
+      inputArea.style.display = 'none';
+      loginBtn.style.display = 'block';
     }
-  }
-  function refreshPlayer(){ playerEl.src = embedURL(serverSel.value, seasonSel.value, episodeSel.value); }
+  });
 
-  /* ---------- DOWNLOAD ---------- */
-  function refreshDownload(){
-    dlBtn.style.display='none';
-    const api = mediaType==='tv'
-      ? `https://apimocine.vercel.app/tv/${mediaId}?season=${seasonSel.value}&episode=${episodeSel.value}`
-      : `https://apimocine.vercel.app/movie/${mediaId}`;
-    fetch(api)
-      .then(r=>r.json())
-      .then(d=>{
-        const link = d?.media?.sources?.find(src=>src.url)?.url;
-        if(link){ dlBtn.href=link; dlBtn.style.display='inline-block'; }
-      })
-      .catch(()=>{ dlBtn.style.display='none'; });
-  }
-
-  /* ---------- SEASONS / EPISODES (TV) ---------- */
-  async function initSeasons(){
-    if(mediaType!=='tv'){ return; }
-
-    // show selectors
-    sLabel.style.display = seasonSel.style.display = 'inline-block';
-    eLabel.style.display = episodeSel.style.display = 'inline-block';
-
-    // get seasons
-    const tvInfo = await fetch(`https://api.themoviedb.org/3/tv/${mediaId}?api_key=${TMDB_KEY}`)
-                   .then(r=>r.json());
-    seasonSel.innerHTML='';
-    tvInfo.seasons
-      .filter(s=>s.season_number>0 && s.episode_count>0)
-      .forEach(s=>{
-        const opt=document.createElement('option');
-        opt.value=s.season_number;
-        opt.textContent=`Season ${s.season_number}`;
-        seasonSel.appendChild(opt);
-      });
-
-    await loadEpisodes(); // for first season
-    seasonSel.addEventListener('change', loadEpisodes);
-  }
-
-  async function loadEpisodes(){
-    const sNum = seasonSel.value;
-    episodeSel.innerHTML='';
-    const eps  = await fetch(`https://api.themoviedb.org/3/tv/${mediaId}/season/${sNum}?api_key=${TMDB_KEY}`)
-                   .then(r=>r.json());
-    eps.episodes.forEach(ep=>{
-      const opt=document.createElement('option');
-      opt.value=ep.episode_number;
-      opt.textContent=`Ep ${ep.episode_number}: ${ep.name}`;
-      episodeSel.appendChild(opt);
+  chatSend.onclick = () => {
+    const text = chatText.value.trim();
+    if (!text || !currentUser) return;
+    db.ref('chat').push({
+      name: currentUser.displayName,
+      text: text,
+      time: new Date().toISOString()
     });
-    episodeSel.addEventListener('change', ()=>{ refreshPlayer(); refreshDownload(); });
-    // initial play
-    refreshPlayer();
-    refreshDownload();
-  }
+    chatText.value = '';
+  };
 
-  /* ---------- INITIALISE ---------- */
-  serverSel.addEventListener('change', ()=>{ refreshPlayer(); refreshDownload(); });
+  db.ref('chat').limitToLast(50).on('value', snap => {
+    chatMsgs.innerHTML = '';
+    snap.forEach(child => {
+      const msg = child.val();
+      const time = new Date(msg.time).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+      chatMsgs.innerHTML += `<p><strong>${msg.name}</strong>: ${msg.text} <span class="chat-timestamp">${time}</span></p>`;
+    });
+    chatMsgs.scrollTop = chatMsgs.scrollHeight;
+  });
 
-  if(mediaType==='movie'){
-    // movie: simply load once
-    refreshPlayer();
-    refreshDownload();
-  }else{
-    initSeasons();
-  }
+  const presenceRef = db.ref('presence');
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      const userRef = presenceRef.child(user.uid);
+      userRef.set(true);
+      userRef.onDisconnect().remove();
+    }
+  });
 
-  /* ---------- RECOMMENDATIONS ---------- */
-  async function loadRecommendations(){
-    const box=document.getElementById('recommend-list');
-    box.innerHTML='';
-    try{
-      const data=await fetch(`https://api.themoviedb.org/3/${mediaType}/${mediaId}/recommendations?api_key=${TMDB_KEY}`)
-                 .then(r=>r.json());
-      if(!data.results.length){ box.innerHTML="<p style='color:#888'>No recommendations found.</p>"; return; }
-      data.results.slice(0,10).forEach(it=>{
-        if(!it.poster_path) return;
-        const div=document.createElement('div');
-        div.className='rec-item';
-        div.innerHTML=`<img src="https://image.tmdb.org/t/p/w200${it.poster_path}" alt="">
-                       <span>${it.title||it.name}</span>`;
-        div.onclick=()=>location.href=`watch.html?id=${it.id}&type=${mediaType}&title=${encodeURIComponent(it.title||it.name)}`;
-        box.appendChild(div);
-      });
-    }catch{ box.innerHTML="<p style='color:red'>Error loading recommendations.</p>"; }
-  }
-  loadRecommendations();
-  </script>
-	<center>
- <script type="text/javascript">
-	atOptions = {
-		'key' : '3e8dc7cbcc31780cad2727b4bc64a1df',
-		'format' : 'iframe',
-		'height' : 90,
-		'width' : 728,
-		'params' : {}
-	};
+  presenceRef.on('value', snap => {
+    const count = snap.numChildren();
+    userCount.textContent = `(${count} online)`;
+  });
 </script>
-<script type="text/javascript" src="//transparentdefender.com/3e8dc7cbcc31780cad2727b4bc64a1df/invoke.js"></script>
-		</center>
-	<script type='text/javascript' src='//transparentdefender.com/60/86/60/6086609321601064c3b75f442c564c6f.js'></script>
-</body>
-</html>
+<!-- ===== GLOBAL CHAT WIDGET (END) ===== -->
