@@ -108,18 +108,18 @@
     <div class="footer-links"><a href="#">Disclaimer</a> · <a href="#">About Us</a> · <a href="#">Contact Us</a></div>
   </footer>
 
-  <!-- ——————————— GLOBAL CHAT ——————————— -->
-  <div id="chat-widget">
-    <div id="chat-header">Global Chat (<span id="user-count">0</span>)</div>
-    <div id="chat-box" style="display:none; flex-direction: column;">
-      <div id="chat-messages"></div>
-      <form id="chat-form" style="display:none">
-        <input id="chat-input" type="text" placeholder="Type a message…" autocomplete="off" required>
-        <button type="submit">Send</button>
-      </form>
-      <button id="signin-btn">Sign in with Google</button>
-    </div>
+ <!-- ——— GLOBAL CHAT ——— -->
+<div id="chat-container">
+  <div id="chat-toggle">💬 Global Chat (<span id="user-count">0</span>)</div>
+  <div id="chat-box" class="hidden">
+    <div id="chat-messages"></div>
+    <form id="chat-form" class="hidden">
+      <input id="chat-input" type="text" placeholder="Type a message..." required />
+      <button type="submit">Send</button>
+    </form>
+    <button id="signin-btn">Sign in with Google</button>
   </div>
+</div>
 
   <style>
     /* ——— Global Chat styles ——— (unchanged from your CSS) */
