@@ -1,72 +1,58 @@
+<!-- admin.html – View & Manage Suggestions -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Flixora Admin - Suggestions</title>
+  <title>Flixora Admin – Suggestions</title>
   <style>
     body {
-      background-color: #0b0b0b;
+      background: #0b0b0b;
       color: #fff;
       font-family: 'Segoe UI', sans-serif;
       padding: 20px;
     }
-
     h1 {
-      text-align: center;
-      margin-bottom: 30px;
-      font-size: 2rem;
       color: #00bfff;
+      margin-bottom: 20px;
     }
-
-    .suggestion-list {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .suggestion-item {
-      background: #1a1a1a;
-      border-left: 4px solid #00bfff;
-      padding: 16px;
-      margin-bottom: 15px;
+    .suggestion {
+      background: #1c1c1c;
+      border: 1px solid #333;
+      padding: 15px;
       border-radius: 8px;
+      margin-bottom: 15px;
+      position: relative;
     }
-
-    .suggestion-item h3 {
-      margin: 0 0 8px;
-      font-size: 1.1rem;
-      color: #e0e0e0;
+    .suggestion p {
+      margin: 5px 0;
     }
-
-    .suggestion-item p {
-      margin: 0 0 6px;
-      color: #ccc;
-      font-size: 0.95rem;
-    }
-
-    .timestamp {
+    .delete-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: #e50914;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
       font-size: 0.85rem;
-      color: #888;
     }
-
-    @media (max-width: 600px) {
-      .suggestion-item {
-        padding: 12px;
-      }
-
-      h1 {
-        font-size: 1.5rem;
-      }
+    .delete-btn:hover {
+      background: #c40812;
     }
   </style>
+</head>
+<body>
+  <h1>Viewer Suggestions</h1>
+  <div id="suggestions">Loading suggestions...</div>
 
-  <!-- Firebase -->
+  <!-- Firebase SDK -->
   <script type="module">
-    // Import Firebase modules
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-    // Your Firebase config (same as used in Flixora)
     const firebaseConfig = {
  apiKey: "AIzaSyDGHoMj0M_s52HxD3eJlt8mMaiQLzmAz0Y",
   authDomain: "flixora-suggestions.firebaseapp.com",
@@ -76,45 +62,41 @@
   appId: "1:723289303517:web:96ee6c65f7678724792e34"
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
+    const db = getDatabase(app);
+    const suggestionsRef = ref(db, "suggestions");
 
-    // Reference to suggestions
-    const suggestionsRef = ref(database, 'suggestions');
+    const container = document.getElementById("suggestions");
 
-    // DOM reference
-    const suggestionList = document.querySelector('.suggestion-list');
-
-    // Listen to changes
-    onValue(suggestionsRef, (snapshot) => {
-      suggestionList.innerHTML = ''; // Clear existing
-      const data = snapshot.val();
-
-      if (!data) {
-        suggestionList.innerHTML = '<p>No suggestions submitted yet.</p>';
+    onValue(suggestionsRef, snapshot => {
+      container.innerHTML = '';
+      if (!snapshot.exists()) {
+        container.innerHTML = '<p>No suggestions found.</p>';
         return;
       }
 
-      // Sort by newest first
-      const sorted = Object.values(data).sort((a, b) => b.timestamp - a.timestamp);
+      const data = snapshot.val();
+      Object.keys(data).reverse().forEach(key => {
+        const { nickname, message, timestamp } = data[key];
 
-      sorted.forEach(entry => {
-        const date = new Date(entry.timestamp);
-        const div = document.createElement('div');
-        div.className = 'suggestion-item';
+        const div = document.createElement("div");
+        div.className = "suggestion";
         div.innerHTML = `
-          <h3>${entry.nickname || 'Anonymous'}</h3>
-          <p>${entry.message}</p>
-          <div class="timestamp">${date.toLocaleString()}</div>
+          <p><strong>${nickname}</strong></p>
+          <p>${message}</p>
+          <p style="font-size:0.8rem;color:#888">${timestamp}</p>
+          <button class="delete-btn">Delete</button>
         `;
-        suggestionList.appendChild(div);
+
+        div.querySelector('.delete-btn').onclick = () => {
+          if (confirm("Are you sure you want to delete this suggestion?")) {
+            remove(ref(db, `suggestions/${key}`));
+          }
+        };
+
+        container.appendChild(div);
       });
     });
   </script>
-</head>
-<body>
-  <h1>📬 Flixora Suggestions</h1>
-  <div class="suggestion-list">Loading suggestions…</div>
 </body>
 </html>
