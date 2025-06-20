@@ -16,15 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
   inlineResults = document.getElementById('inline-search-results');
 
   createScrollButtons();
-
-  /* initial content */
   fetchTrendingMovies();
   fetchMovies();
   fetchTVShows();
   fetchAnime();
-  fetchVivamax();            /* ➜ NEW */
+  fetchVivamax();
 
-  /* sidebar genre links */
   document.querySelectorAll('#sidebar ul li').forEach(li =>
     li.addEventListener('click', () => { fetchByGenre(li.dataset.genre); toggleSidebar(); })
   );
@@ -76,7 +73,6 @@ async function fetchAndDisplay(endpoint, target) {
   displayList(results, target);
 }
 
-/* Anime = JA language + animation genre */
 async function fetchAnime() {
   let all = [];
   for (let p = 1; p <= 3; p++) {
@@ -87,7 +83,6 @@ async function fetchAnime() {
   displayList(all, 'anime-list');
 }
 
-/* ➜ NEW: Vivamax (popular Filipino‑language movies) */
 async function fetchVivamax() {
   const url = `${BASE_URL}/discover/movie?api_key=${API_KEY}` +
               `&with_original_language=tl&sort_by=popularity.desc&page=1`;
@@ -227,15 +222,13 @@ function toggleHistory() {
   document.getElementById('history-sidebar').classList.toggle('active');
 }
 
-/* -------- SIDEBAR / ESC --------- */
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('active');
 }
 window.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-/* ========== GLOBAL CHAT MODULE (Netplex style) ========== */
+/* ========== GLOBAL CHAT MODULE ========== */
 (function () {
-  /* Grab HTML nodes */
   const toggle  = document.getElementById('chat-toggle');
   const panel   = document.getElementById('chat-box');
   const closeBt = document.getElementById('close-chat');
@@ -243,10 +236,10 @@ window.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); 
   const form    = document.getElementById('chat-form');
   const input   = document.getElementById('chat-input');
   const online  = document.getElementById('online-count');
+  const signInBtn = document.getElementById('signin-btn');
 
-  if (!toggle || !panel) return;           // chat not on this page
+  if (!toggle || !panel) return;
 
-  /* Firebase (compat already loaded in index.html) */
   const cfg = {
     apiKey:"AIzaSyAbEajCx_wAYT0PJp_foa9d6mGhHmh9OgI",
     authDomain:"flixora-chat.firebaseapp.com",
@@ -263,53 +256,70 @@ window.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); 
 
   let loaded = false;
 
-  /* helpers */
-  const pushMsg = (name,text)=>db.ref('messages').push({name,text,ts:firebase.database.ServerValue.TIMESTAMP});
-  const addRow  = snap=>{
-    const d=snap.val();
-    const row=document.createElement('div');
-    row.className='chat-msg';
-    row.innerHTML=`<span class="name">${d.name}:</span> ${d.text}`;
+  const pushMsg = (name, text, photoURL) =>
+    db.ref('messages').push({
+      name,
+      text,
+      photoURL,
+      ts: firebase.database.ServerValue.TIMESTAMP
+    });
+
+  const addRow = snap => {
+    const d = snap.val();
+    const row = document.createElement('div');
+    row.className = 'chat-msg';
+    const date = new Date(d.ts || Date.now());
+    const timeStr = date.toLocaleString();
+    row.innerHTML = `
+      <img class="chat-avatar" src="${d.photoURL || 'default.jpg'}" alt="">
+      <div class="chat-bubble">
+        <span class="chat-name">${d.name}</span>
+        <span class="chat-text">${d.text}</span>
+        <span class="chat-time">${timeStr}</span>
+      </div>`;
     msgsBox.appendChild(row);
-    msgsBox.scrollTop=msgsBox.scrollHeight;
+    msgsBox.scrollTop = msgsBox.scrollHeight;
   };
-  const setPresence = u=>{
-    const ref=db.ref('presence/'+u.uid);
-    ref.set({name:u.displayName,online:true});
+
+  const setPresence = u => {
+    const ref = db.ref('presence/' + u.uid);
+    ref.set({ name: u.displayName, online: true });
     ref.onDisconnect().remove();
-    db.ref('presence').on('value',s=>online.textContent=s.numChildren());
+    db.ref('presence').on('value', s => online.textContent = s.numChildren());
   };
-  async function ensureSignIn(){
+
+  async function ensureSignIn() {
     if (auth.currentUser) return true;
-    try{ await auth.signInWithPopup(prov); }
-    catch{return false;}
+    try { await auth.signInWithPopup(prov); }
+    catch { return false; }
     setPresence(auth.currentUser);
-    if(!loaded){
-      db.ref('messages').limitToLast(100).on('child_added',addRow);
-      loaded=true;
+    if (!loaded) {
+      db.ref('messages').limitToLast(100).on('child_added', addRow);
+      loaded = true;
     }
-    input.disabled=false;
+    input.disabled = false;
+    signInBtn.style.display = 'none';
     return true;
   }
 
-  /* UI events */
-  toggle.addEventListener('click',()=>{
+  toggle.addEventListener('click', () => {
     toggle.classList.toggle('open');
-    panel .classList.toggle('open');
+    panel.classList.toggle('open');
   });
-  closeBt.addEventListener('click',()=>{
+  closeBt.addEventListener('click', () => {
     toggle.classList.remove('open');
-    panel .classList.remove('open');
+    panel.classList.remove('open');
   });
 
   input.addEventListener('focus', ensureSignIn);
   input.addEventListener('click', ensureSignIn);
+  signInBtn.addEventListener('click', ensureSignIn);
 
-  form.addEventListener('submit',async e=>{
+  form.addEventListener('submit', async e => {
     e.preventDefault();
     if (!(await ensureSignIn())) return;
-    const text=input.value.trim();
-    if(text) pushMsg(auth.currentUser.displayName,text);
-    input.value='';
+    const text = input.value.trim();
+    if (text) pushMsg(auth.currentUser.displayName, text, auth.currentUser.photoURL);
+    input.value = '';
   });
 })();
