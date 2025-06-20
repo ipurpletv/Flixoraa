@@ -264,22 +264,25 @@ window.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); 
       ts: firebase.database.ServerValue.TIMESTAMP
     });
 
-  const addRow = snap => {
-    const d = snap.val();
-    const row = document.createElement('div');
-    row.className = 'chat-msg';
-    const date = new Date(d.ts || Date.now());
-    const timeStr = date.toLocaleString();
-    row.innerHTML = `
-      <img class="chat-avatar" src="${d.photoURL || 'default.jpg'}" alt="">
-      <div class="chat-bubble">
-        <span class="chat-name">${d.name}</span>
-        <span class="chat-text">${d.text}</span>
-        <span class="chat-time">${timeStr}</span>
-      </div>`;
-    msgsBox.appendChild(row);
-    msgsBox.scrollTop = msgsBox.scrollHeight;
-  };
+const addRow = snap => {
+  const d = snap.val();
+  const div = document.createElement('div');
+  div.className = 'chat-msg';
+  const date = new Date(d.ts || Date.now());
+  const timeString = date.toLocaleString();
+  div.innerHTML = `
+    <img src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y" class="anon-pfp" alt="Anonymous">
+    <div class="msg-body">
+      <div class="msg-header">
+        <span class="name">${d.name}</span>
+        <span class="timestamp">${timeString}</span>
+      </div>
+      <div class="msg-text">${d.text}</div>
+    </div>
+  `;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+};
 
   const setPresence = u => {
     const ref = db.ref('presence/' + u.uid);
