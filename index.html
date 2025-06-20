@@ -14,193 +14,253 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
   <style>
-    /* Chat Styles */
-    #chat-toggle {
-      position: fixed;
-      bottom: 10px;
-      right: 10px;
-      background: #111;
-      color: #fff;
-      padding: 8px 12px;
-      border-radius: 10px 10px 0 0;
-      cursor: pointer;
-      font-size: 14px;
-      z-index: 9999;
+    .media-card {
+      display: inline-block;
+      width: 140px;
+      margin: 10px;
+      text-align: center;
     }
-    #chat-toggle .arrow {
-      margin-left: 10px;
-    }
-
-    #chat-box {
-      position: fixed;
-      bottom: 0;
-      right: 10px;
-      width: 300px;
-      background: #1b1b1b;
-      color: #fff;
-      border-radius: 10px 10px 0 0;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      z-index: 9999;
-      display: flex;
-      flex-direction: column;
-      height: 400px;
-    }
-
-    #chat-box header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #e50914;
-      padding: 8px 12px;
-      border-radius: 10px 10px 0 0;
-    }
-
-    #chat-messages {
-      flex: 1;
-      padding: 10px;
-      overflow-y: auto;
-      font-size: 14px;
-    }
-
-    #chat-form {
-      display: flex;
-      border-top: 1px solid #444;
-    }
-
-    #chat-input {
-      flex: 1;
-      padding: 8px;
-      background: #111;
-      border: none;
-      color: #fff;
-    }
-
-    #chat-form button {
-      background: #e50914;
-      border: none;
-      color: #fff;
-      padding: 0 12px;
-      font-size: 18px;
+    .media-card img {
+      width: 100%;
+      border-radius: 4px;
       cursor: pointer;
     }
-
-    .chat-msg {
-      margin-bottom: 6px;
+    .media-title {
+      font-size: 0.9em;
+      color: #fff;
+      margin: 4px 0;
     }
-
-    .chat-msg span {
-      font-weight: bold;
-      color: #e50914;
+    .download-btn {
+      display: inline-block;
+      background: #e50914;
+      color: #fff;
+      padding: 4px 8px;
+      font-size: 0.8em;
+      text-decoration: none;
+      border-radius: 4px;
+      margin-top: 4px;
     }
   </style>
-
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script type='text/javascript' src='//transparentdefender.com/9b/51/58/9b515880df5fea539a7b50bb52210585.js'></script>
 </head>
+
 <body>
-  <!-- [your original HTML above remains unchanged] -->
+  <!-- ╔════ NAVBAR ════╗ -->
+  <header class="navbar">
+    <div class="navbar-content">
+      <div class="nav-left">
+        <button class="menu-btn" aria-label="Menu" onclick="toggleSidebar()">
+          <i class="fas fa-bars"></i>
+        </button>
+        <a href="index.html" class="brand">
+          <img src="Icosss.png" alt="Flixora logo" class="logo" />
+          <span class="brand-name">Flixora</span>
+        </a>
+      </div>
 
-  <!-- Chat Toggle -->
-  <div id="chat-toggle">
-    <span class="label">Chat Room</span>
-    <span id="online-count">0</span>
-    <i class="arrow">▲</i>
+      <div class="nav-right">
+        <div class="search-wrapper">
+          <input type="text" id="search-input" class="search-bar" placeholder="Search movie or show…" oninput="searchTMDB()">
+          <i class="fas fa-search search-icon"></i>
+        </div>
+        <button id="history-btn" class="history-btn" onclick="toggleHistory()">
+          <i class="fas fa-history"></i><span>History</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div id="inline-search-results" class="inline-search-results"></div>
+
+  <!-- ║════ sidebars ════║ -->
+  <nav id="sidebar" class="sidebar">
+    <span class="close-side" onclick="toggleSidebar()">×</span>
+    <h3>Genres</h3>
+    <ul>
+      <li data-genre="28">Action</li><li data-genre="35">Comedy</li>
+      <li data-genre="16">Animation</li><li data-genre="18">Drama</li>
+      <li data-genre="27">Horror</li><li data-genre="10749">Romance</li>
+      <li data-genre="878">Sci‑Fi</li>
+    </ul>
+  </nav>
+
+  <aside id="history-sidebar" class="sidebar history">
+    <span class="close-side" onclick="toggleHistory()">×</span>
+    <h3>Watch History</h3>
+    <div id="history-results" class="results"></div>
+  </aside>
+
+  <!-- Banner -->
+  <div class="banner" id="banner">
+    <div class="banner-overlay">
+      <h1 id="banner-title"></h1>
+      <p id="banner-description"></p>
+      <a id="banner-watch-btn" class="banner-watch-btn" href="#" target="_blank">▶ Watch Now</a>
+    </div>
+  </div>
+	<center>
+ <script type="text/javascript">
+	atOptions = {
+		'key' : '3e8dc7cbcc31780cad2727b4bc64a1df',
+		'format' : 'iframe',
+		'height' : 90,
+		'width' : 728,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//transparentdefender.com/d8207cd27802c5cd3603eef7ed22e16f/invoke.js"></script>
+		</center>
+  <!-- Rows -->
+  <section class="row">
+    <h2>Popular Movies</h2>
+    <div class="list" id="movies-list"></div>
+  </section>
+
+  <section class="row">
+    <h2>TV Shows</h2>
+    <div class="list" id="tvshows-list"></div>
+  </section>
+
+  <section class="row">
+    <h2>Anime</h2>
+    <div class="list" id="anime-list"></div>
+  </section>
+
+  <section class="row">
+    <h2>Vivamax</h2>
+    <div class="list" id="vivamax-list"></div>
+  </section>
+			<center>
+ <script type="text/javascript">
+	atOptions = {
+		'key' : '3e8dc7cbcc31780cad2727b4bc64a1df',
+		'format' : 'iframe',
+		'height' : 90,
+		'width' : 728,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//transparentdefender.com/3e8dc7cbcc31780cad2727b4bc64a1df/invoke.js"></script>
+		</center>
+  <!-- Detail modal -->
+  <div class="modal" id="detail-modal">
+    <div class="modal-content small">
+      <span class="close" onclick="closeModal()">×</span>
+      <div class="modal-body">
+        <img id="detail-poster" src="" alt=""/>
+        <div class="modal-text">
+          <h2 id="detail-title"></h2>
+          <p id="detail-description"></p>
+          <a id="watch-now-btn" class="watch-now-btn" href="#" target="_blank">▶ Watch Now</a>
+          <a id="download-btn" class="download-btn" href="#" target="_blank" style="display:none;">⬇ Download</a>
+ <script type="text/javascript">
+	atOptions = {
+		'key' : 'd8207cd27802c5cd3603eef7ed22e16f',
+		'format' : 'iframe',
+		'height' : 60,
+		'width' : 468,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//transparentdefender.com/d8207cd27802c5cd3603eef7ed22e16f/invoke.js"></script>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- Chat Box -->
-  <div id="chat-box" hidden>
-    <header>
-      <strong>Global Chat</strong>
-      <button id="close-chat">✕</button>
-    </header>
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2025 All rights reserved. We do not host or upload any video files on this site. All content is provided by external third-party services.</p>
+    <div class="footer-links">
+      <a href="#">Disclaimer</a> · <a href="#">About Us</a> · <a href="#">Contact Us</a>
+    </div>
+  </footer>
+  <script type='text/javascript' src='//transparentdefender.com/60/86/60/6086609321601064c3b75f442c564c6f.js'></script>
+  <!-- Firebase SDKs (already in <head>) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
-    <div id="chat-messages"></div>
+<!-- Global Chat logic — plain script, no modules -->
+<script>
+  // ① Your Firebase config
+  const firebaseConfig = {
+    apiKey:            "AIzaSyAbEajCx_wAYT0PJp_foa9d6mGhHmh9OgI",
+    authDomain:        "flixora-chat.firebaseapp.com",
+    databaseURL:       "https://flixora-chat-default-rtdb.firebaseio.com",
+    projectId:         "flixora-chat",
+    storageBucket:     "flixora-chat.appspot.com",      /* fixed typo */
+    messagingSenderId: "715555545977",
+    appId:             "1:715555545977:web:da8dadfc38773436fc05a8"
+  };
 
-    <form id="chat-form">
-      <input id="chat-input" type="text" placeholder="Type a message…" autocomplete="off" required />
-      <button type="submit">➤</button>
-    </form>
-  </div>
+  // ② Init (does nothing if already initialised)
+  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+  const db     = firebase.database();
+  const auth   = firebase.auth();
+  const google = new firebase.auth.GoogleAuthProvider();
 
-  <script>
-    // Your Firebase configuration
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-      databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT_ID.appspot.com",
-      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-      appId: "YOUR_APP_ID"
-    };
+  // ③ DOM shortcuts
+  const $toggle   = document.getElementById('chat-toggle');
+  const $box      = document.getElementById('chat-box');
+  const $close    = document.getElementById('close-chat');
+  const $msgs     = document.getElementById('chat-messages');
+  const $form     = document.getElementById('chat-form');
+  const $input    = document.getElementById('chat-input');
+  const $online   = document.getElementById('online-count');
 
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-    const auth = firebase.auth();
+  let messagesLoaded = false;
 
-    const chatToggle = document.getElementById('chat-toggle');
-    const chatBox = document.getElementById('chat-box');
-    const closeChat = document.getElementById('close-chat');
-    const chatForm = document.getElementById('chat-form');
-    const chatInput = document.getElementById('chat-input');
-    const chatMessages = document.getElementById('chat-messages');
-    const onlineCount = document.getElementById('online-count');
+  /* helper */
+  function addMessage(name,text){
+    db.ref('messages').push({ name, text, ts: firebase.database.ServerValue.TIMESTAMP });
+  }
+  function render(snap){
+    const d = snap.val();
+    const div = document.createElement('div');
+    div.className = 'chat-msg';
+    div.innerHTML = `<span class="name">${d.name}:</span> ${d.text}`;
+    $msgs.appendChild(div);
+    $msgs.scrollTop = $msgs.scrollHeight;
+  }
+  function setPresence(user){
+    const ref = db.ref('presence/'+user.uid);
+    ref.set({ name:user.displayName, online:true });
+    ref.onDisconnect().remove();
+    db.ref('presence').on('value',snap=>{ $online.textContent = snap.numChildren(); });
+  }
 
-    let currentUser = null;
+  /* toggle button */
+  $toggle.addEventListener('click', async ()=>{
+    $box.hidden = !$box.hidden;
+    if ($box.hidden) return;
 
-    // Toggle Chat
-    chatToggle.addEventListener('click', () => {
-      chatBox.hidden = !chatBox.hidden;
-    });
+    // first open → force login
+    if (!auth.currentUser){
+      try{ await auth.signInWithPopup(google); }
+      catch{ alert('Google sign‑in was cancelled or blocked.'); $box.hidden = true; return; }
+    }
+    setPresence(auth.currentUser);
 
-    closeChat.addEventListener('click', () => {
-      chatBox.hidden = true;
-    });
+    // only hook messages once
+    if (!messagesLoaded){
+      db.ref('messages').limitToLast(100).on('child_added', render);
+      messagesLoaded = true;
+    }
+  });
 
-    // Sign in user
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        currentUser = user;
-        db.ref("presence/" + user.uid).set(true);
-        db.ref("presence/" + user.uid).onDisconnect().remove();
-      } else {
-        auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-      }
-    });
+  $close.addEventListener('click', ()=>{ $box.hidden = true; });
 
-    // Listen to messages
-    db.ref("messages").limitToLast(50).on("child_added", snapshot => {
-      const data = snapshot.val();
-      const msg = document.createElement("div");
-      msg.className = "chat-msg";
-      msg.innerHTML = `<span>${data.name}:</span> ${data.text}`;
-      chatMessages.appendChild(msg);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    });
+  $form.addEventListener('submit', e=>{
+    e.preventDefault();
+    const text = $input.value.trim();
+    if (text) addMessage(auth.currentUser.displayName, text);
+    $input.value = '';
+  });
 
-    // Send message
-    chatForm.addEventListener("submit", e => {
-      e.preventDefault();
-      if (!currentUser) return;
-      const text = chatInput.value.trim();
-      if (text !== "") {
-        db.ref("messages").push({
-          name: currentUser.displayName,
-          text: text,
-          timestamp: firebase.database.ServerValue.TIMESTAMP
-        });
-        chatInput.value = "";
-      }
-    });
-
-    // Online user count
-    db.ref("presence").on("value", snap => {
-      onlineCount.textContent = snap.numChildren();
-    });
-  </script>
+</script>
+</body>
+</html>
 
 </body>
 </html>
