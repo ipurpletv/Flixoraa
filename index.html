@@ -122,25 +122,100 @@
 </div>
 
   <style>
-    /* ——— Global Chat styles ——— (unchanged from your CSS) */
-    #chat-widget { position:fixed; bottom:12px; right:12px; width:320px; max-height:460px; font-family:"Segoe UI", sans-serif; z-index:9999; font-size:14px; }
-    #chat-header { background:#e50914; color:#fff; padding:12px; font-weight:bold; border-radius:10px 10px 0 0; cursor:pointer; display:flex; justify-content:space-between; align-items:center; }
-    #chat-box { background:#1b1b1b; display:flex; height:400px; border:1px solid #333; border-top:none; border-radius:0 0 10px 10px; overflow:hidden; }
-    #chat-messages { flex:1; overflow-y:auto; padding:12px; background:#121212; color:#fff; scrollbar-width:thin; }
-    #chat-messages::-webkit-scrollbar { width:6px; }
-    #chat-messages::-webkit-scrollbar-thumb { background:#444; border-radius:10px; }
-    .chat-msg { margin-bottom:12px; background:rgba(255,255,255,.05); padding:10px; border-radius:10px; transition:background .2s; }
-    .chat-msg:hover { background:rgba(255,255,255,.1); }
-    .msg-header { display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px; color:#bbb; }
-    .msg-header .name { font-weight:bold; color:#ffcc00; }
-    .msg-text { color:#f1f1f1; font-size:14px; line-height:1.4em; }
-    #chat-form { display:flex; border-top:1px solid #333; background:#111; }
-    #chat-input { flex:1; padding:10px; border:none; background:#222; color:#fff; font-size:14px; border-bottom-left-radius:10px; }
-    #chat-input:focus { outline:none; background:#2c2c2c; }
-    #chat-form button { background:#e50914; color:#fff; border:none; padding:0 16px; font-weight:bold; cursor:pointer; border-bottom-right-radius:10px; transition:background .2s; }
-    #chat-form button:hover { background:#bf0812; }
-    #signin-btn { margin:14px auto; padding:10px 16px; background:#4285f4; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer; transition:background .2s; }
-    #signin-btn:hover { background:#3367d6; }
+   /* ——— GLOBAL CHAT STYLING ——— */
+#chat-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 320px;
+  font-family: Arial, sans-serif;
+  z-index: 9999;
+}
+
+#chat-toggle {
+  background-color: #e50914;
+  color: #fff;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 8px 8px 0 0;
+  font-weight: bold;
+  text-align: center;
+}
+
+#chat-box {
+  display: flex;
+  flex-direction: column;
+  background-color: #1c1c1c;
+  border: 1px solid #333;
+  max-height: 400px;
+  height: 400px;
+  overflow: hidden;
+  border-radius: 0 0 8px 8px;
+}
+
+#chat-box.hidden {
+  display: none;
+}
+
+#chat-messages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  color: #fff;
+  background: #121212;
+  font-size: 14px;
+}
+
+.chat-msg {
+  margin-bottom: 12px;
+  background: #2c2c2c;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.chat-msg .name {
+  font-weight: bold;
+  color: #ffcc00;
+  display: block;
+}
+
+.chat-msg .timestamp {
+  font-size: 11px;
+  color: #aaa;
+  margin-top: 2px;
+}
+
+#chat-form {
+  display: flex;
+  background: #111;
+  border-top: 1px solid #333;
+}
+
+#chat-input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: #222;
+  color: #fff;
+}
+
+#chat-form button {
+  background: #e50914;
+  color: white;
+  border: none;
+  padding: 0 16px;
+  cursor: pointer;
+}
+
+#signin-btn {
+  background: #4285f4;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
   </style>
 
   <!-- Firebase SDKs -->
@@ -160,81 +235,68 @@
       messagingSenderId:"715555545977",
       appId:"1:715555545977:web:da8dadfc38773436fc05a8"
     });
+const auth = firebase.auth();
+  const db   = firebase.database();
 
-    const auth = firebase.auth();
-    const db   = firebase.database();
-    const hdr  = document.getElementById('chat-header');
-    const box  = document.getElementById('chat-box');
-    const msgs = document.getElementById('chat-messages');
-    const form = document.getElementById('chat-form');
-    const input= document.getElementById('chat-input');
-    const btn  = document.getElementById('signin-btn');
-    const cnt  = document.getElementById('user-count');
+  const toggleBtn = document.getElementById('chat-toggle');
+  const chatBox   = document.getElementById('chat-box');
+  const messages  = document.getElementById('chat-messages');
+  const form      = document.getElementById('chat-form');
+  const input     = document.getElementById('chat-input');
+  const signinBtn = document.getElementById('signin-btn');
+  const userCount = document.getElementById('user-count');
 
-    // Toggle chat panel
-    hdr.addEventListener('click', () => {
-      box.style.display = (box.style.display === 'flex') ? 'none' : 'flex';
+  toggleBtn.onclick = () => {
+    chatBox.classList.toggle('hidden');
+  };
+
+  signinBtn.onclick = () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider).catch(() => auth.signInWithRedirect(provider));
+  };
+
+  form.onsubmit = e => {
+    e.preventDefault();
+    const u = auth.currentUser;
+    const text = input.value.trim();
+    if (!u || !text) return;
+    db.ref('global_chat').push({
+      uid: u.uid,
+      name: u.displayName,
+      text: text,
+      time: Date.now()
     });
+    input.value = '';
+  };
 
-    // Sign-in
-    btn.addEventListener('click', () => {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider).catch(() => auth.signInWithRedirect(provider));
-    });
-
-    // Message send
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      const u = auth.currentUser, text = input.value.trim();
-      if (!u || !text) return;
-      db.ref('global_chat').push({
-        uid: u.uid,
-        name: u.displayName,
-        text: text,
-        time: Date.now()
-      });
-      input.value = '';
-    });
-
-    // Presence
-    function setPresence(u) {
-      const ref = db.ref('presence/' + u.uid);
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      form.classList.remove('hidden');
+      signinBtn.style.display = 'none';
+      const ref = db.ref('presence/' + user.uid);
       ref.set(true);
       ref.onDisconnect().remove();
     }
+  });
 
-    // Auth-state listener
-    auth.onAuthStateChanged(u => {
-      if (u) {
-        setPresence(u);
-        btn.style.display = 'none';
-        form.style.display = 'flex';
-      } else {
-        btn.style.display = 'block';
-        form.style.display = 'none';
-      }
-    });
+  db.ref('presence').on('value', snap => {
+    userCount.textContent = snap.numChildren();
+  });
 
-    // Live user count
-    db.ref('presence').on('value', s => cnt.textContent = s.numChildren());
-
-    // Receiving messages
-    db.ref('global_chat').limitToLast(100).on('child_added', snap => {
-      const d = snap.val();
-      const div = document.createElement('div');
-      div.className = 'chat-msg';
-      const ts = new Date(d.time).toLocaleString();
-      div.innerHTML = `
-        <div class="msg-header">
-          <span class="name">${d.name}</span>
-          <span class="timestamp">${ts}</span>
-        </div>
-        <div class="msg-text">${d.text}</div>
-      `;
-      msgs.appendChild(div);
-      msgs.scrollTop = msgs.scrollHeight;
-    });
-  </script>
+  db.ref('global_chat').limitToLast(100).on('child_added', snap => {
+    const msg = snap.val();
+    const div = document.createElement('div');
+    div.className = 'chat-msg';
+    const date = new Date(msg.time).toLocaleString();
+    div.innerHTML = `
+      <span class="name">${msg.name}</span>
+      <div>${msg.text}</div>
+      <div class="timestamp">${date}</div>
+    `;
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+  });
+</script>
 
 </body>
 </html>
