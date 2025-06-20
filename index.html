@@ -5,25 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Flixora</title>
 
-  <!-- Google Font for banner typography -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-
-  <!-- Core stylesheet -->
   <link rel="stylesheet" href="home.css" />
   <link rel="preload" href="home.css" as="style" />
-
   <link rel="icon" type="image/png" sizes="32x32" href="android-chrome-512x512.png">
-  
-  <!-- Core script -->
   <script defer src="home.js"></script>
   <link rel="preload" href="home.js" as="script" />
-
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
-  <!-- Inline helper styles that shouldn’t live in main stylesheet -->
   <style>
     .media-card {
       display: inline-block;
@@ -52,7 +41,7 @@
       margin-top: 4px;
     }
   </style>
-  <script type='text/javascript' src='//transparentdefender.com/9b/51/58/9b515880df5fea539a7b50bb52210585.js'></script>
+<script type='text/javascript' src='//transparentdefender.com/9b/51/58/9b515880df5fea539a7b50bb52210585.js'></script>
 </head>
 
 <body>
@@ -101,31 +90,27 @@
     <div id="history-results" class="results"></div>
   </aside>
 
-  <!-- ╔════ BANNER ════╗  -->
-  <!-- Redesigned banner section to match beech.watch aesthetic -->
-  <section class="banner" id="banner">
-    <!-- gradient overlay handled in CSS via ::before -->
-    <div class="banner-content">
-      <h1 id="banner-title" class="banner-title"></h1>
-      <p id="banner-description" class="banner-description"></p>
+  <!-- Banner -->
+  <div class="banner" id="banner">
+    <div class="banner-overlay">
+      <h1 id="banner-title"></h1>
+      <p id="banner-description"></p>
       <a id="banner-watch-btn" class="banner-watch-btn" href="#" target="_blank">▶ Watch Now</a>
     </div>
-  </section>
-
-  <center>
-    <script type="text/javascript">
-      atOptions = {
-        'key' : '3e8dc7cbcc31780cad2727b4bc64a1df',
-        'format' : 'iframe',
-        'height' : 90,
-        'width' : 728,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//transparentdefender.com/d8207cd27802c5cd3603eef7ed22e16f/invoke.js"></script>
-  </center>
-
-  <!-- ╔════ CONTENT ROWS ════╗ -->
+  </div>
+	<center>
+ <script type="text/javascript">
+	atOptions = {
+		'key' : '3e8dc7cbcc31780cad2727b4bc64a1df',
+		'format' : 'iframe',
+		'height' : 90,
+		'width' : 728,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//transparentdefender.com/d8207cd27802c5cd3603eef7ed22e16f/invoke.js"></script>
+		</center>
+  <!-- Rows -->
   <section class="row">
     <h2>Popular Movies</h2>
     <div class="list" id="movies-list"></div>
@@ -145,21 +130,19 @@
     <h2>Vivamax</h2>
     <div class="list" id="vivamax-list"></div>
   </section>
-
-  <center>
-    <script type="text/javascript">
-      atOptions = {
-        'key' : '3e8dc7cbcc31780cad2727b4bc64a1df',
-        'format' : 'iframe',
-        'height' : 90,
-        'width' : 728,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//transparentdefender.com/3e8dc7cbcc31780cad2727b4bc64a1df/invoke.js"></script>
-  </center>
-
-  <!-- ╔════ DETAIL MODAL ════╗ -->
+			<center>
+ <script type="text/javascript">
+	atOptions = {
+		'key' : '3e8dc7cbcc31780cad2727b4bc64a1df',
+		'format' : 'iframe',
+		'height' : 90,
+		'width' : 728,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//transparentdefender.com/3e8dc7cbcc31780cad2727b4bc64a1df/invoke.js"></script>
+		</center>
+  <!-- Detail modal -->
   <div class="modal" id="detail-modal">
     <div class="modal-content small">
       <span class="close" onclick="closeModal()">×</span>
@@ -170,29 +153,28 @@
           <p id="detail-description"></p>
           <a id="watch-now-btn" class="watch-now-btn" href="#" target="_blank">▶ Watch Now</a>
           <a id="download-btn" class="download-btn" href="#" target="_blank" style="display:none;">⬇ Download</a>
-          <script type="text/javascript">
-            atOptions = {
-              'key' : 'd8207cd27802c5cd3603eef7ed22e16f',
-              'format' : 'iframe',
-              'height' : 60,
-              'width' : 468,
-              'params' : {}
-            };
-          </script>
-          <script type="text/javascript" src="//transparentdefender.com/d8207cd27802c5cd3603eef7ed22e16f/invoke.js"></script>
+ <script type="text/javascript">
+	atOptions = {
+		'key' : 'd8207cd27802c5cd3603eef7ed22e16f',
+		'format' : 'iframe',
+		'height' : 60,
+		'width' : 468,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//transparentdefender.com/d8207cd27802c5cd3603eef7ed22e16f/invoke.js"></script>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ╔════ FOOTER ════╗ -->
+  <!-- Footer -->
   <footer class="footer">
     <p>© 2025 All rights reserved. We do not host or upload any video files on this site. All content is provided by external third-party services.</p>
     <div class="footer-links">
       <a href="#">Disclaimer</a> · <a href="#">About Us</a> · <a href="#">Contact Us</a>
     </div>
   </footer>
-
   <script type='text/javascript' src='//transparentdefender.com/60/86/60/6086609321601064c3b75f442c564c6f.js'></script>
 </body>
 </html>
