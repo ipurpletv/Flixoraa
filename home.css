@@ -2,17 +2,12 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{
   font-family:"Segoe UI",Tahoma,Verdana,sans-serif;
-  background:#141414;
-  color:#fff;
-  overflow-x:hidden;
+  background:#141414;color:#fff;overflow-x:hidden;
 }
 
 /* —————————————————————— NAVBAR —————————————————————— */
 .navbar{
-  background:#1f1f1f;
-  padding:.75rem 1.5rem;
-  position:sticky;top:0;
-  z-index:999;
+  background:#1f1f1f;padding:.75rem 1.5rem;position:sticky;top:0;z-index:999;
   box-shadow:0 2px 5px rgba(0,0,0,.6);
 }
 .navbar-content{display:flex;justify-content:space-between;align-items:center}
@@ -145,9 +140,9 @@ body{
 #chat-toggle .label{color:#fff}
 #chat-toggle .arrow{color:#fff;transition:transform .25s}
 
-/* panel */
+/* panel (smaller) */
 #chat-box{
-  bottom:60px;width:360px;max-height:500px;
+  bottom:60px;width:300px;max-height:420px;
   background:#0d0d0d;border:1px solid #333;border-radius:8px;
   display:flex;flex-direction:column;overflow:hidden;
   box-shadow:0 4px 14px rgba(0,0,0,.5);
@@ -159,19 +154,19 @@ body{
 #chat-box header button{background:none;border:0;color:#fff;font-size:18px;cursor:pointer}
 #chat-messages{flex:1;overflow-y:auto;padding:12px;font-size:13px}
 
-/* message bubbles (ANONYMOUS avatar) */
+/* message bubbles (placeholder avatar) */
 .chat-msg{display:flex;align-items:flex-start;gap:8px;margin:8px 0;font-size:.9em}
-.anon-pfp{
+.chat-avatar{
   width:32px;height:32px;border-radius:50%;object-fit:cover;
-  background:url("https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y") center/cover;
+  background:url("assets/placeholder.png") center/cover no-repeat;
 }
 .msg-body{
-  background:rgba(255,255,255,.05);padding:6px 10px;border-radius:6px;max-width:280px;
+  background:rgba(255,255,255,.05);padding:6px 10px;border-radius:6px;max-width:230px;
 }
 .msg-header{display:flex;justify-content:space-between;font-size:.75em;color:#ccc}
 .msg-header .name{font-weight:700;color:#ffdd57}
 .msg-header .timestamp{font-style:italic;color:#aaa;margin-left:8px}
-.msg-text{margin-top:4px;color:#eee;font-size:.9em}
+.msg-text{margin-top:4px;color:#eee;font-size:.9em;word-wrap:break-word}
 
 /* form */
 #chat-form{display:flex;border-top:1px solid #333}
