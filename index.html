@@ -232,136 +232,161 @@
   /* Google button */
   #sign-in-btn{
     display:flex;align-items:center;justify-content:center;gap:8px;
-    background:#fff;color:#555;border:none;border-radius:4px;font-size:15px;
-    padding:10px 0;width:82%;margin:40px auto 20px;cursor:pointer;
-    box-shadow:0 2px 4px rgba(0,0,0,.2);
-  }
-  #sign-in-btn img{width:18px;height:18px}
-</style>
-
-<!-- pill toggle -->
-<div id="chat-toggle"><span>Chat Room</span><span id="online-count">0</span><i class="arrow">▲</i></div>
-
-<!-- chat panel (initially visible) -->
-<div id="chat-box">
-  <header>Global Chat <button id="close-chat">✕</button></header>
-
-  <!-- content swaps after sign‑in -->
-  <div id="chat-content">
-    <button id="sign-in-btn">
-      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="">
-      Sign in with Google
-    </button>
-
-    <div id="chat-messages" style="display:none"></div>
-
+    background:<!-- Global Chat -->
+<div id="chat-widget">
+  <div id="chat-header">Global Chat (<span id="user-count">0</span>)</div>
+  <div id="chat-box" style="display:none">
+    <div id="chat-messages"></div>
     <form id="chat-form" style="display:none">
-      <input id="chat-input" type="text" placeholder="Type a message…" autocomplete="off" required disabled>
-      <button type="submit">➤</button>
+      <input id="chat-input" type="text" placeholder="Type a message..." autocomplete="off" required />
+      <button>Send</button>
     </form>
+    <button id="signin-btn" style="display:none">Sign in with Google</button>
   </div>
 </div>
 
+<!-- Chat Styles -->
+<style>
+#chat-widget {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  width: 300px;
+  max-height: 400px;
+  font-family: sans-serif;
+  z-index: 9999;
+}
+#chat-header {
+  background: #222;
+  color: white;
+  padding: 10px;
+  cursor: pointer;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+#chat-box {
+  background: #1b1b1b;
+  display: flex;
+  flex-direction: column;
+  height: 340px;
+  border: 1px solid #333;
+  border-top: none;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+#chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  font-size: 14px;
+  color: white;
+}
+.chat-msg {
+  margin-bottom: 10px;
+}
+.msg-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #999;
+}
+.msg-text {
+  margin-top: 2px;
+  word-wrap: break-word;
+}
+#chat-form {
+  display: flex;
+  border-top: 1px solid #333;
+}
+#chat-input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: #222;
+  color: white;
+}
+#chat-form button {
+  background: #e50914;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+#signin-btn {
+  margin: 10px;
+  padding: 10px;
+  background: #4285f4;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+</style>
+
 <!-- Firebase SDKs -->
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
 
-<!-- Chat logic -->
 <script>
-(() => {
-  /* Firebase init */
-  const cfg={
-    apiKey:"AIzaSyAbEajCx_wAYT0PJp_foa9d6mGhHmh9OgI",
-    authDomain:"flixora-chat.firebaseapp.com",
-    databaseURL:"https://flixora-chat-default-rtdb.firebaseio.com",
-    projectId:"flixora-chat",
-    storageBucket:"flixora-chat.appspot.com",
-    messagingSenderId:"715555545977",
-    appId:"1:715555545977:web:da8dadfc38773436fc05a8"
-  };
-  if(!firebase.apps.length)firebase.initializeApp(cfg);
-
-  const db=firebase.database();
-  const auth=firebase.auth();
-  const prov=new firebase.auth.GoogleAuthProvider();
-  prov.setCustomParameters({prompt:'select_account'}); // always choose account
-  auth.languageCode='en';
-
-  /* DOM refs */
-  const pill   =document.getElementById('chat-toggle');
-  const box    =document.getElementById('chat-box');
-  const close  =document.getElementById('close-chat');
-  const signin =document.getElementById('sign-in-btn');
-  const msgs   =document.getElementById('chat-messages');
-  const form   =document.getElementById('chat-form');
-  const input  =document.getElementById('chat-input');
-  const online =document.getElementById('online-count');
-
-  let loaded=false;
-
-  /* helpers */
-  const push=(n,t)=>db.ref('messages').push({name:n,text:t,ts:firebase.database.ServerValue.TIMESTAMP});
-const addRow = snap => {
-  const d = snap.val();
-  const div = document.createElement('div');
-  div.className = 'chat-msg';
-
-  const date = new Date(d.ts);
-  const timestamp = date.toLocaleString('en-US', {
-    month: 'short', day: 'numeric', year: 'numeric',
-    hour: 'numeric', minute: '2-digit', hour12: true
-  });
-
-div.innerHTML = `
-  <div class="msg-body">
-    <div class="msg-header">
-      <span class="name">${d.name}</span>
-      <span class="timestamp">${timestamp}</span>
-    </div>
-    <div class="msg-text">${d.text}</div>
-  </div>
-`;
-
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  databaseURL: "https://YOUR_PROJECT.firebaseio.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "SENDER_ID",
+  appId: "APP_ID"
 };
 
-  const setPresence=u=>{
-    const ref=db.ref('presence/'+u.uid);
-    ref.set({name:u.displayName,online:true});
-    ref.onDisconnect().remove();
-    db.ref('presence').on('value',s=>online.textContent=s.numChildren());
-  };
-  const enableChat=()=>{
-    signin.style.display='none';
-    msgs.style.display='block';
-    form.style.display='flex';
-    input.disabled=false;
-    if(!loaded){db.ref('messages').limitToLast(100).on('child_added',addRow);loaded=true;}
-  };
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.database();
 
-  /* complete sign‑in after redirect */
-  auth.getRedirectResult().then(res=>{
-    if(res.user){setPresence(res.user);enableChat();}
-  }).catch(console.error);
+const header = document.getElementById('chat-header');
+const box = document.getElementById('chat-box');
+const form = document.getElementById('chat-form');
+const input = document.getElementById('chat-input');
+const msgs = document.getElementById('chat-messages');
+const signin = document.getElementById('signin-btn');
+const userCount = document.getElementById('user-count');
 
-  /* sign‑in handler */
-  signin.addEventListener('click',async()=>{
-    try{
-      await auth.signInWithPopup(prov);
-      setPresence(auth.currentUser);enableChat();
-    }catch(err){
-      // Popup blocked -> fallback to redirect
-      if(err.code==='auth/popup-blocked'||
-         err.code==='auth/popup-closed-by-user'){
-        try{await auth.signInWithRedirect(prov);}catch(e){console.warn(e);}
-      }else{console.warn(err);}
-    }
+header.onclick = () => box.style.display = box.style.display === 'none' ? 'flex' : 'none';
+
+signin.onclick = () => {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider).catch(() => {
+    auth.signInWithRedirect(provider);
   });
+};
 
-  /* auto‑enable if already signed in */
- auth.onAuthStateChanged(user => {
+form.onsubmit = e => {
+  e.preventDefault();
+  const user = auth.currentUser;
+  const text = input.value.trim();
+  if (!text) return;
+  const msg = {
+    uid: user.uid,
+    name: user.displayName,
+    text: text,
+    time: Date.now()
+  };
+  db.ref('global_chat').push(msg);
+  input.value = '';
+};
+
+function enableChat() {
+  signin.style.display = 'none';
+  msgs.style.display = 'block';
+  form.style.display = 'flex';
+}
+
+function setPresence(user) {
+  const userRef = db.ref('presence/' + user.uid);
+  userRef.set(true);
+  userRef.onDisconnect().remove();
+}
+
+auth.onAuthStateChanged(user => {
   if (user) {
     setPresence(user);
     enableChat();
@@ -372,18 +397,26 @@ div.innerHTML = `
   }
 });
 
+db.ref('presence').on('value', snap => {
+  const count = snap.numChildren();
+  userCount.textContent = count;
+});
 
-  /* send */
-  form.addEventListener('submit',e=>{
-    e.preventDefault();
-    const t=input.value.trim();
-    if(t&&auth.currentUser){push(auth.currentUser.displayName,t);input.value='';}
-  });
-
-  /* UI toggles */
-  pill.onclick = ()=>{box.hidden=!box.hidden};
-  close.onclick= ()=>{box.hidden=true};
-})();
+db.ref('global_chat').limitToLast(100).on('child_added', snap => {
+  const d = snap.val();
+  const div = document.createElement('div');
+  div.className = 'chat-msg';
+  const timestamp = new Date(d.time).toLocaleString();
+  div.innerHTML = `
+    <div class="msg-header">
+      <span class="name">${d.name}</span>
+      <span class="timestamp">${timestamp}</span>
+    </div>
+    <div class="msg-text">${d.text}</div>
+  `;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+});
 </script>
 <!-- ──────────────────────────────────────── -->
 </body>
