@@ -112,6 +112,7 @@
   <div id="chat-container">
     <div id="chat-toggle">💬 Global Chat (<span id="user-count">0</span>)</div>
     <div id="chat-box" class="hidden">
+      <div id="pinned-msg" class="chat-msg pinned-msg"></div>
       <div id="chat-messages"></div>
       <form id="chat-form" class="hidden">
         <input id="chat-input" type="text" placeholder="Type a message..." required />
@@ -237,6 +238,14 @@
       background-color: #e50914;
       border-radius: 3px;
     }
+    .pinned-msg {
+  background: #444;
+  color: #fff;
+  border-left: 4px solid #ffcc00;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
   </style>
 
   <!-- Firebase SDKs -->
@@ -303,7 +312,19 @@
     db.ref('presence').on('value', snap => {
       userCount.textContent = snap.numChildren();
     });
-
+db.ref('pinned_message').on('value', snap => {
+  const pinned = snap.val();
+  if (pinned) {
+    const date = new Date(pinned.time).toLocaleString();
+    document.getElementById('pinned-msg').innerHTML = `
+      <span class="name">${pinned.name}</span>
+      <div>${pinned.text}</div>
+      <div class="timestamp">${date}</div>
+    `;
+  } else {
+    document.getElementById('pinned-msg').innerHTML = '';
+  }
+});
     db.ref('global_chat').limitToLast(100).on('child_added', snap => {
       const msg = snap.val();
       const div = document.createElement('div');
