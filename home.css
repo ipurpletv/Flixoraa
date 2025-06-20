@@ -263,15 +263,10 @@ body {
   overflow-x: auto;
   padding-bottom: 1rem;
   scroll-behavior: smooth;
-}
-
-#movies-list,
-#tvshows-list,
-#anime-list,
-#vivamax-list {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+
 #movies-list::-webkit-scrollbar,
 #tvshows-list::-webkit-scrollbar,
 #anime-list::-webkit-scrollbar,
@@ -290,6 +285,7 @@ body {
   cursor: pointer;
   transition: transform 0.2s ease;
 }
+
 #movies-list img:hover,
 #tvshows-list img:hover,
 #anime-list img:hover,
@@ -316,15 +312,19 @@ body {
   font-size: 1.4rem;
   transition: background 0.25s;
 }
+
 .scroll-btn:hover {
   background: rgba(0, 0, 0, 0.75);
 }
+
 .scroll-btn.left {
   left: 0;
 }
+
 .scroll-btn.right {
   right: 0;
 }
+
 .scroll-btn.disabled {
   background: rgba(70, 70, 70, 0.4);
   cursor: default;
@@ -425,7 +425,8 @@ body {
 
   #movies-list img,
   #tvshows-list img,
-  #anime-list img {
+  #anime-list img,
+  #vivamax-list img {
     height: 180px;
   }
 }
@@ -472,13 +473,14 @@ body {
   display: inline-block;
   background: #e50914;
   color: #fff;
-  padding: 10px 24px; /* same as watch-now-btn */
+  padding: 10px 24px;
   font-weight: bold;
   text-decoration: none;
   border-radius: 6px;
   margin-top: 10px;
-}	
-/* ───────── CHAT WIDGET ───────── */
+}
+
+/* —————————————————————— CHAT WIDGET —————————————————————— */
 #chat-toggle,
 #chat-box {
   position: fixed;
@@ -509,7 +511,7 @@ body {
 }
 
 #chat-box {
-  bottom: 70px; /* sits above toggle button */
+  bottom: 70px;
   width: 300px;
   max-height: 420px;
   display: flex;
@@ -578,5 +580,3 @@ body {
   font-size: 16px;
   cursor: pointer;
 }
-/* ───── END CHAT WIDGET STYLES ───── */
-
