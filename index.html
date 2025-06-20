@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Flixora</title>
 
-  <!-- main styles / scripts -->
+  <!-- main assets -->
   <link rel="stylesheet" href="home.css"/>
   <link rel="preload" href="home.css" as="style"/>
   <script defer src="home.js"></script>
@@ -14,7 +14,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="android-chrome-512x512.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
-  <!-- quick media‑card tweaks -->
+  <!-- tiny media‑card tweak -->
   <style>
     .media-card{display:inline-block;width:140px;margin:10px;text-align:center}
     .media-card img{width:100%;border-radius:4px;cursor:pointer}
@@ -22,7 +22,7 @@
     .download-btn{display:inline-block;background:#e50914;color:#fff;padding:4px 8px;font-size:.8em;border-radius:4px;margin-top:4px}
   </style>
 
-  <!-- ad (unchanged) -->
+  <!-- head ad -->
   <script src="//transparentdefender.com/9b/51/58/9b515880df5fea539a7b50bb52210585.js"></script>
 </head>
 <body>
@@ -68,7 +68,7 @@
     <div class="banner-overlay">
       <h1 id="banner-title"></h1>
       <p id="banner-description"></p>
-      <a id="banner-watch-btn" class="banner-watch-btn" target="_blank">▶ Watch Now</a>
+      <a id="banner-watch-btn" class="watch-now-btn" target="_blank">▶ Watch Now</a>
     </div>
   </div>
 
@@ -125,7 +125,7 @@
     </div>
   </div>
 
-  <!-- chat styles -->
+  <!-- chat styles (unchanged) -->
   <style>
     #chat-widget{position:fixed;bottom:12px;right:12px;width:320px;max-height:460px;font-family:"Segoe UI",sans-serif;z-index:9999;font-size:14px}
     #chat-header{background:#e50914;color:#fff;padding:12px;font-weight:bold;border-radius:10px 10px 0 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
@@ -154,65 +154,79 @@
 
   <!-- chat script -->
   <script>
-    window.onload = () => {
-      firebase.initializeApp({
-        apiKey:"AIzaSyAbEajCx_wAYT0PJp_foa9d6mGhHmh9OgI",
-        authDomain:"flixora-chat.firebaseapp.com",
-        databaseURL:"https://flixora-chat-default-rtdb.firebaseio.com",
-        projectId:"flixora-chat",
-        storageBucket:"flixora-chat.appspot.com",
-        messagingSenderId:"715555545977",
-        appId:"1:715555545977:web:da8dadfc38773436fc05a8"
-      });
+    /* firebase config */
+    firebase.initializeApp({
+      apiKey:"AIzaSyAbEajCx_wAYT0PJp_foa9d6mGhHmh9OgI",
+      authDomain:"flixora-chat.firebaseapp.com",
+      databaseURL:"https://flixora-chat-default-rtdb.firebaseio.com",
+      projectId:"flixora-chat",
+      storageBucket:"flixora-chat.appspot.com",
+      messagingSenderId:"715555545977",
+      appId:"1:715555545977:web:da8dadfc38773436fc05a8"
+    });
 
-      const auth = firebase.auth();
-      const db   = firebase.database();
+    const auth = firebase.auth();
+    const db   = firebase.database();
 
-      const hdr  = document.getElementById('chat-header');
-      const box  = document.getElementById('chat-box');
-      const msgs = document.getElementById('chat-messages');
-      const form = document.getElementById('chat-form');
-      const input= document.getElementById('chat-input');
-      const btn  = document.getElementById('signin-btn');
-      const cnt  = document.getElementById('user-count');
+    /* DOM refs */
+    const hdr   = document.getElementById('chat-header');
+    const box   = document.getElementById('chat-box');
+    const msgs  = document.getElementById('chat-messages');
+    const form  = document.getElementById('chat-form');
+    const input = document.getElementById('chat-input');
+    const btn   = document.getElementById('signin-btn');
+    const cnt   = document.getElementById('user-count');
 
-      hdr.onclick = () => { box.style.display = box.style.display==='none' ? 'flex' : 'none'; };
-
-      btn.onclick = () => {
-        const p = new firebase.auth.GoogleAuthProvider();
-        auth.signInWithPopup(p).catch(()=>auth.signInWithRedirect(p));
-      };
-
-      form.onsubmit = e=>{
-        e.preventDefault();
-        const u=auth.currentUser,text=input.value.trim();
-        if(!u||!text)return;
-        db.ref('global_chat').push({uid:u.uid,name:u.displayName,text,time:Date.now()});
-        input.value='';
-      };
-
-      function setPresence(u){
-        const ref=db.ref('presence/'+u.uid);
-        ref.set(true); ref.onDisconnect().remove();
-      }
-
-      auth.onAuthStateChanged(u=>{
-        if(u){ setPresence(u); btn.style.display='none'; form.style.display='flex'; }
-        else { btn.style.display='block'; form.style.display='none'; }
-      });
-
-      db.ref('presence').on('value',s=>cnt.textContent=s.numChildren());
-
-      db.ref('global_chat').limitToLast(100).on('child_added',snap=>{
-        const d=snap.val();
-        const div=document.createElement('div');
-        div.className='chat-msg';
-        const ts=new Date(d.time).toLocaleString();
-        div.innerHTML=`<div class="msg-header"><span class="name">${d.name}</span><span class="timestamp">${ts}</span></div><div class="msg-text">${d.text}</div>`;
-        msgs.appendChild(div);
-        msgs.scrollTop=msgs.scrollHeight;
-      });
+    /* header toggle */
+    hdr.onclick = ()=>{
+      const cur = getComputedStyle(box).display;
+      box.style.display = (cur==='none') ? 'flex' : 'none';
     };
+
+    /* google sign‑in */
+    btn.onclick = ()=>{
+      const p=new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(p).catch(()=>auth.signInWithRedirect(p));
+    };
+
+    /* send message */
+    form.onsubmit = e=>{
+      e.preventDefault();
+      const u = auth.currentUser, text = input.value.trim();
+      if(!text||!u) return;
+      db.ref('global_chat').push({uid:u.uid,name:u.displayName,text,time:Date.now()});
+      input.value='';
+    };
+
+    /* presence helpers */
+    function setPresence(u){
+      const ref = db.ref('presence/'+u.uid);
+      ref.set(true); ref.onDisconnect().remove();
+    }
+
+    auth.onAuthStateChanged(u=>{
+      if(u){
+        setPresence(u);
+        btn.style.display='none';
+        form.style.display='flex';
+      }else{
+        btn.style.display='block';
+        form.style.display='none';
+      }
+    });
+
+    db.ref('presence').on('value',s=>cnt.textContent = s.numChildren());
+
+    /* live chat feed */
+    db.ref('global_chat').limitToLast(100).on('child_added',snap=>{
+      const d  = snap.val();
+      const ts = new Date(d.time).toLocaleString();
+      const div=document.createElement('div');
+      div.className='chat-msg';
+      div.innerHTML=`<div class="msg-header"><span class="name">${d.name}</span><span class="timestamp">${ts}</span></div><div class="msg-text">${d.text}</div>`;
+      msgs.appendChild(div);
+      msgs.scrollTop = msgs.scrollHeight;
+    });
   </script>
 </body>
 </html>
