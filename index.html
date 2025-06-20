@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Flixora</title>
 
-  <!-- Main styles and scripts -->
+  <!-- Site styles / scripts -->
   <link rel="stylesheet" href="home.css" />
   <link rel="preload" href="home.css" as="style" />
   <link rel="icon" type="image/png" sizes="32x32" href="android-chrome-512x512.png">
@@ -19,44 +19,7 @@
     .media-card{display:inline-block;width:140px;margin:10px;text-align:center}
     .media-card img{width:100%;border-radius:4px;cursor:pointer}
     .media-title{font-size:.9em;color:#fff;margin:4px 0}
-    .download-btn{display:inline-block;background:#e50914;color:#fff;padding:4px 8px;font-size:.8em;text-decoration:none;border-radius:4px;margin-top:4px}
-    .chat-msg {
-  display: flex;
-  align-items: flex-start;
-  margin: 8px 0;
-  font-size: 0.9em;
-}
-.chat-msg img.avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  margin-right: 8px;
-}
-.msg-body {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 6px 10px;
-  border-radius: 6px;
-  max-width: 280px;
-}
-.msg-header {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.75em;
-  color: #ccc;
-}
-.name {
-  font-weight: bold;
-  color: #fff;
-}
-.timestamp {
-  margin-left: 8px;
-  font-style: italic;
-}
-.msg-text {
-  margin-top: 4px;
-  color: #eee;
-}
-
+    .download-btn{display:inline-block;background:#e50914;color:#fff;padding:4px 8px;font-size:.8em;border-radius:4px;margin-top:4px}
   </style>
 
   <!-- Ad script -->
@@ -144,280 +107,143 @@
   <!-- FOOTER -->
   <footer class="footer">
     <p>© 2025 All rights reserved. We do not host or upload any video files on this site. All content is provided by external third‑party services.</p>
-    <div class="footer-links"><a href="#">Disclaimer</a> · <a href="#">About Us</a> · <a href="#">Contact Us</a></div>
+    <div class="footer-links"><a href="#">Disclaimer</a> · <a href="#">About Us</a> · <a href="#">Contact Us</a></div>
   </footer>
 
-  <!-- Chat Widget -->
- <!-- GLOBAL CHAT WIDGET STYLES -->
-<!-- ─────────── GLOBAL CHAT (v2) ─────────── -->
-<style>
-  /* chat pill */
-  #chat-toggle{
-    position:fixed;bottom:12px;right:12px;z-index:9999;
-    background:#e50914;color:#fff;padding:10px 16px;border-radius:8px 8px 0 0;
-    font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px;cursor:pointer;
-  }
-  #chat-toggle .arrow{font-size:10px;transform:rotate(180deg)}
+  <!-- ——————————— GLOBAL CHAT ——————————— -->
+  <div id="chat-widget">
+    <div id="chat-header">Global Chat (<span id="user-count">0</span>)</div>
 
-  /* chat panel */
-#chat-box {
-  position: fixed;
-  bottom: 52px;
-  right: 12px;
-  width: 300px;
-  height: 420px;
-  background: #222;
-  color: #fff;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
-  z-index: 9999;
-  overflow: hidden;
-}
+    <div id="chat-panel">
+      <div id="chat-messages"></div>
 
-#chat-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
+      <form id="chat-form" style="display:none">
+        <input id="chat-input" type="text" placeholder="Type a message…" autocomplete="off" required />
+        <button type="submit">Send</button>
+      </form>
 
-#chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 12px;
-  font-size: 14px;
-  background: #1b1b1b;
-}
-
-#chat-form {
-  display: flex;
-  border-top: 1px solid #444;
-  background: #111;
-}
-
-#chat-input {
-  flex: 1;
-  padding: 10px;
-  background: #111;
-  border: none;
-  color: #fff;
-  font-size: 14px;
-}
-
-#chat-form button {
-  background: #e50914;
-  border: none;
-  color: #fff;
-  padding: 0 16px;
-  cursor: pointer;
-}
-
-  #chat-box header{
-    background:#e50914;padding:12px;font-size:15px;font-weight:bold;
-    display:flex;justify-content:space-between;align-items:center;
-  }
-  #chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 12px;
-  font-size: 14px;
-  background: #1b1b1b;
-}
-
-  .chat-msg{margin-bottom:6px}.chat-msg .name{color:#ff4;font-weight:700;margin-right:4px}
-  #chat-form{display:flex;border-top:1px solid #444}
-  #chat-input{flex:1;padding:10px;background:#111;border:none;color:#fff;font-size:14px}
-  #chat-form button{background:#e50914;border:none;color:#fff;padding:0 16px;cursor:pointer}
-  /* Google button */
-  #sign-in-btn{
-    display:flex;align-items:center;justify-content:center;gap:8px;
-    background:<!-- Global Chat -->
-<div id="chat-widget">
-  <div id="chat-header">Global Chat (<span id="user-count">0</span>)</div>
-  <div id="chat-box" style="display:none">
-    <div id="chat-messages"></div>
-    <form id="chat-form" style="display:none">
-      <input id="chat-input" type="text" placeholder="Type a message..." autocomplete="off" required />
-      <button>Send</button>
-    </form>
-    <button id="signin-btn" style="display:none">Sign in with Google</button>
-  </div>
-</div>
-
-<!-- Chat Styles -->
-<style>
-#chat-widget {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  width: 300px;
-  max-height: 400px;
-  font-family: sans-serif;
-  z-index: 9999;
-}
-#chat-header {
-  background: #222;
-  color: white;
-  padding: 10px;
-  cursor: pointer;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-}
-#chat-box {
-  background: #1b1b1b;
-  display: flex;
-  flex-direction: column;
-  height: 340px;
-  border: 1px solid #333;
-  border-top: none;
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-}
-#chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 12px;
-  font-size: 14px;
-  color: white;
-}
-.chat-msg {
-  margin-bottom: 10px;
-}
-.msg-header {
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  color: #999;
-}
-.msg-text {
-  margin-top: 2px;
-  word-wrap: break-word;
-}
-#chat-form {
-  display: flex;
-  border-top: 1px solid #333;
-}
-#chat-input {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  background: #222;
-  color: white;
-}
-#chat-form button {
-  background: #e50914;
-  color: white;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-}
-#signin-btn {
-  margin: 10px;
-  padding: 10px;
-  background: #4285f4;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-</style>
-
-<!-- Firebase SDKs -->
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
-
-<script>
-const firebaseConfig = {
-  apiKey: "AIzaSyAbEajCx_wAYT0PJp_foa9d6mGhHmh9OgI",
-  authDomain: "flixora-chat.firebaseapp.com",
-  databaseURL: "https://flixora-chat-default-rtdb.firebaseio.com",
-  projectId: "flixora-chat",
-  storageBucket: "flixora-chat.firebasestorage.app",
-  messagingSenderId: "715555545977",
-  appId: "1:715555545977:web:da8dadfc38773436fc05a8"
-};
-
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.database();
-
-const header = document.getElementById('chat-header');
-const box = document.getElementById('chat-box');
-const form = document.getElementById('chat-form');
-const input = document.getElementById('chat-input');
-const msgs = document.getElementById('chat-messages');
-const signin = document.getElementById('signin-btn');
-const userCount = document.getElementById('user-count');
-
-header.onclick = () => box.style.display = box.style.display === 'none' ? 'flex' : 'none';
-
-signin.onclick = () => {
-  const provider = new firebase.auth.GoogleAuthProvider();
-  auth.signInWithPopup(provider).catch(() => {
-    auth.signInWithRedirect(provider);
-  });
-};
-
-form.onsubmit = e => {
-  e.preventDefault();
-  const user = auth.currentUser;
-  const text = input.value.trim();
-  if (!text) return;
-  const msg = {
-    uid: user.uid,
-    name: user.displayName,
-    text: text,
-    time: Date.now()
-  };
-  db.ref('global_chat').push(msg);
-  input.value = '';
-};
-
-function enableChat() {
-  signin.style.display = 'none';
-  msgs.style.display = 'block';
-  form.style.display = 'flex';
-}
-
-function setPresence(user) {
-  const userRef = db.ref('presence/' + user.uid);
-  userRef.set(true);
-  userRef.onDisconnect().remove();
-}
-
-auth.onAuthStateChanged(user => {
-  if (user) {
-    setPresence(user);
-    enableChat();
-  } else {
-    signin.style.display = 'flex';
-    msgs.style.display = 'none';
-    form.style.display = 'none';
-  }
-});
-
-db.ref('presence').on('value', snap => {
-  const count = snap.numChildren();
-  userCount.textContent = count;
-});
-
-db.ref('global_chat').limitToLast(100).on('child_added', snap => {
-  const d = snap.val();
-  const div = document.createElement('div');
-  div.className = 'chat-msg';
-  const timestamp = new Date(d.time).toLocaleString();
-  div.innerHTML = `
-    <div class="msg-header">
-      <span class="name">${d.name}</span>
-      <span class="timestamp">${timestamp}</span>
+      <button id="signin-btn">Sign in with Google</button>
     </div>
-    <div class="msg-text">${d.text}</div>
-  `;
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-});
-</script>
-<!-- ──────────────────────────────────────── -->
+  </div>
+
+  <!-- CHAT CSS -->
+  <style>
+  #chat-widget{
+    position:fixed;bottom:10px;right:10px;width:300px;font-family:sans-serif;z-index:9999
+  }
+  #chat-header{
+    background:#222;color:#fff;padding:10px;border-radius:8px 8px 0 0;cursor:pointer;font-weight:600
+  }
+  #chat-panel{
+    background:#1b1b1b;border:1px solid #333;border-top:none;display:flex;flex-direction:column;
+    height:340px;border-radius:0 0 8px 8px;overflow:hidden
+  }
+  #chat-messages{
+    flex:1;overflow-y:auto;padding:12px;font-size:14px;color:#fff
+  }
+  .chat-msg{margin-bottom:10px}
+  .msg-header{display:flex;justify-content:space-between;font-size:12px;color:#aaa}
+  .msg-header .name{color:#ffdd57;font-weight:600}
+  .msg-text{margin-top:2px;word-wrap:break-word}
+  #chat-form{display:flex;border-top:1px solid #444}
+  #chat-input{flex:1;padding:10px;border:none;background:#222;color:#fff}
+  #chat-form button{background:#e50914;border:none;color:#fff;padding:0 16px;cursor:pointer}
+  #signin-btn{
+    margin:20px auto;padding:10px 14px;background:#4285f4;color:#fff;border:none;border-radius:4px;cursor:pointer;
+    display:flex;align-items:center;gap:6px
+  }
+  </style>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+  <script>
+  /* ==== Firebase init ==== */
+  const firebaseConfig = {
+    apiKey:            "AIzaSyAbEajCx_wAYT0PJp_foa9d6mGhHmh9OgI",
+    authDomain:        "flixora-chat.firebaseapp.com",
+    databaseURL:       "https://flixora-chat-default-rtdb.firebaseio.com",
+    projectId:         "flixora-chat",
+    storageBucket:     "flixora-chat.appspot.com",
+    messagingSenderId: "715555545977",
+    appId:             "1:715555545977:web:da8dadfc38773436fc05a8"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth=firebase.auth();
+  const db  =firebase.database();
+
+  /* ==== DOM refs ==== */
+  const hdr   =document.getElementById('chat-header');
+  const panel =document.getElementById('chat-panel');
+  const msgs  =document.getElementById('chat-messages');
+  const form  =document.getElementById('chat-form');
+  const input =document.getElementById('chat-input');
+  const signin=document.getElementById('signin-btn');
+  const count =document.getElementById('user-count');
+
+  /* toggle panel open/close */
+  hdr.onclick=()=>{panel.style.display=panel.style.display==='none'?'flex':'none';};
+  panel.style.display='none';        // start collapsed
+
+  /* sign‑in */
+  signin.onclick=()=>{
+    const prov=new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(prov).catch(()=>auth.signInWithRedirect(prov));
+  };
+
+  /* message send */
+  form.onsubmit=e=>{
+    e.preventDefault();
+    const user=auth.currentUser;
+    const text=input.value.trim();
+    if(!text||!user)return;
+    db.ref('global_chat').push({
+      uid:user.uid,
+      name:user.displayName,
+      text:text,
+      time:Date.now()
+    });
+    input.value='';
+  };
+
+  /* presence & UI */
+  function enableChat(){
+    signin.style.display='none';
+    form.style.display='flex';
+  }
+  function disableChat(){
+    signin.style.display='block';
+    form.style.display='none';
+  }
+  function setPresence(u){
+    const ref=db.ref('presence/'+u.uid);
+    ref.set(true);ref.onDisconnect().remove();
+  }
+
+  auth.onAuthStateChanged(user=>{
+    if(user){ setPresence(user); enableChat(); }
+    else   { disableChat(); }
+  });
+
+  /* live user count */
+  db.ref('presence').on('value',s=>count.textContent=s.numChildren());
+
+  /* incoming messages */
+  db.ref('global_chat').limitToLast(100).on('child_added',snap=>{
+    const d=snap.val();
+    const div=document.createElement('div');
+    div.className='chat-msg';
+    const ts=new Date(d.time).toLocaleString();
+    div.innerHTML=`
+      <div class="msg-header"><span class="name">${d.name}</span><span>${ts}</span></div>
+      <div class="msg-text">${d.text}</div>
+    `;
+    msgs.appendChild(div);
+    msgs.scrollTop=msgs.scrollHeight;
+  });
+  </script>
+  <!-- ——————————————————————— -->
 </body>
 </html>
