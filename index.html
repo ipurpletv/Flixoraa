@@ -160,13 +160,34 @@
   #chat-toggle .arrow{font-size:10px;transform:rotate(180deg)}
 
   /* chat panel */
-  #chat-box {
+#chat-box {
   position: fixed;
   bottom: 52px;
   right: 12px;
-  width: 300px; /* reduced */
-  max-height: 420px; /* reduced */
-  ...
+  width: 300px;
+  height: 420px; /* fixed height */
+  background: #222;
+  color: #fff;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 14px rgba(0,0,0,.5);
+  z-index: 9999;
+  overflow: hidden; /* prevent overflow from stretching */
+}
+
+#chat-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* fills chat-box */
+}
+
+#chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  font-size: 14px;
+  background: #1b1b1b;
 }
   #chat-box header{
     background:#e50914;padding:12px;font-size:15px;font-weight:bold;
