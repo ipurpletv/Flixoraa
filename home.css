@@ -1,4 +1,4 @@
-/* —————————————————————— RESET & BASE —————————————————————— */
+/* Reset and base styles */
 * {
   margin: 0;
   padding: 0;
@@ -6,475 +6,339 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
   background-color: #141414;
+  font-family: 'Arial', sans-serif;
   color: #fff;
   overflow-x: hidden;
 }
 
-/* —————————————————————— NAVBAR —————————————————————— */
+/* Navbar */
 .navbar {
-  background-color: #1f1f1f;
-  padding: 0.75rem 1.5rem;
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
-}
-
-.navbar-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 12px 20px;
+  background-color: #141414;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-.nav-left,
-.nav-right {
+.navbar-left {
   display: flex;
   align-items: center;
+  gap: 12px;
 }
 
-.nav-right {
-  gap: 1rem;
+.navbar-logo {
+  height: 32px;
 }
 
-.inline-search-results {
-  display: none;
-  background: #1e1e1e;
-  padding: 1rem;
-  position: absolute;
-  top: 70px;
-  right: 1.5rem;
-  width: 350px;
-  max-height: 400px;
-  overflow-y: auto;
-  z-index: 998;
-  border: 1px solid #333;
-  border-radius: 8px;
-}
-
-.search-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0.5rem 0;
-  cursor: pointer;
-  border-bottom: 1px solid #333;
-}
-
-.search-item:last-child {
-  border-bottom: none;
-}
-
-.search-item img {
-  width: 50px;
-  height: 75px;
-  object-fit: cover;
-  border-radius: 4px;
-}
-
-.search-item span {
-  color: #fff;
-  font-size: 0.95rem;
-}
-
-/* Menu button (☰) */
-.menu-btn {
-  background: none;
-  border: none;
-  color: #fff;
+.navbar-brand {
   font-size: 1.5rem;
-  cursor: pointer;
-  margin-right: 1rem;
+  font-weight: bold;
+  color: #fff;
 }
 
-/* Brand styling */
-.brand {
+.navbar-right {
   display: flex;
   align-items: center;
-  color: #fff;
-  text-decoration: none;
-  font-size: 1.4rem;
-  font-weight: bold;
-}
-
-.brand .logo {
-  height: 35px;
-  margin-right: 8px;
-}
-
-/* Search Bar in Navbar */
-.search-wrapper {
-  position: relative;
+  gap: 16px;
 }
 
 .search-bar {
-  width: 220px;
-  padding: 0.4rem 2.5rem 0.4rem 1.5rem;
+  padding: 6px 12px;
   border-radius: 20px;
   border: none;
+  outline: none;
   background-color: #333;
-  color: white;
-  font-size: 1rem;
-}
-
-.search-bar::placeholder {
-  color: #aaa;
-}
-
-.search-icon {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #bbb;
-}
-
-/* History button */
-.history-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.4rem 1rem;
-  border: 1px solid #555;
-  border-radius: 20px;
-  background: transparent;
   color: #fff;
+  width: 180px;
+}
+
+.history-button {
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
-.history-btn:hover {
-  background-color: #333;
-}
-
-/* —————————————————————— SIDEBARS —————————————————————— */
+/* Sidebar */
 .sidebar {
   position: fixed;
-  top: 0;
-  left: -250px;
-  width: 250px;
-  height: 100%;
-  background-color: #1d1d1d;
-  padding: 1rem;
-  transition: left 0.3s ease;
-  z-index: 1001;
+  top: 60px;
+  left: 0;
+  width: 200px;
+  height: calc(100vh - 60px);
+  background-color: #1f1f1f;
+  padding: 20px;
   overflow-y: auto;
 }
 
-.sidebar.active {
-  left: 0;
-}
-
-.sidebar.history {
-  left: auto;
-  right: -250px;
-}
-
-.sidebar.history.active {
-  right: 0;
-}
-
 .sidebar h3 {
-  margin-bottom: 0.5rem;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
 }
 
 .sidebar ul {
   list-style: none;
+  padding: 0;
 }
 
 .sidebar ul li {
-  padding: 0.5rem 0;
+  margin-bottom: 10px;
   cursor: pointer;
-  color: #ccc;
-  border-bottom: 1px solid #333;
+  transition: color 0.3s ease;
 }
 
 .sidebar ul li:hover {
+  color: #ff3c3c;
+}
+
+/* Main content */
+.main-content {
+  margin-left: 220px;
+  padding: 20px;
+}
+
+/* Banner Section */
+.banner {
+  position: relative;
+  height: 55vh;
+  background-size: cover;
+  background-position: center;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  overflow: hidden;
+}
+
+.banner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(to top, rgba(20,20,20,0.9) 10%, rgba(20,20,20,0.2) 90%);
+  z-index: 1;
+}
+
+.banner-content {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  z-index: 2;
+  max-width: 50%;
+}
+
+.banner-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+.banner-description {
+  font-size: 1rem;
+  color: #ddd;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.banner-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.banner-buttons button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.banner-buttons .watch-button {
+  background-color: #ff3c3c;
   color: #fff;
 }
 
-/* Close button inside sidebars */
-.close-side {
-  font-size: 1.5rem;
-  color: red;
-  cursor: pointer;
-  display: block;
-  text-align: right;
-  margin-bottom: 0.5rem;
+.banner-buttons .watch-button:hover {
+  background-color: #e22e2e;
 }
 
-/* —————————————————————— BANNER —————————————————————— */
-.banner {
-  position: relative;
-  height: 400px;
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  align-items: flex-end;
+.banner-buttons .download-button {
+  background-color: #fff;
+  color: #000;
 }
 
-.banner-overlay {
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-  color: white;
-  padding: 2rem;
-  width: 100%;
+.banner-buttons .download-button:hover {
+  background-color: #ddd;
 }
 
-.banner-overlay h1 {
-  font-size: 2rem;
-  margin: 0;
-}
-
-.banner-overlay p {
-  max-width: 600px;
-  margin: 0.5rem 0 1rem;
-  color: #ddd;
-}
-
-.banner-watch-btn {
-  background-color: #ff4444;
-  color: white;
-  padding: 0.5rem 1.2rem;
-  border-radius: 5px;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-/* —————————————————————— SECTIONS —————————————————————— */
+/* Rows */
 .row {
-  margin: 1rem 1rem;
-  font-size: 1.5rem;
-  position: relative;
+  margin-bottom: 30px;
 }
 
 .row h2 {
-  margin-bottom: 0.5rem;
-  font-size: 1.5rem;
+  margin-bottom: 12px;
 }
 
-/* —————————————————————— THUMBNAILS —————————————————————— */
-#movies-list,
-#tvshows-list,
-#anime-list,
-#vivamax-list {
+.row-posters {
   display: flex;
-  gap: 1rem;
   overflow-x: auto;
-  padding-bottom: 1rem;
-  scroll-behavior: smooth;
+  gap: 10px;
 }
 
-#movies-list,
-#tvshows-list,
-#anime-list,
-#vivamax-list {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-#movies-list::-webkit-scrollbar,
-#tvshows-list::-webkit-scrollbar,
-#anime-list::-webkit-scrollbar,
-#vivamax-list::-webkit-scrollbar {
+.row-posters::-webkit-scrollbar {
   display: none;
 }
 
-#movies-list img,
-#tvshows-list img,
-#anime-list img,
-#vivamax-list img {
+.row-poster {
   width: 140px;
-  height: 210px;
-  object-fit: cover;
-  border-radius: 8px;
+  border-radius: 6px;
+  transition: transform 0.3s ease;
   cursor: pointer;
-  transition: transform 0.2s ease;
-}
-#movies-list img:hover,
-#tvshows-list img:hover,
-#anime-list img:hover,
-#vivamax-list img:hover {
-  transform: scale(1.05);
 }
 
-/* Scroll buttons (left/right) */
-.scroll-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 42px;
-  height: 64px;
-  border: none;
-  border-radius: 4px;
-  background: rgba(0, 0, 0, 0.55);
-  color: #fff;
-  cursor: pointer;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.4rem;
-  transition: background 0.25s;
-}
-.scroll-btn:hover {
-  background: rgba(0, 0, 0, 0.75);
-}
-.scroll-btn.left {
-  left: 0;
-}
-.scroll-btn.right {
-  right: 0;
-}
-.scroll-btn.disabled {
-  background: rgba(70, 70, 70, 0.4);
-  cursor: default;
-  pointer-events: none;
+.row-poster:hover {
+  transform: scale(1.08);
 }
 
-/* —————————————————————— MODALS —————————————————————— */
+/* Modal */
 .modal {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(20, 20, 20, 0.95);
-  display: none;
-  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.8);
+  display: flex;
   justify-content: center;
-  z-index: 1002;
+  align-items: center;
+  z-index: 1000;
 }
 
 .modal-content {
-  background: #1e1e1e;
-  padding: 1.5rem;
-  border-radius: 10px;
+  background-color: #1f1f1f;
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;
   max-width: 800px;
-  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
 }
 
-.modal-content.small {
-  background: #1c1c1c;
-  padding: 20px;
-  max-width: 600px;
-  width: 90%;
-  border-radius: 10px;
-  color: #fff;
-}
-
-.modal-body {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  flex-direction: row;
-}
-
-.modal-body img {
-  width: 150px;
-  border-radius: 6px;
-}
-
-.modal-text {
-  flex: 1;
-}
-
-/* Watch Now button styling */
-.watch-now-btn {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 10px 24px;
-  background-color: #e50914;
-  color: #fff;
-  font-weight: 600;
-  text-decoration: none;
-  border-radius: 6px;
-  transition: background-color 0.3s ease;
-}
-.watch-now-btn:hover {
-  background-color: #b00610;
-}
-
-/* —————————————————————— FOOTER —————————————————————— */
-.footer {
-  background-color: #1c1c1c;
-  text-align: center;
-  padding: 20px;
-  margin-top: 2rem;
-  color: #aaa;
-}
-
-.footer-links a {
-  color: #aaa;
-  margin: 0 10px;
-  text-decoration: none;
-}
-.footer-links a:hover {
-  text-decoration: underline;
-}
-
-/* —————————————————————— RESPONSIVE —————————————————————— */
-@media (max-width: 768px) {
-  .modal-body {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .search-wrapper {
-    max-width: 100%;
-  }
-
-  #movies-list img,
-  #tvshows-list img,
-  #anime-list img {
-    height: 180px;
-  }
-}
-
-/* —————————————————————— WATCH HISTORY —————————————————————— */
-#history-results .history-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-#history-results .history-list li {
-  padding: 10px;
-  border-bottom: 1px solid #444;
-  cursor: pointer;
-  color: #fff;
-  font-size: 14px;
-}
-#history-results .history-list li:hover {
-  background-color: #333;
-}
-
-/* —————————————————————— MEDIA CARD —————————————————————— */
-.media-card {
-  display: inline-block;
-  width: 140px;
-  margin: 10px;
-  text-align: center;
-}
-
-.media-card img {
+.modal-content img {
   width: 100%;
-  border-radius: 4px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.modal-content h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.modal-content p {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 16px;
+  color: #ccc;
+}
+
+.modal-content .modal-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.modal-content .modal-buttons button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
 }
 
-.media-title {
-  font-size: 0.9em;
+.modal-content .watch-now {
+  background-color: #ff3c3c;
   color: #fff;
-  margin: 4px 0;
 }
 
-.download-btn {
-  display: inline-block;
-  background: #e50914;
+.modal-content .download-now {
+  background-color: #fff;
+  color: #000;
+}
+
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
   color: #fff;
-  padding: 10px 24px; /* same as watch-now-btn */
-  font-weight: bold;
-  text-decoration: none;
-  border-radius: 6px;
-  margin-top: 10px;
-}	
+  cursor: pointer;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #1f1f1f;
+  color: #aaa;
+  font-size: 0.9rem;
+  margin-top: 30px;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    padding: 10px;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .banner-content {
+    max-width: 90%;
+    bottom: 20px;
+    left: 20px;
+  }
+
+  .banner-title {
+    font-size: 2rem;
+  }
+
+  .navbar-right {
+    gap: 10px;
+  }
+
+  .search-bar {
+    width: 140px;
+  }
+
+  .row-poster {
+    width: 120px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .banner-title {
+    font-size: 1.5rem;
+  }
+
+  .banner-description {
+    font-size: 0.9rem;
+  }
+
+  .row-poster {
+    width: 100px;
+  }
+}
