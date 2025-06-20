@@ -112,104 +112,61 @@
 
   <!-- Chat Widget -->
  <!-- GLOBAL CHAT WIDGET STYLES -->
+<!-- ─────────── GLOBAL CHAT (v2) ─────────── -->
 <style>
-  #chat-toggle {
-    position: fixed;
-    bottom: 0;
-    right: 10px;
-    background: #e50914;
-    color: #fff;
-    padding: 8px 12px;
-    border-radius: 8px 8px 0 0;
-    cursor: pointer;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    z-index: 9999;
+  /* chat pill */
+  #chat-toggle{
+    position:fixed;bottom:12px;right:12px;z-index:9999;
+    background:#e50914;color:#fff;padding:10px 16px;border-radius:8px 8px 0 0;
+    font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px;cursor:pointer;
   }
-  #chat-toggle .label { margin-right: 6px; }
-  #chat-toggle .arrow { font-size: 10px; transform: rotate(180deg); }
-  #chat-box {
-    position: fixed;
-    bottom: 45px;
-    right: 10px;
-    width: 300px;
-    max-height: 400px;
-    background: #222;
-    color: white;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    z-index: 9999;
+  #chat-toggle .arrow{font-size:10px;transform:rotate(180deg)}
+
+  /* chat panel */
+  #chat-box{
+    position:fixed;bottom:52px;right:12px;width:360px;max-height:500px;
+    background:#222;color:#fff;border-radius:8px;display:flex;flex-direction:column;
+    box-shadow:0 4px 14px rgba(0,0,0,.5);z-index:9999;
   }
-  #chat-box header {
-    background: #e50914;
-    color: #fff;
-    padding: 10px;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  #chat-box header{
+    background:#e50914;padding:12px;font-size:15px;font-weight:bold;
+    display:flex;justify-content:space-between;align-items:center;
   }
-  #chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 10px;
-    font-size: 14px;
+  #chat-messages{
+    flex:1;overflow-y:auto;padding:12px;font-size:14px;
   }
-  .chat-msg {
-    margin-bottom: 6px;
+  .chat-msg{margin-bottom:6px}.chat-msg .name{color:#ff4;font-weight:700;margin-right:4px}
+  #chat-form{display:flex;border-top:1px solid #444}
+  #chat-input{flex:1;padding:10px;background:#111;border:none;color:#fff;font-size:14px}
+  #chat-form button{background:#e50914;border:none;color:#fff;padding:0 16px;cursor:pointer}
+  /* Google button */
+  #sign-in-btn{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    background:#fff;color:#555;border:none;border-radius:4px;font-size:15px;
+    padding:10px 0;width:82%;margin:40px auto 20px;cursor:pointer;
+    box-shadow:0 2px 4px rgba(0,0,0,.2);
   }
-  .chat-msg .name {
-    font-weight: bold;
-    color: #e50914;
-  }
-  #chat-form {
-    display: flex;
-    border-top: 1px solid #444;
-  }
-  #chat-input {
-    flex: 1;
-    padding: 8px;
-    border: none;
-    outline: none;
-    background: #111;
-    color: white;
-  }
-  #chat-form button {
-    background: #e50914;
-    border: none;
-    color: white;
-    padding: 0 15px;
-    cursor: pointer;
-  }
-  #sign-in-btn {
-    background: #e50914;
-    color: white;
-    border: none;
-    padding: 10px;
-    margin: 20px auto;
-    width: 80%;
-    cursor: pointer;
-    font-weight: bold;
-    border-radius: 5px;
-  }
+  #sign-in-btn img{width:18px;height:18px}
 </style>
 
-<!-- GLOBAL CHAT WIDGET HTML -->
-<div id="chat-toggle"><span class="label">Chat Room</span><span id="online-count">0</span><i class="arrow">▲</i></div>
+<!-- pill toggle -->
+<div id="chat-toggle"><span>Chat Room</span><span id="online-count">0</span><i class="arrow">▲</i></div>
 
-<div id="chat-box" hidden>
-  <header>
-    <span>Global Chat</span>
-    <button id="close-chat">✕</button>
-  </header>
+<!-- chat panel (initially visible) -->
+<div id="chat-box">
+  <header>Global Chat <button id="close-chat">✕</button></header>
+
+  <!-- content swaps after sign‑in -->
   <div id="chat-content">
-    <button id="sign-in-btn">Sign in with Google</button>
-    <div id="chat-messages" style="display:none;"></div>
-    <form id="chat-form" style="display:none;">
-      <input id="chat-input" type="text" placeholder="Type a message…" autocomplete="off" required />
+    <button id="sign-in-btn">
+      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="">
+      Sign in with Google
+    </button>
+
+    <div id="chat-messages" style="display:none"></div>
+
+    <form id="chat-form" style="display:none">
+      <input id="chat-input" type="text" placeholder="Type a message…" autocomplete="off" required disabled>
       <button type="submit">➤</button>
     </form>
   </div>
@@ -220,105 +177,80 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
-<!-- GLOBAL CHAT LOGIC -->
+<!-- Chat logic -->
 <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyAbEajCx_wAYT0PJp_foa9d6mGhHmh9OgI",
-    authDomain: "flixora-chat.firebaseapp.com",
-    databaseURL: "https://flixora-chat-default-rtdb.firebaseio.com",
-    projectId: "flixora-chat",
-    storageBucket: "flixora-chat.appspot.com",
-    messagingSenderId: "715555545977",
-    appId: "1:715555545977:web:da8dadfc38773436fc05a8"
+(() => {
+  /* Firebase init */
+  const cfg={
+    apiKey:"AIzaSyAbEajCx_wAYT0PJp_foa9d6mGhHmh9OgI",
+    authDomain:"flixora-chat.firebaseapp.com",
+    databaseURL:"https://flixora-chat-default-rtdb.firebaseio.com",
+    projectId:"flixora-chat",
+    storageBucket:"flixora-chat.appspot.com",
+    messagingSenderId:"715555545977",
+    appId:"1:715555545977:web:da8dadfc38773436fc05a8"
   };
-  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-  const db = firebase.database(), auth = firebase.auth(), prov = new firebase.auth.GoogleAuthProvider();
+  if(!firebase.apps.length)firebase.initializeApp(cfg);
+  const db=firebase.database(),auth=firebase.auth(),prov=new firebase.auth.GoogleAuthProvider();
 
-  const $toggle = document.getElementById('chat-toggle');
-  const $box = document.getElementById('chat-box');
-  const $close = document.getElementById('close-chat');
-  const $msgs = document.getElementById('chat-messages');
-  const $form = document.getElementById('chat-form');
-  const $input = document.getElementById('chat-input');
-  const $online = document.getElementById('online-count');
-  const $signin = document.getElementById('sign-in-btn');
+  /* DOM refs */
+  const pill  =document.getElementById('chat-toggle');
+  const box   =document.getElementById('chat-box');
+  const close =document.getElementById('close-chat');
+  const signin=document.getElementById('sign-in-btn');
+  const msgs  =document.getElementById('chat-messages');
+  const form  =document.getElementById('chat-form');
+  const input =document.getElementById('chat-input');
+  const online=document.getElementById('online-count');
 
-  let loaded = false;
+  let loaded=false;
 
-  function add(name, text) {
-    db.ref('messages').push({ name, text, ts: firebase.database.ServerValue.TIMESTAMP });
+  /* helpers */
+  const add=(n,t)=>db.ref('messages').push({name:n,text:t,ts:firebase.database.ServerValue.TIMESTAMP});
+  const row=snap=>{
+    const d=snap.val();
+    const div=document.createElement('div');
+    div.className='chat-msg';
+    div.innerHTML=`<span class="name">${d.name}:</span> ${d.text}`;
+    msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
+  };
+  const presence=u=>{
+    const p=db.ref('presence/'+u.uid);
+    p.set({name:u.displayName,online:true});
+    p.onDisconnect().remove();
+    db.ref('presence').on('value',s=>online.textContent=s.numChildren());
+  };
+  function enableChat(){
+    signin.style.display="none";
+    msgs.style.display="block";
+    form.style.display="flex";
+    input.disabled=false;
+    if(!loaded){db.ref('messages').limitToLast(100).on('child_added',row);loaded=true;}
   }
 
-  function show(snap) {
-    const d = snap.val();
-    const div = document.createElement('div');
-    div.className = 'chat-msg';
-    div.innerHTML = `<span class="name">${d.name}:</span> ${d.text}`;
-    $msgs.appendChild(div);
-    $msgs.scrollTop = $msgs.scrollHeight;
-  }
+  /* sign‑in */
+  signin.onclick=async()=>{
+    try{
+      const {user}=await auth.signInWithPopup(prov);
+      presence(user);enableChat();
+    }catch(e){console.warn("Sign‑in canceled");}
+  };
 
-  function presence(user) {
-    const ref = db.ref('presence/' + user.uid);
-    ref.set({ name: user.displayName, online: true });
-    ref.onDisconnect().remove();
-    db.ref('presence').on('value', snap => {
-      $online.textContent = snap.numChildren();
-    });
-  }
+  /* auto‑resume */
+  auth.onAuthStateChanged(u=>{if(u){presence(u);enableChat();}});
 
-  function loadMessages() {
-    if (loaded) return;
-    db.ref('messages').limitToLast(100).on('child_added', show);
-    loaded = true;
-  }
-
-  async function signIn() {
-    try {
-      const result = await auth.signInWithPopup(prov);
-      const user = result.user;
-      presence(user);
-      loadMessages();
-
-      // Hide Sign-in button, show chat
-      $signin.style.display = 'none';
-      $msgs.style.display = 'block';
-      $form.style.display = 'flex';
-      $input.disabled = false;
-      $box.hidden = false;
-    } catch (err) {
-      console.error("Sign in error", err);
-    }
-  }
-
-  $signin.addEventListener('click', signIn);
-  $toggle.addEventListener('click', () => {
-    $box.hidden = !$box.hidden;
-  });
-  $close.addEventListener('click', () => {
-    $box.hidden = true;
-  });
-
-  $form.addEventListener('submit', async e => {
+  /* send */
+  form.addEventListener('submit',e=>{
     e.preventDefault();
-    const txt = $input.value.trim();
-    if (txt && auth.currentUser) {
-      add(auth.currentUser.displayName, txt);
-      $input.value = '';
-    }
+    const txt=input.value.trim();
+    if(txt&&auth.currentUser){add(auth.currentUser.displayName,txt);input.value='';}
   });
 
-  // Auto-reveal chat box after sign in (if already signed in)
-  auth.onAuthStateChanged(user => {
-    if (user) {
-      presence(user);
-      loadMessages();
-      $signin.style.display = 'none';
-      $msgs.style.display = 'block';
-      $form.style.display = 'flex';
-      $input.disabled = false;
-    }
-  });
+  /* pill & close */
+  pill.onclick=()=>{box.hidden=!box.hidden};
+  close.onclick =()=>{box.hidden=true};
+})();
 </script>
+<!-- ──────────────────────────────────────── -->
 </body>
 </html>
