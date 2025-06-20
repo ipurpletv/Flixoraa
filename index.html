@@ -143,108 +143,126 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
 <!-- ───────── CHAT LOGIC ───────── -->
+<!-- Your full HTML remains unchanged until the Chat logic section -->
+<!-- Inside <body>, after the rest of your content -->
+
+<!-- Chat logic -->
 <script>
 (() => {
-  /* Firebase init */
   const cfg = {
-    apiKey:            "AIzaSyAbEajCx_wAYT0PJp_foa9d6mGhHmh9OgI",
-    authDomain:        "flixora-chat.firebaseapp.com",
-    databaseURL:       "https://flixora-chat-default-rtdb.firebaseio.com",
-    projectId:         "flixora-chat",
-    storageBucket:     "flixora-chat.appspot.com",
+    apiKey: "AIzaSyAbEajCx_wAYT0PJp_foa9d6mGhHmh9OgI",
+    authDomain: "flixora-chat.firebaseapp.com",
+    databaseURL: "https://flixora-chat-default-rtdb.firebaseio.com",
+    projectId: "flixora-chat",
+    storageBucket: "flixora-chat.appspot.com",
     messagingSenderId: "715555545977",
-    appId:             "1:715555545977:web:da8dadfc38773436fc05a8"
+    appId: "1:715555545977:web:da8dadfc38773436fc05a8"
   };
   if (!firebase.apps.length) firebase.initializeApp(cfg);
 
-  const db     = firebase.database();
-  const auth   = firebase.auth();
-  const prov   = new firebase.auth.GoogleAuthProvider();
+  const db = firebase.database();
+  const auth = firebase.auth();
+  const prov = new firebase.auth.GoogleAuthProvider();
   prov.setCustomParameters({ prompt: 'select_account' });
+  auth.languageCode = 'en';
 
-  /* DOM */
-  const pill   = document.getElementById('chat-toggle');
-  const panel  = document.getElementById('chat-box');
-  const closeB = document.getElementById('close-chat');
-  const signB  = document.getElementById('sign-in-btn');
-  const msgs   = document.getElementById('chat-messages');
-  const form   = document.getElementById('chat-form');
-  const input  = document.getElementById('chat-input');
+  const pill = document.getElementById('chat-toggle');
+  const box = document.getElementById('chat-box');
+  const close = document.getElementById('close-chat');
+  const signin = document.getElementById('sign-in-btn');
+  const msgs = document.getElementById('chat-messages');
+  const form = document.getElementById('chat-form');
+  const input = document.getElementById('chat-input');
   const online = document.getElementById('online-count');
 
   let loaded = false;
 
-  /* helpers */
-  const push = (n,t,p) => db.ref('messages').push({
-    name:n, text:t, photoURL:p,
+  const push = (n, t) => db.ref('messages').push({
+    name: n || "Anonymous",
+    text: t,
     ts: firebase.database.ServerValue.TIMESTAMP
   });
 
-  const row  = snap => {
-    const d   = snap.val();
-    const ts  = d.ts ? new Date(d.ts).toLocaleString() : '';
-    const img = d.photoURL ? d.photoURL : 'default-avatar.png';
-    const wrap= document.createElement('div');
-    wrap.className='chat-msg';
-    wrap.innerHTML = `
-      <img class="chat-avatar ${d.photoURL?'':'default'}" src="${img}" alt="">
-      <div class="chat-bubble">
-        <span class="chat-name">${d.name}</span>
-        <span class="chat-text">${d.text}</span>
-        <span class="chat-time">${ts}</span>
-      </div>`;
-    msgs.appendChild(wrap);
+  const addRow = snap => {
+    const d = snap.val();
+    const div = document.createElement('div');
+    div.className = 'chat-msg';
+    const date = new Date(d.ts || Date.now());
+    const timeString = date.toLocaleString();
+    div.innerHTML = `
+      <div class="msg-body">
+        <div class="msg-header">
+          <span class="name">${d.name || "Anonymous"}</span>
+          <span class="timestamp">${timeString}</span>
+        </div>
+        <div class="msg-text">${d.text}</div>
+      </div>
+    `;
+    msgs.appendChild(div);
     msgs.scrollTop = msgs.scrollHeight;
   };
 
-  const presence = u => {
-    const ref = db.ref('presence/'+u.uid);
-    ref.set({name:u.displayName,online:true});
+  const setPresence = u => {
+    const ref = db.ref('presence/' + u.uid);
+    ref.set({ name: "Anonymous", online: true });
     ref.onDisconnect().remove();
     db.ref('presence').on('value', s => online.textContent = s.numChildren());
   };
 
-  function enableChat(){
-    signB.style.display='none';
-    msgs.style.display='block';
-    form.style.display='flex';
+  const enableChat = () => {
+    signin.style.display = 'none';
+    msgs.style.display = 'block';
+    form.style.display = 'flex';
     input.disabled = false;
-    if(!loaded){ db.ref('messages').limitToLast(100).on('child_added', row); loaded=true; }
-  }
+    if (!loaded) {
+      db.ref('messages').limitToLast(100).on('child_added', addRow);
+      loaded = true;
+    }
+  };
 
-  /* sign‑in */
-  async function startSign(){
-    try{
-      await auth.signInWithPopup(prov);
-      presence(auth.currentUser);
+  auth.getRedirectResult().then(res => {
+    if (res.user) {
+      setPresence(res.user);
       enableChat();
-    }catch(err){
-      if(err.code==='auth/popup-blocked'||err.code==='auth/popup-closed-by-user'){
-        await auth.signInWithRedirect(prov);
-      }else{
-        alert(err.message);
+    }
+  }).catch(console.error);
+
+  signin.addEventListener('click', async () => {
+    try {
+      await auth.signInWithPopup(prov);
+      setPresence(auth.currentUser);
+      enableChat();
+    } catch (err) {
+      if (err.code === 'auth/popup-blocked' || err.code === 'auth/popup-closed-by-user') {
+        try {
+          await auth.signInWithRedirect(prov);
+        } catch (e) {
+          console.warn(e);
+        }
+      } else {
+        console.warn(err);
       }
     }
-  }
-
-  /* auto enable if already signed in */
-  auth.onAuthStateChanged(u=>{
-    if(u){presence(u);enableChat();}
   });
 
-  /* events */
-  signB.onclick = startSign;
-  pill.onclick  = ()=> panel.hidden = !panel.hidden;
-  closeB.onclick= ()=> panel.hidden = true;
-
-  form.addEventListener('submit', e=>{
-    e.preventDefault();
-    const txt = input.value.trim();
-    if(txt && auth.currentUser){
-      push(auth.currentUser.displayName, txt, auth.currentUser.photoURL||'');
-      input.value='';
+  auth.onAuthStateChanged(u => {
+    if (u) {
+      setPresence(u);
+      enableChat();
     }
   });
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const t = input.value.trim();
+    if (t && auth.currentUser) {
+      push("Anonymous", t);
+      input.value = '';
+    }
+  });
+
+  pill.onclick = () => { box.hidden = !box.hidden; };
+  close.onclick = () => { box.hidden = true; };
 })();
 </script>
 </body>
