@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Flixora</title>
 
+  <!-- Main styles and scripts -->
   <link rel="stylesheet" href="home.css" />
   <link rel="preload" href="home.css" as="style" />
   <link rel="icon" type="image/png" sizes="32x32" href="android-chrome-512x512.png">
@@ -13,35 +14,16 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
+  <!-- Only quick media‑card overrides left in page -->
   <style>
-    .media-card {
-      display: inline-block;
-      width: 140px;
-      margin: 10px;
-      text-align: center;
-    }
-    .media-card img {
-      width: 100%;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .media-title {
-      font-size: 0.9em;
-      color: #fff;
-      margin: 4px 0;
-    }
-    .download-btn {
-      display: inline-block;
-      background: #e50914;
-      color: #fff;
-      padding: 4px 8px;
-      font-size: 0.8em;
-      text-decoration: none;
-      border-radius: 4px;
-      margin-top: 4px;
-    }
+    .media-card { display:inline-block;width:140px;margin:10px;text-align:center; }
+    .media-card img { width:100%;border-radius:4px;cursor:pointer; }
+    .media-title { font-size:0.9em;color:#fff;margin:4px 0; }
+    .download-btn { display:inline-block;background:#e50914;color:#fff;padding:4px 8px;font-size:0.8em;text-decoration:none;border-radius:4px;margin-top:4px; }
   </style>
-<script type='text/javascript' src='//transparentdefender.com/9b/51/58/9b515880df5fea539a7b50bb52210585.js'></script>
+
+  <!-- Ad script (unchanged) -->
+  <script src="//transparentdefender.com/9b/51/58/9b515880df5fea539a7b50bb52210585.js"></script>
 </head>
 
 <body>
@@ -98,50 +80,28 @@
       <a id="banner-watch-btn" class="banner-watch-btn" href="#" target="_blank">▶ Watch Now</a>
     </div>
   </div>
-	<center>
- <script type="text/javascript">
-	atOptions = {
-		'key' : '3e8dc7cbcc31780cad2727b4bc64a1df',
-		'format' : 'iframe',
-		'height' : 90,
-		'width' : 728,
-		'params' : {}
-	};
-</script>
-<script type="text/javascript" src="//transparentdefender.com/d8207cd27802c5cd3603eef7ed22e16f/invoke.js"></script>
-		</center>
+
+  <!-- Ads (unchanged) -->
+  <center>
+    <script>
+      atOptions={key:'3e8dc7cbcc31780cad2727b4bc64a1df',format:'iframe',height:90,width:728,params:{}};
+    </script>
+    <script src="//transparentdefender.com/d8207cd27802c5cd3603eef7ed22e16f/invoke.js"></script>
+  </center>
+
   <!-- Rows -->
-  <section class="row">
-    <h2>Popular Movies</h2>
-    <div class="list" id="movies-list"></div>
-  </section>
+  <section class="row"><h2>Popular Movies</h2><div class="list" id="movies-list"></div></section>
+  <section class="row"><h2>TV Shows</h2><div class="list" id="tvshows-list"></div></section>
+  <section class="row"><h2>Anime</h2><div class="list" id="anime-list"></div></section>
+  <section class="row"><h2>Vivamax</h2><div class="list" id="vivamax-list"></div></section>
 
-  <section class="row">
-    <h2>TV Shows</h2>
-    <div class="list" id="tvshows-list"></div>
-  </section>
+  <center>
+    <script>
+      atOptions={key:'3e8dc7cbcc31780cad2727b4bc64a1df',format:'iframe',height:90,width:728,params:{}};
+    </script>
+    <script src="//transparentdefender.com/3e8dc7cbcc31780cad2727b4bc64a1df/invoke.js"></script>
+  </center>
 
-  <section class="row">
-    <h2>Anime</h2>
-    <div class="list" id="anime-list"></div>
-  </section>
-
-  <section class="row">
-    <h2>Vivamax</h2>
-    <div class="list" id="vivamax-list"></div>
-  </section>
-			<center>
- <script type="text/javascript">
-	atOptions = {
-		'key' : '3e8dc7cbcc31780cad2727b4bc64a1df',
-		'format' : 'iframe',
-		'height' : 90,
-		'width' : 728,
-		'params' : {}
-	};
-</script>
-<script type="text/javascript" src="//transparentdefender.com/3e8dc7cbcc31780cad2727b4bc64a1df/invoke.js"></script>
-		</center>
   <!-- Detail modal -->
   <div class="modal" id="detail-modal">
     <div class="modal-content small">
@@ -153,16 +113,6 @@
           <p id="detail-description"></p>
           <a id="watch-now-btn" class="watch-now-btn" href="#" target="_blank">▶ Watch Now</a>
           <a id="download-btn" class="download-btn" href="#" target="_blank" style="display:none;">⬇ Download</a>
- <script type="text/javascript">
-	atOptions = {
-		'key' : 'd8207cd27802c5cd3603eef7ed22e16f',
-		'format' : 'iframe',
-		'height' : 60,
-		'width' : 468,
-		'params' : {}
-	};
-</script>
-<script type="text/javascript" src="//transparentdefender.com/d8207cd27802c5cd3603eef7ed22e16f/invoke.js"></script>
         </div>
       </div>
     </div>
@@ -170,97 +120,109 @@
 
   <!-- Footer -->
   <footer class="footer">
-    <p>© 2025 All rights reserved. We do not host or upload any video files on this site. All content is provided by external third-party services.</p>
+    <p>© 2025 All rights reserved. We do not host or upload any video files on this site. All content is provided by external third‑party services.</p>
     <div class="footer-links">
       <a href="#">Disclaimer</a> · <a href="#">About Us</a> · <a href="#">Contact Us</a>
     </div>
   </footer>
-  <script type='text/javascript' src='//transparentdefender.com/60/86/60/6086609321601064c3b75f442c564c6f.js'></script>
-  <!-- Firebase SDKs (already in <head>) -->
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
-<!-- Global Chat logic — plain script, no modules -->
-<script>
-  // ① Your Firebase config
-  const firebaseConfig = {
-    apiKey:            "AIzaSyAbEajCx_wAYT0PJp_foa9d6mGhHmh9OgI",
-    authDomain:        "flixora-chat.firebaseapp.com",
-    databaseURL:       "https://flixora-chat-default-rtdb.firebaseio.com",
-    projectId:         "flixora-chat",
-    storageBucket:     "flixora-chat.appspot.com",      /* fixed typo */
-    messagingSenderId: "715555545977",
-    appId:             "1:715555545977:web:da8dadfc38773436fc05a8"
-  };
+  <!-- Ads (unchanged) -->
+  <script src="//transparentdefender.com/60/86/60/6086609321601064c3b75f442c564c6f.js"></script>
 
-  // ② Init (does nothing if already initialised)
-  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-  const db     = firebase.database();
-  const auth   = firebase.auth();
-  const google = new firebase.auth.GoogleAuthProvider();
+  <!-- ─────────── GLOBAL CHAT WIDGET ─────────── -->
+  <div id="chat-toggle">
+    <span class="label">Chat Room</span>
+    <span id="online-count">0</span>
+    <i class="arrow">▲</i>
+  </div>
 
-  // ③ DOM shortcuts
-  const $toggle   = document.getElementById('chat-toggle');
-  const $box      = document.getElementById('chat-box');
-  const $close    = document.getElementById('close-chat');
-  const $msgs     = document.getElementById('chat-messages');
-  const $form     = document.getElementById('chat-form');
-  const $input    = document.getElementById('chat-input');
-  const $online   = document.getElementById('online-count');
+  <div id="chat-box" hidden>
+    <header>
+      <strong>Global Chat</strong>
+      <button id="close-chat">✕</button>
+    </header>
 
-  let messagesLoaded = false;
+    <div id="chat-messages"></div>
 
-  /* helper */
-  function addMessage(name,text){
-    db.ref('messages').push({ name, text, ts: firebase.database.ServerValue.TIMESTAMP });
-  }
-  function render(snap){
-    const d = snap.val();
-    const div = document.createElement('div');
-    div.className = 'chat-msg';
-    div.innerHTML = `<span class="name">${d.name}:</span> ${d.text}`;
-    $msgs.appendChild(div);
-    $msgs.scrollTop = $msgs.scrollHeight;
-  }
-  function setPresence(user){
-    const ref = db.ref('presence/'+user.uid);
-    ref.set({ name:user.displayName, online:true });
-    ref.onDisconnect().remove();
-    db.ref('presence').on('value',snap=>{ $online.textContent = snap.numChildren(); });
-  }
+    <form id="chat-form">
+      <input id="chat-input" type="text" placeholder="Type a message…" autocomplete="off" required />
+      <button type="submit">➤</button>
+    </form>
+  </div>
+  <!-- ─────────────────────────────────────────── -->
 
-  /* toggle button */
-  $toggle.addEventListener('click', async ()=>{
-    $box.hidden = !$box.hidden;
-    if ($box.hidden) return;
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
-    // first open → force login
-    if (!auth.currentUser){
-      try{ await auth.signInWithPopup(google); }
-      catch{ alert('Google sign‑in was cancelled or blocked.'); $box.hidden = true; return; }
+  <!-- Global Chat logic -->
+  <script>
+    const firebaseConfig = {
+      apiKey:            "AIzaSyAbEajCx_wAYT0PJp_foa9d6mGhHmh9OgI",
+      authDomain:        "flixora-chat.firebaseapp.com",
+      databaseURL:       "https://flixora-chat-default-rtdb.firebaseio.com",
+      projectId:         "flixora-chat",
+      storageBucket:     "flixora-chat.appspot.com",
+      messagingSenderId: "715555545977",
+      appId:             "1:715555545977:web:da8dadfc38773436fc05a8"
+    };
+
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const db   = firebase.database();
+    const auth = firebase.auth();
+    const gProv= new firebase.auth.GoogleAuthProvider();
+
+    const $toggle = document.getElementById('chat-toggle');
+    const $box    = document.getElementById('chat-box');
+    const $close  = document.getElementById('close-chat');
+    const $msgs   = document.getElementById('chat-messages');
+    const $form   = document.getElementById('chat-form');
+    const $input  = document.getElementById('chat-input');
+    const $online = document.getElementById('online-count');
+
+    let chatLoaded = false;
+
+    function addMsg(name,text){
+      db.ref('messages').push({ name, text, ts: firebase.database.ServerValue.TIMESTAMP });
     }
-    setPresence(auth.currentUser);
-
-    // only hook messages once
-    if (!messagesLoaded){
-      db.ref('messages').limitToLast(100).on('child_added', render);
-      messagesLoaded = true;
+    function renderMsg(snap){
+      const d = snap.val();
+      const div = document.createElement('div');
+      div.className = 'chat-msg';
+      div.innerHTML = `<span class="name">${d.name}:</span> ${d.text}`;
+      $msgs.appendChild(div);
+      $msgs.scrollTop = $msgs.scrollHeight;
     }
-  });
+    function presence(u){
+      const p = db.ref('presence/'+u.uid);
+      p.set({ name:u.displayName, online:true });
+      p.onDisconnect().remove();
+      db.ref('presence').on('value', s => { $online.textContent = s.numChildren(); });
+    }
 
-  $close.addEventListener('click', ()=>{ $box.hidden = true; });
-
-  $form.addEventListener('submit', e=>{
-    e.preventDefault();
-    const text = $input.value.trim();
-    if (text) addMessage(auth.currentUser.displayName, text);
-    $input.value = '';
-  });
-
-</script>
-</body>
-</html>
-
+    $toggle.addEventListener('click', async () => {
+      $box.hidden = !$box.hidden;
+      if ($box.hidden) return;
+      try {
+        if (!auth.currentUser) await auth.signInWithPopup(gProv);
+      } catch {
+        alert('Google sign‑in required to chat.');
+        $box.hidden = true; return;
+      }
+      presence(auth.currentUser);
+      if (!chatLoaded){
+        db.ref('messages').limitToLast(100).on('child_added', renderMsg);
+        chatLoaded = true;
+      }
+    });
+    $close.addEventListener('click', () => $box.hidden = true);
+    $form.addEventListener('submit', e => {
+      e.preventDefault();
+      const txt = $input.value.trim();
+      if (txt) addMsg(auth.currentUser.displayName, txt);
+      $input.value = '';
+    });
+  </script>
 </body>
 </html>
