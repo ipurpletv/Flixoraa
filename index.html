@@ -344,9 +344,25 @@ db.ref('pinned_message').on('value', snap => {
 <!-- ─── ENTRY MODAL ─── -->
 <div id="entry-modal" class="entry-modal">
   <div class="entry-content">
-    <img src="unnamed.png" alt="Flixora Logo" class="entry-logo" />
+    <img src="dasd.png" alt="Flixora Logo" class="entry-logo" />
     <h1>Welcome to Flixora</h1>
     <p>Your home for movies, TV shows, anime & more. Stream now!</p>
+    <p class="share-text">Share us with your family and friends.</p>
+
+    <!-- Ad Space -->
+    <div class="entry-ad">
+      <script type="text/javascript">
+        atOptions = {
+          'key': 'd8207cd27802c5cd3603eef7ed22e16f',
+          'format': 'iframe',
+          'height': 60,
+          'width': 468,
+          'params': {}
+        };
+      </script>
+      <script type="text/javascript" src="//transparentdefender.com/d8207cd27802c5cd3603eef7ed22e16f/invoke.js"></script>
+    </div>
+
     <button onclick="dismissEntryModal()">Get Started</button>
   </div>
 </div>
@@ -368,36 +384,46 @@ db.ref('pinned_message').on('value', snap => {
 
   .entry-content {
     background: #1c1c1c;
-    padding: 40px;
-    border-radius: 12px;
+    padding: 50px 30px;
+    border-radius: 14px;
     text-align: center;
     color: white;
-    max-width: 90%;
-    width: 400px;
-    box-shadow: 0 0 20px #000;
+    max-width: 95%;
+    width: 500px;
+    box-shadow: 0 0 25px #000;
   }
 
   .entry-logo {
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
     margin-bottom: 20px;
   }
 
   .entry-content h1 {
-    font-size: 28px;
-    margin-bottom: 12px;
+    font-size: 30px;
+    margin-bottom: 14px;
   }
 
   .entry-content p {
-    font-size: 16px;
-    margin-bottom: 24px;
+    font-size: 17px;
+    margin-bottom: 10px;
     color: #ccc;
+  }
+
+  .share-text {
+    font-style: italic;
+    color: #aaa;
+    margin-bottom: 20px;
+  }
+
+  .entry-ad {
+    margin: 20px 0;
   }
 
   .entry-content button {
     background-color: #e50914;
     border: none;
-    padding: 12px 24px;
+    padding: 14px 28px;
     font-size: 16px;
     border-radius: 6px;
     color: white;
