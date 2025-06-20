@@ -232,3 +232,86 @@ function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('active');
 }
 window.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* ========== GLOBAL CHAT (plain script) ========== */
+(function () {
+  const $toggle   = document.getElementById('chat-toggle');
+  const $box      = document.getElementById('chat-box');
+  const $close    = document.getElementById('close-chat');
+  const $msgs     = document.getElementById('chat-messages');
+  const $form     = document.getElementById('chat-form');
+  const $input    = document.getElementById('chat-input');
+  const $online   = document.getElementById('online-count');
+
+  if (!$toggle || !$box) return; // chat not present on this page
+
+  /* Firebase init (compat) */
+  const firebaseConfig = {
+    apiKey:            "AIzaSyAbEajCx_wAYT0PJp_foa9d6mGhHmh9OgI",
+    authDomain:        "flixora-chat.firebaseapp.com",
+    databaseURL:       "https://flixora-chat-default-rtdb.firebaseio.com",
+    projectId:         "flixora-chat",
+    storageBucket:     "flixora-chat.appspot.com",
+    messagingSenderId: "715555545977",
+    appId:             "1:715555545977:web:da8dadfc38773436fc05a8"
+  };
+  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db   = firebase.database();
+  const prov = new firebase.auth.GoogleAuthProvider();
+
+  let loaded = false;
+
+  function renderMessage(snap) {
+    const d = snap.val();
+    const div = document.createElement('div');
+    div.className = 'chat-msg';
+    div.innerHTML = `<span class="name">${d.name}:</span> ${d.text}`;
+    $msgs.appendChild(div);
+    $msgs.scrollTop = $msgs.scrollHeight;
+  }
+
+  function pushMessage(txt) {
+    db.ref('messages').push({
+      name: auth.currentUser.displayName,
+      text: txt,
+      ts:   firebase.database.ServerValue.TIMESTAMP
+    });
+  }
+
+  function updatePresence(user) {
+    const ref = db.ref('presence/' + user.uid);
+    ref.set({ name: user.displayName, online: true });
+    ref.onDisconnect().remove();
+    db.ref('presence').on('value', s => { $online.textContent = s.numChildren(); });
+  }
+
+  $toggle.addEventListener('click', async () => {
+    $box.hidden = !$box.hidden;
+    if ($box.hidden) return;
+
+    try {
+      if (!auth.currentUser) await auth.signInWithPopup(prov);
+    } catch {
+      alert('Google sign‑in is required to chat.');
+      $box.hidden = true;
+      return;
+    }
+    updatePresence(auth.currentUser);
+
+    if (!loaded) {
+      db.ref('messages').limitToLast(100).on('child_added', renderMessage);
+      loaded = true;
+    }
+  });
+
+  $close.addEventListener('click', () => { $box.hidden = true; });
+
+  $form.addEventListener('submit', e => {
+    e.preventDefault();
+    const txt = $input.value.trim();
+    if (txt) pushMessage(txt);
+    $input.value = '';
+  });
+
+})();
