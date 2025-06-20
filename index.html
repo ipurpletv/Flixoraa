@@ -191,64 +191,80 @@
     appId:"1:715555545977:web:da8dadfc38773436fc05a8"
   };
   if(!firebase.apps.length)firebase.initializeApp(cfg);
-  const db=firebase.database(),auth=firebase.auth(),prov=new firebase.auth.GoogleAuthProvider();
+
+  const db=firebase.database();
+  const auth=firebase.auth();
+  const prov=new firebase.auth.GoogleAuthProvider();
+  prov.setCustomParameters({prompt:'select_account'}); // always choose account
+  auth.languageCode='en';
 
   /* DOM refs */
-  const pill  =document.getElementById('chat-toggle');
-  const box   =document.getElementById('chat-box');
-  const close =document.getElementById('close-chat');
-  const signin=document.getElementById('sign-in-btn');
-  const msgs  =document.getElementById('chat-messages');
-  const form  =document.getElementById('chat-form');
-  const input =document.getElementById('chat-input');
-  const online=document.getElementById('online-count');
+  const pill   =document.getElementById('chat-toggle');
+  const box    =document.getElementById('chat-box');
+  const close  =document.getElementById('close-chat');
+  const signin =document.getElementById('sign-in-btn');
+  const msgs   =document.getElementById('chat-messages');
+  const form   =document.getElementById('chat-form');
+  const input  =document.getElementById('chat-input');
+  const online =document.getElementById('online-count');
 
   let loaded=false;
 
   /* helpers */
-  const add=(n,t)=>db.ref('messages').push({name:n,text:t,ts:firebase.database.ServerValue.TIMESTAMP});
-  const row=snap=>{
+  const push=(n,t)=>db.ref('messages').push({name:n,text:t,ts:firebase.database.ServerValue.TIMESTAMP});
+  const addRow=snap=>{
     const d=snap.val();
     const div=document.createElement('div');
     div.className='chat-msg';
     div.innerHTML=`<span class="name">${d.name}:</span> ${d.text}`;
     msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
   };
-  const presence=u=>{
-    const p=db.ref('presence/'+u.uid);
-    p.set({name:u.displayName,online:true});
-    p.onDisconnect().remove();
+  const setPresence=u=>{
+    const ref=db.ref('presence/'+u.uid);
+    ref.set({name:u.displayName,online:true});
+    ref.onDisconnect().remove();
     db.ref('presence').on('value',s=>online.textContent=s.numChildren());
   };
-  function enableChat(){
-    signin.style.display="none";
-    msgs.style.display="block";
-    form.style.display="flex";
+  const enableChat=()=>{
+    signin.style.display='none';
+    msgs.style.display='block';
+    form.style.display='flex';
     input.disabled=false;
-    if(!loaded){db.ref('messages').limitToLast(100).on('child_added',row);loaded=true;}
-  }
-
-  /* sign‑in */
-  signin.onclick=async()=>{
-    try{
-      const {user}=await auth.signInWithPopup(prov);
-      presence(user);enableChat();
-    }catch(e){console.warn("Sign‑in canceled");}
+    if(!loaded){db.ref('messages').limitToLast(100).on('child_added',addRow);loaded=true;}
   };
 
-  /* auto‑resume */
-  auth.onAuthStateChanged(u=>{if(u){presence(u);enableChat();}});
+  /* complete sign‑in after redirect */
+  auth.getRedirectResult().then(res=>{
+    if(res.user){setPresence(res.user);enableChat();}
+  }).catch(console.error);
+
+  /* sign‑in handler */
+  signin.addEventListener('click',async()=>{
+    try{
+      await auth.signInWithPopup(prov);
+      setPresence(auth.currentUser);enableChat();
+    }catch(err){
+      // Popup blocked -> fallback to redirect
+      if(err.code==='auth/popup-blocked'||
+         err.code==='auth/popup-closed-by-user'){
+        try{await auth.signInWithRedirect(prov);}catch(e){console.warn(e);}
+      }else{console.warn(err);}
+    }
+  });
+
+  /* auto‑enable if already signed in */
+  auth.onAuthStateChanged(u=>{if(u){setPresence(u);enableChat();}});
 
   /* send */
   form.addEventListener('submit',e=>{
     e.preventDefault();
-    const txt=input.value.trim();
-    if(txt&&auth.currentUser){add(auth.currentUser.displayName,txt);input.value='';}
+    const t=input.value.trim();
+    if(t&&auth.currentUser){push(auth.currentUser.displayName,t);input.value='';}
   });
 
-  /* pill & close */
-  pill.onclick=()=>{box.hidden=!box.hidden};
-  close.onclick =()=>{box.hidden=true};
+  /* UI toggles */
+  pill.onclick = ()=>{box.hidden=!box.hidden};
+  close.onclick= ()=>{box.hidden=true};
 })();
 </script>
 <!-- ──────────────────────────────────────── -->
