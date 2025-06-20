@@ -341,6 +341,89 @@ db.ref('pinned_message').on('value', snap => {
       messages.scrollTop = messages.scrollHeight;
     });
   </script>
+<!-- ─── ENTRY MODAL ─── -->
+<div id="entry-modal" class="entry-modal">
+  <div class="entry-content">
+    <img src="unnamed.png" alt="Flixora Logo" class="entry-logo" />
+    <h1>Welcome to Flixora</h1>
+    <p>Your home for movies, TV shows, anime & more. Stream now!</p>
+    <button onclick="dismissEntryModal()">Get Started</button>
+  </div>
+</div>
+
+<style>
+  .entry-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+  }
+
+  .entry-content {
+    background: #1c1c1c;
+    padding: 40px;
+    border-radius: 12px;
+    text-align: center;
+    color: white;
+    max-width: 90%;
+    width: 400px;
+    box-shadow: 0 0 20px #000;
+  }
+
+  .entry-logo {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+  }
+
+  .entry-content h1 {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+
+  .entry-content p {
+    font-size: 16px;
+    margin-bottom: 24px;
+    color: #ccc;
+  }
+
+  .entry-content button {
+    background-color: #e50914;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+  }
+
+  .entry-content button:hover {
+    background-color: #c40812;
+  }
+</style>
+
+<script>
+  function dismissEntryModal() {
+    document.getElementById('entry-modal').style.display = 'none';
+    localStorage.setItem('flixora-visited', 'yes');
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const hasVisited = localStorage.getItem('flixora-visited');
+    if (!hasVisited) {
+      document.getElementById('entry-modal').style.display = 'flex';
+    } else {
+      document.getElementById('entry-modal').style.display = 'none';
+    }
+  });
+</script>
 
 </body>
 </html>
