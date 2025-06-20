@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -74,7 +75,7 @@
   <div class="banner-overlay">
     <h1 id="banner-title"></h1>
     <p id="banner-description"></p>
-    <a id="banner-watch-btn" class="banner-watch-btn" target="_blank">▶ Watch Now</a>
+    <a id="banner-watch-btn" class="banner-watch-btn" target="_blank">▶ Watch Now</a>
   </div>
 </div>
 
@@ -85,8 +86,8 @@
 </center>
 
 <!-- ───────── CONTENT ROWS ───────── -->
-<section class="row"><h2>Popular Movies</h2><div class="list" id="movies-list"></div></section>
-<section class="row"><h2>TV Shows</h2><div class="list" id="tvshows-list"></div></section>
+<section class="row"><h2>Popular Movies</h2><div class="list" id="movies-list"></div></section>
+<section class="row"><h2>TV Shows</h2><div class="list" id="tvshows-list"></div></section>
 <section class="row"><h2>Anime</h2><div class="list" id="anime-list"></div></section>
 <section class="row"><h2>Vivamax</h2><div class="list" id="vivamax-list"></div></section>
 
@@ -104,8 +105,8 @@
       <div class="modal-text">
         <h2 id="detail-title"></h2>
         <p id="detail-description"></p>
-        <a id="watch-now-btn" class="watch-now-btn" target="_blank">▶ Watch Now</a>
-        <a id="download-btn" class="download-btn" target="_blank" style="display:none;">⬇ Download</a>
+        <a id="watch-now-btn" class="watch-now-btn" target="_blank">▶ Watch Now</a>
+        <a id="download-btn" class="download-btn" target="_blank" style="display:none;">⬇ Download</a>
       </div>
     </div>
   </div>
@@ -113,15 +114,15 @@
 
 <!-- ───────── FOOTER ───────── -->
 <footer class="footer">
-  <p>© 2025 All rights reserved. We do not host or upload any video files on this site. All content is provided by external third‑party services.</p>
-  <div class="footer-links"><a href="#">Disclaimer</a> · <a href="#">About Us</a> · <a href="#">Contact Us</a></div>
+  <p>© 2025 All rights reserved. We do not host or upload any video files on this site. All content is provided by external third‑party services.</p>
+  <div class="footer-links"><a href="#">Disclaimer</a> · <a href="#">About Us</a> · <a href="#">Contact Us</a></div>
 </footer>
 
-<!-- ───────── GLOBAL CHAT ───────── -->
+<!-- ───────── GLOBAL CHAT ───────── -->
 <div id="chat-toggle"><span class="label">Chat Room</span><span id="online-count">0</span><i class="arrow">▲</i></div>
 
 <div id="chat-box" hidden>
-  <header>Global Chat <button id="close-chat">✕</button></header>
+  <header>Global Chat <button id="close-chat">✕</button></header>
   <div id="chat-content">
     <button id="sign-in-btn">
       <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="">
@@ -142,127 +143,109 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
-<!-- ───────── CHAT LOGIC ───────── -->
-<!-- Your full HTML remains unchanged until the Chat logic section -->
-<!-- Inside <body>, after the rest of your content -->
-
-<!-- Chat logic -->
+<!-- ───────── CHAT LOGIC ───────── -->
 <script>
 (() => {
+  /* Firebase init */
   const cfg = {
-    apiKey: "AIzaSyAbEajCx_wAYT0PJp_foa9d6mGhHmh9OgI",
-    authDomain: "flixora-chat.firebaseapp.com",
-    databaseURL: "https://flixora-chat-default-rtdb.firebaseio.com",
-    projectId: "flixora-chat",
-    storageBucket: "flixora-chat.appspot.com",
+    apiKey:            "AIzaSyAbEajCx_wAYT0PJp_foa9d6mGhHmh9OgI",
+    authDomain:        "flixora-chat.firebaseapp.com",
+    databaseURL:       "https://flixora-chat-default-rtdb.firebaseio.com",
+    projectId:         "flixora-chat",
+    storageBucket:     "flixora-chat.appspot.com",
     messagingSenderId: "715555545977",
-    appId: "1:715555545977:web:da8dadfc38773436fc05a8"
+    appId:             "1:715555545977:web:da8dadfc38773436fc05a8"
   };
   if (!firebase.apps.length) firebase.initializeApp(cfg);
 
-  const db = firebase.database();
-  const auth = firebase.auth();
-  const prov = new firebase.auth.GoogleAuthProvider();
+  const db     = firebase.database();
+  const auth   = firebase.auth();
+  const prov   = new firebase.auth.GoogleAuthProvider();
   prov.setCustomParameters({ prompt: 'select_account' });
-  auth.languageCode = 'en';
 
-  const pill = document.getElementById('chat-toggle');
-  const box = document.getElementById('chat-box');
-  const close = document.getElementById('close-chat');
-  const signin = document.getElementById('sign-in-btn');
-  const msgs = document.getElementById('chat-messages');
-  const form = document.getElementById('chat-form');
-  const input = document.getElementById('chat-input');
+  /* DOM */
+  const pill   = document.getElementById('chat-toggle');
+  const panel  = document.getElementById('chat-box');
+  const closeB = document.getElementById('close-chat');
+  const signB  = document.getElementById('sign-in-btn');
+  const msgs   = document.getElementById('chat-messages');
+  const form   = document.getElementById('chat-form');
+  const input  = document.getElementById('chat-input');
   const online = document.getElementById('online-count');
 
   let loaded = false;
 
-  const push = (n, t) => db.ref('messages').push({
-    name: n || "Anonymous",
-    text: t,
+  /* helpers */
+  const push = (n,t,p) => db.ref('messages').push({
+    name:n, text:t, photoURL:p,
     ts: firebase.database.ServerValue.TIMESTAMP
   });
 
-  const addRow = snap => {
-    const d = snap.val();
-    const div = document.createElement('div');
-    div.className = 'chat-msg';
-    const date = new Date(d.ts || Date.now());
-    const timeString = date.toLocaleString();
-    div.innerHTML = `
-      <div class="msg-body">
-        <div class="msg-header">
-          <span class="name">${d.name || "Anonymous"}</span>
-          <span class="timestamp">${timeString}</span>
-        </div>
-        <div class="msg-text">${d.text}</div>
-      </div>
-    `;
-    msgs.appendChild(div);
+  const row  = snap => {
+    const d   = snap.val();
+    const ts  = d.ts ? new Date(d.ts).toLocaleString() : '';
+    const img = d.photoURL ? d.photoURL : 'default-avatar.png';
+    const wrap= document.createElement('div');
+    wrap.className='chat-msg';
+    wrap.innerHTML = `
+      <img class="chat-avatar ${d.photoURL?'':'default'}" src="${img}" alt="">
+      <div class="chat-bubble">
+        <span class="chat-name">${d.name}</span>
+        <span class="chat-text">${d.text}</span>
+        <span class="chat-time">${ts}</span>
+      </div>`;
+    msgs.appendChild(wrap);
     msgs.scrollTop = msgs.scrollHeight;
   };
 
-  const setPresence = u => {
-    const ref = db.ref('presence/' + u.uid);
-    ref.set({ name: "Anonymous", online: true });
+  const presence = u => {
+    const ref = db.ref('presence/'+u.uid);
+    ref.set({name:u.displayName,online:true});
     ref.onDisconnect().remove();
     db.ref('presence').on('value', s => online.textContent = s.numChildren());
   };
 
-  const enableChat = () => {
-    signin.style.display = 'none';
-    msgs.style.display = 'block';
-    form.style.display = 'flex';
+  function enableChat(){
+    signB.style.display='none';
+    msgs.style.display='block';
+    form.style.display='flex';
     input.disabled = false;
-    if (!loaded) {
-      db.ref('messages').limitToLast(100).on('child_added', addRow);
-      loaded = true;
-    }
-  };
+    if(!loaded){ db.ref('messages').limitToLast(100).on('child_added', row); loaded=true; }
+  }
 
-  auth.getRedirectResult().then(res => {
-    if (res.user) {
-      setPresence(res.user);
-      enableChat();
-    }
-  }).catch(console.error);
-
-  signin.addEventListener('click', async () => {
-    try {
+  /* sign‑in */
+  async function startSign(){
+    try{
       await auth.signInWithPopup(prov);
-      setPresence(auth.currentUser);
+      presence(auth.currentUser);
       enableChat();
-    } catch (err) {
-      if (err.code === 'auth/popup-blocked' || err.code === 'auth/popup-closed-by-user') {
-        try {
-          await auth.signInWithRedirect(prov);
-        } catch (e) {
-          console.warn(e);
-        }
-      } else {
-        console.warn(err);
+    }catch(err){
+      if(err.code==='auth/popup-blocked'||err.code==='auth/popup-closed-by-user'){
+        await auth.signInWithRedirect(prov);
+      }else{
+        alert(err.message);
       }
     }
+  }
+
+  /* auto enable if already signed in */
+  auth.onAuthStateChanged(u=>{
+    if(u){presence(u);enableChat();}
   });
 
-  auth.onAuthStateChanged(u => {
-    if (u) {
-      setPresence(u);
-      enableChat();
-    }
-  });
+  /* events */
+  signB.onclick = startSign;
+  pill.onclick  = ()=> panel.hidden = !panel.hidden;
+  closeB.onclick= ()=> panel.hidden = true;
 
-  form.addEventListener('submit', e => {
+  form.addEventListener('submit', e=>{
     e.preventDefault();
-    const t = input.value.trim();
-    if (t && auth.currentUser) {
-      push("Anonymous", t);
-      input.value = '';
+    const txt = input.value.trim();
+    if(txt && auth.currentUser){
+      push(auth.currentUser.displayName, txt, auth.currentUser.photoURL||'');
+      input.value='';
     }
   });
-
-  pill.onclick = () => { box.hidden = !box.hidden; };
-  close.onclick = () => { box.hidden = true; };
 })();
 </script>
 </body>
