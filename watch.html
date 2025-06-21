@@ -321,6 +321,24 @@
 		'params' : {}
 	};
 </script>
+		<script>
+// Disable right-click
+document.addEventListener('contextmenu', event => event.preventDefault());
+
+// Block common DevTools shortcuts
+document.onkeydown = function (e) {
+  if (
+    e.key === "F12" ||                             // F12
+    (e.ctrlKey && e.shiftKey && e.key === "I") ||  // Ctrl+Shift+I
+    (e.ctrlKey && e.shiftKey && e.key === "J") ||  // Ctrl+Shift+J
+    (e.ctrlKey && e.shiftKey && e.key === "C") ||  // Ctrl+Shift+C
+    (e.ctrlKey && e.key === "U")                   // Ctrl+U (View Source)
+  ) {
+    e.preventDefault();
+    return false;
+  }
+};
+</script>
 <script type="text/javascript" src="//transparentdefender.com/3e8dc7cbcc31780cad2727b4bc64a1df/invoke.js"></script>
 		</center>
 	<script type='text/javascript' src='//transparentdefender.com/60/86/60/6086609321601064c3b75f442c564c6f.js'></script>
