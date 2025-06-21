@@ -26,6 +26,33 @@ document.addEventListener('DOMContentLoaded', () => {
     li.addEventListener('click', () => { fetchByGenre(li.dataset.genre); toggleSidebar(); })
   );
 });
+// Fetch and display upcoming movies
+async function fetchComingSoon() {
+  try {
+    const response = await fetch(`https://api.themoviedb.org/3/movie/upcoming?api_key=ba0e2f64d29bae320cf0bbd091bbdf3f&language=en-US&page=1`);
+    const data = await response.json();
+    const comingSoonList = document.getElementById("coming-soon-list");
+
+    data.results.forEach(movie => {
+      const thumb = document.createElement("div");
+      thumb.classList.add("movie-list-item");
+
+      thumb.innerHTML = `
+        <img src="https://image.tmdb.org/t/p/w300${movie.poster_path}" class="movie-list-item-img" alt="${movie.title}">
+        <span class="movie-list-item-title">${movie.title}</span>
+        <span class="movie-list-item-date">Releasing: ${movie.release_date}</span>
+      `;
+
+      thumb.addEventListener("click", () => openDetailModal(movie.id, "movie")); // If you use a modal
+
+      comingSoonList.appendChild(thumb);
+    });
+  } catch (err) {
+    console.error("Failed to load upcoming movies:", err);
+  }
+}
+
+fetchComingSoon();
 
 /* ----------- SCROLL BUTTONS ------------ */
 function createScrollButtons() {
