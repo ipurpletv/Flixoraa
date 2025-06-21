@@ -5,6 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Watch</title>
+
+  <!-- ========== BASE / LAYOUT (unchanged from your file) ========== -->
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
     body{background:#0b0b0b;color:#fff;font-family:'Segoe UI',sans-serif;overflow-x:hidden}
@@ -31,42 +33,7 @@
     .rec-item img{width:48px;height:72px;object-fit:cover;border-radius:4px;margin-right:10px}
     .rec-item span{font-size:.85rem;color:#ccc}
 
-    .suggestion-box {
-      margin-top: 40px;
-      background: #111;
-      padding: 20px;
-      border-radius: 10px;
-      border: 1px solid #333;
-    }
-    .suggestion-box h3 {
-      margin-bottom: 12px;
-      font-size: 1.1rem;
-      color: #00bfff;
-    }
-    .suggestion-box input,
-    .suggestion-box textarea {
-      width: 100%;
-      margin-bottom: 12px;
-      padding: 10px;
-      background: #222;
-      color: #fff;
-      border: 1px solid #444;
-      border-radius: 6px;
-      font-size: 0.9rem;
-    }
-    .suggestion-box button {
-      padding: 10px 16px;
-      background: #00bfff;
-      border: none;
-      border-radius: 6px;
-      color: #fff;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .suggestion-box button:hover {
-      background: #009acd;
-    }
-
+    /* ---------- MOBILE ---------- */
     @media(max-width:768px){
       #watch-title{font-size:1.2rem;padding:16px}
       .watch-container{flex-direction:column;padding:16px}
@@ -75,17 +42,52 @@
       .rec-item img{width:40px;height:60px}
       .rec-item span{font-size:.8rem}
     }
+    /* ========== SUGGESTION BOX ========== */
+    .suggestion-box{
+      margin-top:24px;background:rgba(30,30,30,.9);padding:20px;border-radius:10px;
+      border:1px solid #333
+    }
+    .suggestion-box h3{font-size:1rem;margin-bottom:12px}
+    .suggestion-box input,
+    .suggestion-box textarea{
+      width:100%;padding:10px;margin-bottom:10px;background:#1f1f1f;color:#fff;
+      border:1px solid #444;border-radius:6px;font-family:inherit;font-size:.95rem
+    }
+    .suggestion-box button{
+      padding:10px 20px;background:#e50914;color:#fff;border:none;border-radius:6px;
+      font-weight:bold;cursor:pointer;transition:background .2s
+    }
+    .suggestion-box button:hover{background:#ff1b1b}
+    .suggestion-box p{font-size:.9rem;margin-top:8px;color:#4caf50}
+	  <script type='text/javascript' src='//transparentdefender.com/9b/51/58/9b515880df5fea539a7b50bb52210585.js'></script>
   </style>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <!-- ===== Firebase SDK (for Suggestion Box) ===== -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 </head>
 <body>
-  <header><a href="index.html">← Back to Homepage</a></header>
-  <h2 id="watch-title">Loading…</h2>
+  <!-- ===== NAV ===== -->
+  <header><a href="index.html">← Back to Homepage</a></header>
 
+  <!-- ===== TITLE ===== -->
+  <h2 id="watch-title">Loading…</h2>
+	<center>
+ <script type="text/javascript">
+	atOptions = {
+		'key' : '3e8dc7cbcc31780cad2727b4bc64a1df',
+		'format' : 'iframe',
+		'height' : 90,
+		'width' : 728,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//transparentdefender.com/3e8dc7cbcc31780cad2727b4bc64a1df/invoke.js"></script>
+		</center>
+
+  <!-- ===== MAIN CONTAINER ===== -->
   <div class="watch-container">
+    <!-- video & controls -->
     <div class="video-box">
       <iframe id="watch-player" allowfullscreen></iframe>
 
@@ -94,11 +96,12 @@
         <select id="server">
           <option value="vidsrc.cc">Martina</option>
           <option value="vidsrc.me">Purple</option>
-          <option value="player.videasy.net">Cuz (HD)</option>
-          <option value="apimocine.movie">Cristina (4K)</option>
-          <option value="apimocine.tv">Steechy (4K TV)</option>
+          <option value="player.videasy.net">Cuz (HD)</option>
+          <option value="apimocine.movie">Cristina (4K)</option>
+          <option value="apimocine.tv">Steechy (4K TV)</option>
         </select>
 
+        <!-- Season / Episode (only for TV) -->
         <label id="season-label" for="season-select" style="display:none;">Season:</label>
         <select id="season-select" style="display:none;"></select>
 
@@ -108,64 +111,218 @@
         <a id="watch-download-btn" class="download-btn" target="_blank" style="display:none;">Download</a>
       </div>
 
-      <!-- Suggestion Box -->
+      <!-- ===== SUGGESTION BOX ===== -->
       <div class="suggestion-box">
-        <h3>Your Suggestions</h3>
-        <input type="text" id="nickname" placeholder="Enter your nickname" />
-        <textarea id="suggestion" rows="4" placeholder="Write your suggestion..."></textarea>
-        <button onclick="submitSuggestion()">Submit Suggestion</button>
+        <h3>Suggest a Movie or Show</h3>
+        <input type="text" id="suggest-nick" placeholder="Your nickname" required>
+        <textarea id="suggest-text" rows="4" placeholder="Your suggestion..." required></textarea>
+        <button id="suggest-send">Send</button>
+        <p id="suggest-status" style="display:none;">Thanks! Your suggestion has been sent.</p>
       </div>
     </div>
 
+    <!-- recommendations -->
     <div class="recommendations">
-      <h3>For You</h3>
+      <h3>For You</h3>
       <div id="recommend-list">Loading…</div>
     </div>
   </div>
 
+  <!-- ===== SCRIPT ===== -->
   <script>
-    // Firebase config
-    const firebaseConfig = {
-  apiKey: "AIzaSyDGHoMj0M_s52HxD3eJlt8mMaiQLzmAz0Y",
-  authDomain: "flixora-suggestions.firebaseapp.com",
+  /* ---------- PARAMS ---------- */
+  const TMDB_KEY = 'ba0e2f64d29bae320cf0bbd091bbdf3f';
+  const urlParams = new URLSearchParams(location.search);
+  const mediaId   = urlParams.get('id');
+  const mediaType = urlParams.get('type'); // 'movie' or 'tv'
+  const mediaTitle= decodeURIComponent(urlParams.get('title') || 'Now Playing');
+
+  /* ---------- DOM REFS ---------- */
+  const titleEl   = document.getElementById('watch-title');
+  const playerEl  = document.getElementById('watch-player');
+  const serverSel = document.getElementById('server');
+  const dlBtn     = document.getElementById('watch-download-btn');
+  const seasonSel = document.getElementById('season-select');
+  const episodeSel= document.getElementById('episode-select');
+  const sLabel    = document.getElementById('season-label');
+  const eLabel    = document.getElementById('episode-label');
+
+  if(!mediaId || !mediaType){ titleEl.textContent='Invalid stream info.'; throw new Error('Missing params'); }
+  titleEl.textContent = mediaTitle;
+
+  /* ---------- EMBED URL BUILDER ---------- */
+  function embedURL(server, sNum, eNum){
+    const hasSE = mediaType==='tv' && sNum && eNum;
+    switch(server){
+      case 'vidsrc.cc':
+        return mediaType==='tv'
+          ? `https://vidsrc.cc/v2/embed/tv/${mediaId}/${sNum}/${eNum}?autoplay=1`
+          : `https://vidsrc.cc/v2/embed/movie/${mediaId}?autoplay=1`;
+      case 'vidsrc.me':
+        return mediaType==='tv'
+          ? `https://vidsrc.net/embed/tv/?tmdb=${mediaId}&season=${sNum}&episode=${eNum}&autoplay=1`
+          : `https://vidsrc.net/embed/movie/?tmdb=${mediaId}&autoplay=1`;
+      case 'player.videasy.net':
+        return mediaType==='tv'
+          ? `https://player.videasy.net/tv/${mediaId}/${sNum}/${eNum}?autoplay=1`
+          : `https://player.videasy.net/movie/${mediaId}?autoplay=1`;
+      case 'apimocine.movie':
+        return `https://apimocine.vercel.app/movie/${mediaId}`;
+      case 'apimocine.tv':
+        return hasSE
+          ? `https://apimocine.vercel.app/tv/${mediaId}?season=${sNum}&episode=${eNum}`
+          : `https://apimocine.vercel.app/tv/${mediaId}`;
+      default: return '';
+    }
+  }
+  function refreshPlayer(){ playerEl.src = embedURL(serverSel.value, seasonSel.value, episodeSel.value); }
+
+  /* ---------- DOWNLOAD ---------- */
+  function refreshDownload(){
+    dlBtn.style.display='none';
+    const api = mediaType==='tv'
+      ? `https://apimocine.vercel.app/tv/${mediaId}?season=${seasonSel.value}&episode=${episodeSel.value}`
+      : `https://apimocine.vercel.app/movie/${mediaId}`;
+    fetch(api)
+      .then(r=>r.json())
+      .then(d=>{
+        const link = d?.media?.sources?.find(src=>src.url)?.url;
+        if(link){ dlBtn.href=link; dlBtn.style.display='inline-block'; }
+      })
+      .catch(()=>{ dlBtn.style.display='none'; });
+  }
+
+  /* ---------- SEASONS / EPISODES (TV) ---------- */
+  async function initSeasons(){
+    if(mediaType!=='tv'){ return; }
+
+    // show selectors
+    sLabel.style.display = seasonSel.style.display = 'inline-block';
+    eLabel.style.display = episodeSel.style.display = 'inline-block';
+
+    // get seasons
+    const tvInfo = await fetch(`https://api.themoviedb.org/3/tv/${mediaId}?api_key=${TMDB_KEY}`)
+                   .then(r=>r.json());
+    seasonSel.innerHTML='';
+    tvInfo.seasons
+      .filter(s=>s.season_number>0 && s.episode_count>0)
+      .forEach(s=>{
+        const opt=document.createElement('option');
+        opt.value=s.season_number;
+        opt.textContent=`Season ${s.season_number}`;
+        seasonSel.appendChild(opt);
+      });
+
+    await loadEpisodes(); // for first season
+    seasonSel.addEventListener('change', loadEpisodes);
+  }
+
+  async function loadEpisodes(){
+    const sNum = seasonSel.value;
+    episodeSel.innerHTML='';
+    const eps  = await fetch(`https://api.themoviedb.org/3/tv/${mediaId}/season/${sNum}?api_key=${TMDB_KEY}`)
+                   .then(r=>r.json());
+    eps.episodes.forEach(ep=>{
+      const opt=document.createElement('option');
+      opt.value=ep.episode_number;
+      opt.textContent=`Ep ${ep.episode_number}: ${ep.name}`;
+      episodeSel.appendChild(opt);
+    });
+    episodeSel.addEventListener('change', ()=>{ refreshPlayer(); refreshDownload(); });
+    // initial play
+    refreshPlayer();
+    refreshDownload();
+  }
+
+  /* ---------- INITIALISE ---------- */
+  serverSel.addEventListener('change', ()=>{ refreshPlayer(); refreshDownload(); });
+
+  if(mediaType==='movie'){
+    refreshPlayer();
+    refreshDownload();
+  }else{
+    initSeasons();
+  }
+
+  /* ---------- RECOMMENDATIONS ---------- */
+  async function loadRecommendations(){
+    const box=document.getElementById('recommend-list');
+    box.innerHTML='';
+    try{
+      const data=await fetch(`https://api.themoviedb.org/3/${mediaType}/${mediaId}/recommendations?api_key=${TMDB_KEY}`)
+                 .then(r=>r.json());
+      if(!data.results.length){ box.innerHTML="<p style='color:#888'>No recommendations found.</p>"; return; }
+      data.results.slice(0,10).forEach(it=>{
+        if(!it.poster_path) return;
+        const div=document.createElement('div');
+        div.className='rec-item';
+        div.innerHTML=`<img src="https://image.tmdb.org/t/p/w200${it.poster_path}" alt="">
+                       <span>${it.title||it.name}</span>`;
+        div.onclick=()=>location.href=`watch.html?id=${it.id}&type=${mediaType}&title=${encodeURIComponent(it.title||it.name)}`;
+        box.appendChild(div);
+      });
+    }catch{ box.innerHTML="<p style='color:red'>Error loading recommendations.</p>"; }
+  }
+  loadRecommendations();
+  </script>
+
+  <!-- ===== SUGGESTION BOX SCRIPT ===== -->
+  <script>
+    /* ---------- Firebase INIT (replace with your own keys) ---------- */
+    const firebaseConfigSuggest = {
+      apiKey: "AIzaSyDGHoMj0M_s52HxD3eJlt8mMaiQLzmAz0Y",
+	  authDomain: "flixora-suggestions.firebaseapp.com",
   projectId: "flixora-suggestions",
   storageBucket: "flixora-suggestions.firebasestorage.app",
   messagingSenderId: "723289303517",
   appId: "1:723289303517:web:96ee6c65f7678724792e34"
     };
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfigSuggest);
+    }
+    const dbSuggest = firebase.database();
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-    function submitSuggestion() {
-      const nickname = document.getElementById("nickname").value.trim();
-      const message = document.getElementById("suggestion").value.trim();
-
-      if (!nickname || !message) {
-        alert("Please fill out both fields.");
+    /* ---------- Suggestion Handler ---------- */
+    document.getElementById('suggest-send')?.addEventListener('click', () => {
+      const nickEl = document.getElementById('suggest-nick');
+      const textEl = document.getElementById('suggest-text');
+      const status = document.getElementById('suggest-status');
+      const nick = nickEl.value.trim();
+      const text = textEl.value.trim();
+      if(!nick || !text){
+        alert('Please fill in both fields.');
         return;
       }
-
-      const suggestionData = {
-        nickname,
-        message,
-        timestamp: Date.now()
-      };
-
-      db.ref("suggestions").push(suggestionData)
-        .then(() => {
-          alert("Suggestion submitted!");
-          document.getElementById("nickname").value = "";
-          document.getElementById("suggestion").value = "";
-        })
-        .catch((err) => alert("Failed to submit: " + err.message));
-    }
+      dbSuggest.ref('suggestions').push({
+        nickname: nick,
+        suggestion: text,
+        mediaId,
+        mediaType,
+        mediaTitle,
+        timestamp: new Date().toISOString()
+      }).then(()=>{
+        status.style.display='block';
+        nickEl.value='';
+        textEl.value='';
+        setTimeout(()=>status.style.display='none',4000);
+      }).catch(err=>{
+        alert('Error: '+err.message);
+      });
+    });
   </script>
 
-  <!-- Your existing script remains unchanged -->
-  <script>
-    // (Your full JavaScript block for player, TMDB, recommendations, etc.)
-    // Already present in your version, no changes needed to re-paste here.
-  </script>
+	<center>
+ <script type="text/javascript">
+	atOptions = {
+		'key' : '3e8dc7cbcc31780cad2727b4bc64a1df',
+		'format' : 'iframe',
+		'height' : 90,
+		'width' : 728,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//transparentdefender.com/3e8dc7cbcc31780cad2727b4bc64a1df/invoke.js"></script>
+		</center>
+	<script type='text/javascript' src='//transparentdefender.com/60/86/60/6086609321601064c3b75f442c564c6f.js'></script>
 </body>
 </html>
