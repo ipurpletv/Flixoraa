@@ -112,7 +112,6 @@
   <div id="chat-container">
     <div id="chat-toggle">💬 Global Chat (<span id="user-count">0</span>)</div>
     <div id="chat-box" class="hidden">
-      <div id="pinned-msg" class="chat-msg pinned-msg"></div>
       <div id="chat-messages"></div>
       <form id="chat-form" class="hidden">
         <input id="chat-input" type="text" placeholder="Type a message..." required />
@@ -186,12 +185,10 @@
     }
 
     .chat-msg .timestamp {
-  font-size: 11px;
-  color: #aaa;
-  margin-top: 8px;
-  display: block;
-  text-align: right;
-}
+      font-size: 11px;
+      color: #aaa;
+      margin-top: 2px;
+    }
 
     #chat-form {
       padding: 6px;
@@ -238,14 +235,6 @@
       background-color: #e50914;
       border-radius: 3px;
     }
-    .pinned-msg {
-  background: #444;
-  color: #fff;
-  border-left: 4px solid #ffcc00;
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-
   </style>
 
   <!-- Firebase SDKs -->
@@ -312,19 +301,7 @@
     db.ref('presence').on('value', snap => {
       userCount.textContent = snap.numChildren();
     });
-db.ref('pinned_message').on('value', snap => {
-  const pinned = snap.val();
-  if (pinned) {
-    const date = new Date(pinned.time).toLocaleString();
-    document.getElementById('pinned-msg').innerHTML = `
-      <span class="name">${pinned.name}</span>
-      <div>${pinned.text}</div>
-      <div class="timestamp">${date}</div>
-    `;
-  } else {
-    document.getElementById('pinned-msg').innerHTML = '';
-  }
-});
+
     db.ref('global_chat').limitToLast(100).on('child_added', snap => {
       const msg = snap.val();
       const div = document.createElement('div');
@@ -341,115 +318,6 @@ db.ref('pinned_message').on('value', snap => {
       messages.scrollTop = messages.scrollHeight;
     });
   </script>
-<!-- ─── ENTRY MODAL ─── -->
-<div id="entry-modal" class="entry-modal">
-  <div class="entry-content">
-    <img src="dasd.png" alt="Flixora Logo" class="entry-logo" />
-    <h1>Welcome to Flixora</h1>
-    <p>Your home for movies, TV shows, anime & more. Stream now!</p>
-    <p class="share-text">Share us with your family and friends.</p>
-
-    <!-- Ad Space -->
-    <div class="entry-ad">
-      <script type="text/javascript">
-        atOptions = {
-          'key': 'd8207cd27802c5cd3603eef7ed22e16f',
-          'format': 'iframe',
-          'height': 60,
-          'width': 468,
-          'params': {}
-        };
-      </script>
-      <script type="text/javascript" src="//transparentdefender.com/d8207cd27802c5cd3603eef7ed22e16f/invoke.js"></script>
-    </div>
-
-    <button onclick="dismissEntryModal()">Get Started</button>
-  </div>
-</div>
-
-<style>
-  .entry-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    backdrop-filter: blur(10px);
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 99999;
-  }
-
-  .entry-content {
-    background: #1c1c1c;
-    padding: 50px 30px;
-    border-radius: 14px;
-    text-align: center;
-    color: white;
-    max-width: 95%;
-    width: 500px;
-    box-shadow: 0 0 25px #000;
-  }
-
-  .entry-logo {
-    width: 90px;
-    height: 90px;
-    margin-bottom: 20px;
-  }
-
-  .entry-content h1 {
-    font-size: 30px;
-    margin-bottom: 14px;
-  }
-
-  .entry-content p {
-    font-size: 17px;
-    margin-bottom: 10px;
-    color: #ccc;
-  }
-
-  .share-text {
-    font-style: italic;
-    color: #aaa;
-    margin-bottom: 20px;
-  }
-
-  .entry-ad {
-    margin: 20px 0;
-  }
-
-  .entry-content button {
-    background-color: #e50914;
-    border: none;
-    padding: 14px 28px;
-    font-size: 16px;
-    border-radius: 6px;
-    color: white;
-    cursor: pointer;
-  }
-
-  .entry-content button:hover {
-    background-color: #c40812;
-  }
-</style>
-
-<script>
-  function dismissEntryModal() {
-    document.getElementById('entry-modal').style.display = 'none';
-    localStorage.setItem('flixora-visited', 'yes');
-  }
-
-  window.addEventListener('DOMContentLoaded', () => {
-    const hasVisited = localStorage.getItem('flixora-visited');
-    if (!hasVisited) {
-      document.getElementById('entry-modal').style.display = 'flex';
-    } else {
-      document.getElementById('entry-modal').style.display = 'none';
-    }
-  });
-</script>
 
 </body>
 </html>
