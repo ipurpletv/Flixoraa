@@ -182,7 +182,7 @@
     // add more IDs here
   };
 
-  const ADSTERRA_URL = 'https://paypou.com/bGWQdghg/36850879';
+  const PASTEPESO_URL = 'https://paypou.com/bGWQdghg/36850879';
 
   const linkElem  = document.getElementById('download-link');
   const timerElem = document.getElementById('timer');
@@ -195,7 +195,7 @@
     if (--sec < 0) {
       clearInterval(tick);
       document.getElementById('countdown').style.display = 'none';
-      linkElem.href = downloadLinks[id] || ADSTERRA_URL;
+      linkElem.href = downloadLinks[id] || PASTEPESO_URL;
       linkElem.style.display = 'inline-block';
     }
   }, 1000);
